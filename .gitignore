@@ -8,6 +8,4 @@
 /Maray/Maray.csproj.user
 /.vs
 /Maray/.vs
-
-*/.vs/*
-*/bin/*
+/Maray/bin

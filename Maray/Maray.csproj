@@ -49,20 +49,24 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Views\" />
+	  <Compile Update="Views\AboutPage.xaml.cs">
+	    <DependentUpon>AboutPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
+
 	<ItemGroup>
-	  <Folder Include="Views\" />
+	  <MauiXaml Update="Views\AboutPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+		<MauiXaml Update="Views\Setting.xaml">
+			<SubType></SubType>
+		</MauiXaml>
+		<MauiXaml Update="Views\Server.xaml">
+			<SubType></SubType>
+		</MauiXaml>
+		<MauiXaml Update="Views\Config.xaml">
+			<SubType></SubType>
+		</MauiXaml>
 	</ItemGroup>
-	<ItemGroup>
-	  <MauiXaml Update="Views\Setting.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Server.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Config.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	</ItemGroup>
+
 </Project>

@@ -4,18 +4,28 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Maray"
-    xmlns:localViews="clr-namespace:Maray.Views"
+    xmlns:views="clr-namespace:Maray.Views"
     Shell.FlyoutBehavior="Disabled">
 
     <TabBar>
+        <ShellContent
+            Title="Main"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Icon="icon_notes" />
+
+        <ShellContent
+            Title="About"
+            ContentTemplate="{DataTemplate views:AboutPage}"
+            Icon="icon_about" />
+        
         <Tab Title="Server">
-            <ShellContent ContentTemplate="{DataTemplate localViews:Server}" />
+            <ShellContent ContentTemplate="{DataTemplate views:Server}" />
         </Tab>
         <Tab Title="Config">
-            <ShellContent ContentTemplate="{DataTemplate localViews:Config}" />
+            <ShellContent ContentTemplate="{DataTemplate views:Config}" />
         </Tab>
         <Tab Title="Setting">
-            <ShellContent ContentTemplate="{DataTemplate localViews:Setting}" />
+            <ShellContent ContentTemplate="{DataTemplate views:Setting}" />
         </Tab>
     </TabBar>
 
