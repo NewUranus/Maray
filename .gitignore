@@ -6,6 +6,8 @@
 /Maray/.vs/Maray/FileContentIndex
 /Maray/obj
 /Maray/Maray.csproj.user
+/.vs
+/Maray/.vs
 
 */.vs/*
 */bin/*
