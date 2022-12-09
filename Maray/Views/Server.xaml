@@ -8,5 +8,11 @@
             Text="Server"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+
+        <Entry x:Name="entry"
+            Placeholder="Enter Node"
+            TextChanged="OnEntryTextChanged"
+            Completed="OnEntryCompleted"/>
+
     </VerticalStackLayout>
 </ContentPage>
