@@ -21,7 +21,7 @@
                 VerticalOptions="End" />
         </HorizontalStackLayout>
 
-        <Label Text="This app is written in XAML and C# with .NET MAUI,is another v2ray client." />
+        <Label Text="This app is written in XAML and C# with .NET MAUI,is another v2ray client..." />
         <Button Clicked="LearnMore_Clicked" Text="Learn more..." />
     </VerticalStackLayout>
 </ContentPage>
