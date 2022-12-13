@@ -5,47 +5,44 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Maray"
     xmlns:views="clr-namespace:Maray.Views"
-    Shell.FlyoutBehavior="{OnIdiom Phone=Disabled, Default=Locked}"
-    >
+    Shell.FlyoutBehavior="{OnIdiom Phone=Disabled,
+                                   Default=Locked}">
 
-    <Shell.FlyoutWidth> 100 </Shell.FlyoutWidth>
+    <Shell.FlyoutWidth>100</Shell.FlyoutWidth>
 
     <Shell.FlyoutFooterTemplate>
 
         <DataTemplate>
             <Grid RowDefinitions="100">
                 <Grid.GestureRecognizers>
-                    <TapGestureRecognizer/>
+                    <TapGestureRecognizer />
                 </Grid.GestureRecognizers>
-                <Image Source="ellipsis.png"
-                       VerticalOptions="Center"
-                               HorizontalOptions="Center"
-                               WidthRequest="16"
-                               HeightRequest="16"
-                        />
+                <Image
+                    HeightRequest="16"
+                    HorizontalOptions="Center"
+                    Source="ellipsis.png"
+                    VerticalOptions="Center"
+                    WidthRequest="16" />
             </Grid>
         </DataTemplate>
     </Shell.FlyoutFooterTemplate>
 
-    <FlyoutItem
-        FlyoutIcon="icon_notes.png">
-        <ShellContent
-            Title="Main"
-            ContentTemplate="{DataTemplate local:MainPage}"/>
+    <FlyoutItem FlyoutIcon="icon_notes.png">
+        <ShellContent Title="Main" ContentTemplate="{DataTemplate local:MainPage}" />
     </FlyoutItem>
 
-    <FlyoutItem
-        FlyoutIcon="server.png">
-        <ShellContent
-            Title="Server"
-            ContentTemplate="{DataTemplate views:Server}"/>
+    <FlyoutItem>
+        <ShellContent Title="Subscribe" ContentTemplate="{DataTemplate views:SubscribeSetting}" />
     </FlyoutItem>
 
-    <FlyoutItem
-        FlyoutIcon="icon_about.png">
-        <ShellContent
-            Title="About"
-            ContentTemplate="{DataTemplate views:AboutPage}"/>
+    <FlyoutItem FlyoutIcon="server.png">
+        <ShellContent Title="Server" ContentTemplate="{DataTemplate views:Server}" />
+    </FlyoutItem>
+
+
+
+    <FlyoutItem FlyoutIcon="icon_about.png">
+        <ShellContent Title="About" ContentTemplate="{DataTemplate views:AboutPage}" />
     </FlyoutItem>
 
     <TabBar x:Name="PhoneTabs">
@@ -58,7 +55,7 @@
             Title="About"
             ContentTemplate="{DataTemplate views:AboutPage}"
             Icon="icon_about" />
-        
+
         <Tab Title="Server">
             <ShellContent ContentTemplate="{DataTemplate views:Server}" />
         </Tab>

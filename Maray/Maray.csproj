@@ -67,6 +67,9 @@
 		<MauiXaml Update="Views\Config.xaml">
 			<SubType></SubType>
 		</MauiXaml>
+		<MauiXaml Update="Views\SubscribeSetting.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -78,6 +81,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Model\" />
-	  <Folder Include="ViewModels\" />
+	  <Folder Include="Views\UserControls\" />
 	</ItemGroup>
 </Project>
