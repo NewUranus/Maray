@@ -1,4 +1,7 @@
-﻿namespace Maray;
+﻿using Maray.ViewModels;
+using Maray.Views;
+
+namespace Maray;
 
 public static class MauiProgram
 {
@@ -13,6 +16,10 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-		return builder.Build();
+        var services = builder.Services;
+        services.AddSingleton<ServerVM>();
+        services.AddSingleton<Server>();
+
+        return builder.Build();
 	}
 }
