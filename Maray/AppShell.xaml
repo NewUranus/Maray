@@ -31,7 +31,7 @@
         <ShellContent Title="Main" ContentTemplate="{DataTemplate local:MainPage}" />
     </FlyoutItem>
 
-    <FlyoutItem>
+    <FlyoutItem FlyoutIcon="plus.png">
         <ShellContent Title="Subscribe" ContentTemplate="{DataTemplate views:SubscribeSetting}" />
     </FlyoutItem>
 

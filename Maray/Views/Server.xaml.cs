@@ -28,4 +28,9 @@ public partial class Server : ContentPage
     void OnEntryTextChanged(System.Object sender, Microsoft.Maui.Controls.TextChangedEventArgs e)
     {
     }
+
+    private void ImageButton_Clicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new SubscribeSetting());
+    }
 }

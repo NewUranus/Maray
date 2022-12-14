@@ -4,7 +4,9 @@
              x:Class="Maray.Views.Server"
              xmlns:localVM="clr-namespace:Maray.ViewModels"
              xmlns:localM="clr-namespace:Maray.Model"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             Shell.NavBarIsVisible="False"
+             >
 
     <ContentPage.BindingContext>
         <localVM:ServerVM />
@@ -19,6 +21,17 @@
 
         <CollectionView
             ItemsSource="{Binding servers}">
+            <CollectionView.Header>
+                <ImageButton
+                    Source="plus.png"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    BorderColor="Yellow"
+                    BorderWidth="2"
+                    Clicked="ImageButton_Clicked">
+                    
+                </ImageButton>
+            </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="localM:ServerM">
                     <Grid Padding="10">

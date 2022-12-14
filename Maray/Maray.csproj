@@ -76,6 +76,7 @@
 	  <None Remove="Model\" />
 	  <None Remove="Resources\Images\ellipsis.svg" />
 	  <None Remove="Resources\Images\more.svg" />
+	  <None Remove="Resources\Images\plus.svg" />
 	  <None Remove="Resources\Images\server.svg" />
 	  <None Remove="ViewModels\" />
 	</ItemGroup>
