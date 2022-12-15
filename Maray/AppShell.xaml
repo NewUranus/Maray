@@ -39,6 +39,11 @@
         <ShellContent Title="Server" ContentTemplate="{DataTemplate views:Server}" />
     </FlyoutItem>
 
+    <FlyoutItem FlyoutIcon="ellipsis.png">
+        <ShellContent Title="Setting" ContentTemplate="{DataTemplate views:Setting}" 
+                      Shell.NavBarIsVisible="False"/>
+    </FlyoutItem>
+
 
 
     <FlyoutItem FlyoutIcon="icon_about.png">

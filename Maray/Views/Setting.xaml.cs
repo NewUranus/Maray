@@ -6,4 +6,10 @@ public partial class Setting : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void Switch_Toggled(object sender, ToggledEventArgs e)
+    {
+        var s = sender as Switch;
+        App.Current.UserAppTheme = s.IsToggled ? AppTheme.Dark : AppTheme.Light;
+    }
 }
