@@ -4,52 +4,79 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:Maray.ViewModels"
-    Title="Subscribe">
+    Title="Subscribe"
+    x:DataType="vm:SubscribeSettingVM">
     <ContentPage.Resources>
         <ControlTemplate x:Key="subItem" />
     </ContentPage.Resources>
-    <CollectionView ItemSizingStrategy="MeasureFirstItem" ItemsSource="{Binding SubscribeItemsource}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <!--  x:DataType="vm:SubscribeSettingVM"  -->
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Label
-                        Margin="5"
-                        Text="备注"
-                        VerticalOptions="Center" />
-                    <Entry Grid.Column="1" Text="{Binding Note}" />
-                    <Label
-                        Grid.Row="1"
-                        Margin="5"
-                        Text="地址"
-                        VerticalOptions="Center" />
-                    <Entry
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Text="{Binding SubscribeUrl}" />
-
-                    <HorizontalStackLayout
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        HorizontalOptions="EndAndExpand">
-                        <Button Text="移除1" />
-                        <Button Text="移除3" />
-                    </HorizontalStackLayout>
-                </Grid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <HorizontalStackLayout HorizontalOptions="End">
+            <Button Command="{Binding AddNewCommand}" Text="AddNew" />
+        </HorizontalStackLayout>
+        <CollectionView
+            Grid.Row="1"
+            ItemSizingStrategy="MeasureFirstItem"
+            ItemsSource="{Binding SubscribeItemsource}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:SubscribeItemVM">
+                    <!--  x:DataType="vm:SubscribeSettingVM"  -->
+                    <Frame>
+                        <Grid
+                            ColumnDefinitions="auto,1*"
+                            RowDefinitions="*,*,*"
+                            RowSpacing="5">
 
 
+                            <Grid Grid.ColumnSpan="2" ColumnDefinitions="auto,1*,auto">
 
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+                                <Label
+                                    Margin="5"
+                                    Text="备注"
+                                    VerticalOptions="Center" />
+                                <Entry
+                                    Grid.Column="1"
+                                    Margin="5"
+                                    Text="{Binding Note}" />
+                                <HorizontalStackLayout Grid.Column="2">
+
+                                    <!--<CheckBox IsChecked="{Binding IsEnable}" />-->
+                                    <Label Margin="5" VerticalTextAlignment="Center">启用</Label>
+                                </HorizontalStackLayout>
+
+                            </Grid>
+
+                            <Label
+                                Grid.Row="1"
+                                Margin="5"
+                                Text="地址"
+                                VerticalOptions="Center" />
+                            <Entry
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="5"
+                                Text="{Binding SubscribeUrl}" />
+
+                            <HorizontalStackLayout
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                HorizontalOptions="EndAndExpand"
+                                Spacing="5">
+                                <Button Text="更新" />
+                                <Button Text="移除" />
+                            </HorizontalStackLayout>
+                        </Grid>
+
+                    </Frame>
+
+
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
 </ContentPage>

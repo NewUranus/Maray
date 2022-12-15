@@ -6,26 +6,28 @@ namespace Maray.Views;
 
 public partial class SubscribeSetting : ContentPage
 {
-	public SubscribeSetting()
-	{
-		InitializeComponent();
-        CreateMonkeyCollection();
-        BindingContext = this;
-    }
-    public ObservableCollection<SubscribeItemVM> SubscribeItemsource { get; set; } = new ObservableCollection<SubscribeItemVM>();
-    void CreateMonkeyCollection()
+    public SubscribeSetting(SubscribeSettingVM subscribeSettingVM )
     {
-
-        SubscribeItemsource.Add(new SubscribeItemVM()
-        {
-            Note="ceshi1",
-            SubscribeUrl = "111"
-        });
-
-        SubscribeItemsource.Add(new SubscribeItemVM()
-        {
-            Note = "ceshi2",
-            SubscribeUrl = "222"
-        });
+        InitializeComponent();
+        BindingContext = subscribeSettingVM;
+        //CreateMonkeyCollection();
+        //BindingContext = this;
     }
-    }
+
+    //public ObservableCollection<SubscribeItemVM> SubscribeItemsource { get; set; } = new ObservableCollection<SubscribeItemVM>();
+
+    //private void CreateMonkeyCollection()
+    //{
+    //    SubscribeItemsource.Add(new SubscribeItemVM()
+    //    {
+    //        Note = "ceshi1",
+    //        SubscribeUrl = "111"
+    //    });
+
+    //    SubscribeItemsource.Add(new SubscribeItemVM()
+    //    {
+    //        Note = "ceshi2",
+    //        SubscribeUrl = "222"
+    //    });
+    //}
+}

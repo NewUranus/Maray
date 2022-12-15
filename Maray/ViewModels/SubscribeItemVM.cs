@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Maray.ViewModels
 {
-   public class SubscribeItemVM
+    public partial class SubscribeItemVM : ObservableObject
     {
-        public string Note { get; set; }
-        public string SubscribeUrl { get; set; }
+        [ObservableProperty]
+        public string note;
+
+        [ObservableProperty]
+        public string subscribeUrl;
     }
 }
