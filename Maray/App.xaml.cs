@@ -1,11 +1,20 @@
-﻿namespace Maray;
+﻿using Maray.Views;
+
+namespace Maray;
 
 public partial class App : Application
 {
-	public App()
-	{
-		InitializeComponent();
+    public App()
+    {
+        InitializeComponent();
 
-		MainPage = new AppShell();
-	}
+        MainPage = new AppShell();
+
+        Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
+        Routing.RegisterRoute(nameof(AboutPage), typeof(AboutPage));
+        Routing.RegisterRoute(nameof(Config), typeof(Config));
+        Routing.RegisterRoute(nameof(Server), typeof(Server));
+        Routing.RegisterRoute(nameof(Setting), typeof(Setting));
+        Routing.RegisterRoute(nameof(SubscribeSetting), typeof(SubscribeSetting));
+    }
 }

@@ -31,6 +31,6 @@ public partial class Server : ContentPage
 
     private void ImageButton_Clicked(object sender, EventArgs e)
     {
-        //Navigation.PushAsync(new SubscribeSetting());
+        Shell.Current.GoToAsync(nameof(AboutPage));
     }
 }
