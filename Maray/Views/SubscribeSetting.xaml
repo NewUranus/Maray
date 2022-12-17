@@ -3,9 +3,14 @@
     x:Class="Maray.Views.SubscribeSetting"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:vm="clr-namespace:Maray.ViewModels"
+    xmlns:localVM="clr-namespace:Maray.ViewModels"
+    xmlns:localM="clr-namespace:Maray.Models"
     Title="Subscribe"
-    x:DataType="vm:SubscribeSettingVM">
+    x:DataType="localVM:SubscribeSettingVM">
+    <ContentPage.BindingContext>
+        <localVM:SubscribeSettingVM />
+    </ContentPage.BindingContext>
+
     <ContentPage.Resources>
         <ControlTemplate x:Key="subItem" />
     </ContentPage.Resources>
@@ -22,14 +27,13 @@
             ItemSizingStrategy="MeasureFirstItem"
             ItemsSource="{Binding SubscribeItemsource}">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="vm:SubscribeItemVM">
-                    <!--  x:DataType="vm:SubscribeSettingVM"  -->
+                <DataTemplate x:DataType="localM:SubscribeItemM">
+
                     <Frame>
                         <Grid
                             ColumnDefinitions="auto,1*"
-                            RowDefinitions="*,*,*"
+                            RowDefinitions="50,50,40"
                             RowSpacing="5">
-
 
                             <Grid Grid.ColumnSpan="2" ColumnDefinitions="auto,1*,auto">
 
@@ -43,10 +47,9 @@
                                     Text="{Binding Note}" />
                                 <HorizontalStackLayout Grid.Column="2">
 
-                                    <!--<CheckBox IsChecked="{Binding IsEnable}" />-->
+                                    <CheckBox IsChecked="{Binding IsEnable}" />
                                     <Label Margin="5" VerticalTextAlignment="Center">启用</Label>
                                 </HorizontalStackLayout>
-
                             </Grid>
 
                             <Label
@@ -69,14 +72,9 @@
                                 <Button Text="移除" />
                             </HorizontalStackLayout>
                         </Grid>
-
                     </Frame>
-
-
-
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
     </Grid>
-
 </ContentPage>

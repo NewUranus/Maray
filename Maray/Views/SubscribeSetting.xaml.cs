@@ -1,18 +1,29 @@
 using Maray.ViewModels;
 
-using System.Collections.ObjectModel;
-
 namespace Maray.Views;
 
 public partial class SubscribeSetting : ContentPage
 {
-    public SubscribeSetting(SubscribeSettingVM subscribeSettingVM )
+
+    public SubscribeSetting( )
     {
         InitializeComponent();
-        BindingContext = subscribeSettingVM;
-        //CreateMonkeyCollection();
-        //BindingContext = this;
+        InitVM();
     }
+
+    void InitVM()
+    {
+
+        //var vm= MauiApp.CreateBuilder().Services.sing
+        //BindingContext =new SubscribeSettingVM();
+    }
+    //public SubscribeSetting(SubscribeSettingVM subscribeSettingVM)
+    //{
+    //    InitializeComponent();
+    //    BindingContext = subscribeSettingVM;
+    //    //CreateMonkeyCollection();
+    //    //BindingContext = this;
+    //}
 
     //public ObservableCollection<SubscribeItemVM> SubscribeItemsource { get; set; } = new ObservableCollection<SubscribeItemVM>();
 

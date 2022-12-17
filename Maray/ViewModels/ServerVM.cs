@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Maray.Model;
+using Maray.Models;
 
 namespace Maray.ViewModels
 {

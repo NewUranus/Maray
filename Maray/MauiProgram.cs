@@ -20,7 +20,9 @@ public static class MauiProgram
         services.AddSingleton<ServerVM>();
         services.AddSingleton<Server>();
         services.AddSingleton<SubscribeSettingVM>();
-        services.AddSingleton<SubscribeItemVM>();
+
+        //builder.Services.AddTransient<SubscribeSettingVM>();
+        //builder.Services.AddTransient<SubscribeSetting>();
         return builder.Build();
 	}
 }

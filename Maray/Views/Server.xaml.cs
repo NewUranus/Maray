@@ -1,6 +1,6 @@
 ﻿namespace Maray.Views;
 
-using Maray.Model;
+using Maray.Models;
 using Maray.ViewModels;
 using System;
 using System.Text;

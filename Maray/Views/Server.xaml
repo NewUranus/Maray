@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Maray.Views.Server"
-             xmlns:localVM="clr-namespace:Maray.ViewModels"
-             xmlns:localM="clr-namespace:Maray.Model"
-             Title="{Binding Title}"
-             Shell.NavBarIsVisible="False"
-             >
+<ContentPage
+    x:Class="Maray.Views.Server"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localM="clr-namespace:Maray.Models"
+    xmlns:localVM="clr-namespace:Maray.ViewModels"
+    Title="{Binding Title}"
+    Shell.NavBarIsVisible="False">
 
     <ContentPage.BindingContext>
         <localVM:ServerVM />
@@ -14,34 +14,29 @@
 
     <VerticalStackLayout>
 
-        <Entry x:Name="entry"
+        <Entry
+            x:Name="entry"
+            Completed="OnEntryCompleted"
             Placeholder="Enter Node"
-            TextChanged="OnEntryTextChanged"
-            Completed="OnEntryCompleted"/>
+            TextChanged="OnEntryTextChanged" />
 
-        <CollectionView
-            ItemsSource="{Binding servers}">
+        <CollectionView ItemsSource="{Binding servers}">
             <CollectionView.Header>
                 <ImageButton
-                    Source="plus.png"
-                    WidthRequest="40"
-                    HeightRequest="40"
                     BorderColor="Yellow"
                     BorderWidth="2"
-                    Clicked="ImageButton_Clicked">
-                    
-                </ImageButton>
+                    Clicked="ImageButton_Clicked"
+                    HeightRequest="40"
+                    Source="plus.png"
+                    WidthRequest="40" />
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="localM:ServerM">
                     <Grid Padding="10">
-                        <Label Text="{Binding v}">
-
-                        </Label>
+                        <Label Text="{Binding v}" />
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
     </VerticalStackLayout>
 </ContentPage>

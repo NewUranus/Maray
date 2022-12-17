@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Maray.Model
+namespace Maray.Models
 {
     public class ServerM
     {
