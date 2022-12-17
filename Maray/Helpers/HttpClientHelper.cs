@@ -30,13 +30,13 @@ namespace Maray.Helpers
             }
         }
 
-        public async Task<string> GetAsync(string url)
+        public async Task<string> GetAsync(string url, CancellationToken token)
         {
             if (string.IsNullOrEmpty(url))
             {
                 return null;
             }
-            HttpResponseMessage response = await httpClient.GetAsync(url);
+            HttpResponseMessage response = await httpClient.GetAsync(url, token);
 
             return await response.Content.ReadAsStringAsync();
         }

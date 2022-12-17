@@ -1,38 +1,24 @@
-﻿
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Maray.Helpers
+﻿namespace Maray.Helpers
 {
-    
-    class DownloadHelper
+    internal class DownloadHelper
     {
-
-        /// <summary>
-        /// DownloadString
-        /// </summary> 
-        /// <param name="url"></param>
+        /// <summary> DownloadString </summary>
+        /// <param name="url"> </param>
         public async Task<string> DownloadStringAsync(string url, bool blProxy, string userAgent)
         {
             try
             {
-                //Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
-               
-               // var result = await HttpClientHelper.GetInstance().GetAsync(client, url, cts.Token);
-                return null;
+                var cts = new CancellationTokenSource();
+                cts.CancelAfter(1000 * 30);
+                var result = await HttpClientHelper.GetInstance().GetAsync(url, cts.Token);
+                return result;
             }
             catch (Exception ex)
             {
-                
+                Console.WriteLine(ex);
+                return ex.Message;
             }
-            return null;
+            
         }
     }
-    
 }

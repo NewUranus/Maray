@@ -18,16 +18,22 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <HorizontalStackLayout HorizontalOptions="End">
+
             <Button Command="{Binding AddNewCommand}" Text="AddNew" />
+        </HorizontalStackLayout>
+        <HorizontalStackLayout Grid.Row="2" HorizontalOptions="End">
+            <Button Command="{Binding SaveCommand}" Text="Save" />
+
         </HorizontalStackLayout>
         <CollectionView
             Grid.Row="1"
             ItemSizingStrategy="MeasureFirstItem"
             ItemsSource="{Binding SubscribeItemsource}">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="localM:SubscribeItemM">
+                <DataTemplate x:DataType="localVM:SubscribeItemVM">
 
                     <Frame>
                         <Grid
@@ -68,7 +74,7 @@
                                 Grid.Column="1"
                                 HorizontalOptions="EndAndExpand"
                                 Spacing="5">
-                                <Button Text="更新" />
+                                <Button Command="{Binding UpdateSubscribeCommand}" Text="更新" />
                                 <Button Text="移除" />
                             </HorizontalStackLayout>
                         </Grid>
