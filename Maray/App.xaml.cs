@@ -15,6 +15,6 @@ public partial class App : Application
         Routing.RegisterRoute(nameof(Config), typeof(Config));
         Routing.RegisterRoute(nameof(Server), typeof(Server));
         Routing.RegisterRoute(nameof(Setting), typeof(Setting));
-        Routing.RegisterRoute(nameof(SubscribeSetting), typeof(SubscribeSetting));
+        Routing.RegisterRoute(nameof(SubscribeSettingPage), typeof(SubscribeSettingPage));
     }
 }

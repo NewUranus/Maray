@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="Maray.Views.SubscribeSetting"
+    x:Class="Maray.Views.SubscribeSettingPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:localVM="clr-namespace:Maray.ViewModels"
     xmlns:localM="clr-namespace:Maray.Models"
+    xmlns:localVM="clr-namespace:Maray.ViewModels"
     Title="Subscribe"
     x:DataType="localVM:SubscribeSettingVM">
     <ContentPage.BindingContext>

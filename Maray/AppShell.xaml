@@ -29,11 +29,11 @@
     </Shell.FlyoutFooterTemplate>
 
     <FlyoutItem FlyoutIcon="icon_notes.png">
-        <ShellContent Title="Main" ContentTemplate="{DataTemplate views:Main}" />
+        <ShellContent Title="MainPage" ContentTemplate="{DataTemplate views:MainPage}" />
     </FlyoutItem>
 
     <FlyoutItem FlyoutIcon="plus.png">
-        <ShellContent Title="Subscribe" ContentTemplate="{DataTemplate views:SubscribeSetting}" />
+        <ShellContent Title="SubscribePage" ContentTemplate="{DataTemplate views:SubscribeSettingPage}" />
     </FlyoutItem>
 
     <FlyoutItem FlyoutIcon="server.png">

@@ -2,10 +2,10 @@ using Maray.ViewModels;
 
 namespace Maray.Views;
 
-public partial class SubscribeSetting : ContentPage
+public partial class SubscribeSettingPage : ContentPage
 {
 
-    public SubscribeSetting( )
+    public SubscribeSettingPage( )
     {
         InitializeComponent();
         InitVM();
