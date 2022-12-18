@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Maray.Models;
+using Maray.Services;
 
 namespace Maray.ViewModels
 {
-	public class ServerVM : INotifyPropertyChanged
+    [INotifyPropertyChanged]
+    public partial class ServerVM
     {
         private string title;
         public string Title
@@ -22,18 +25,28 @@ namespace Maray.ViewModels
             }
         }
 
-        public ObservableCollection<ServerM> servers { get; } = new();
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string name = "") =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        readonly SubscribeService subscribeService;
+        public ObservableCollection<ServerM> servers;//{ get; } = new();
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //public void OnPropertyChanged([CallerMemberName] string name = "") =>
+        //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        public ServerVM()
-		{
-            title = "Server Page";
+        public ServerVM(SubscribeService subService)
+        {
+            subscribeService = subService;
 
-            servers.Add(new ServerM() { v = "server test 1" });
-            servers.Add(new ServerM() { v = "server test 2" });
+            UpdateList();
         }
-	}
+
+        private void UpdateList()
+        {
+            var list = subscribeService.GetSubscribeList();
+            if (list != null)
+            {
+                servers = new ObservableCollection<ServerM>(list);
+                OnPropertyChanged("servers");
+            }
+        }
+    }
 }
 

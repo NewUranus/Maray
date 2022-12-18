@@ -1,19 +1,24 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
+
 namespace Maray.Models
 {
-    public class ServerM
-    {
-        public string v { get; set; }
-        public string ps { get; set; }
-        public string add { get; set; }
-        public string port { get; set; }
-        public string type { get; set; }
-        public string id { get; set; }
-        public string aid { get; set; }
-        public string net { get; set; }
-        public string path { get; set; }
-        public string host { get; set; }
-        public string tls { get; set; }
-    }
+    public sealed record ServerM(
+        [AllowNull]
+        [property: JsonPropertyName("v")]
+        string v
+        //string ps,
+        //string add,
+        //string port,
+        //string type,
+        //string id,
+        //string aid,
+        //string net,
+        //string path,
+        //string host,
+        //string tls
+        );
 }
 

@@ -8,10 +8,6 @@
     Title="{Binding Title}"
     Shell.NavBarIsVisible="False">
 
-    <ContentPage.BindingContext>
-        <localVM:ServerVM />
-    </ContentPage.BindingContext>
-
     <VerticalStackLayout>
 
         <Entry

@@ -1,4 +1,5 @@
-﻿using Maray.ViewModels;
+﻿using Maray.Services;
+using Maray.ViewModels;
 using Maray.Views;
 
 namespace Maray;
@@ -20,7 +21,7 @@ public static class MauiProgram
         services.AddSingleton<ServerVM>();
         services.AddSingleton<Server>();
         services.AddSingleton<SubscribeSettingVM>();
-
+        services.AddSingleton<SubscribeService>();
         //builder.Services.AddTransient<SubscribeSettingVM>();
         //builder.Services.AddTransient<SubscribeSetting>();
         return builder.Build();

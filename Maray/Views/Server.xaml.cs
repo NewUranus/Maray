@@ -7,10 +7,10 @@ using System.Text;
 
 public partial class Server : ContentPage
 {
-    private ServerVM ServerVM;
+    ServerVM vm => BindingContext as ServerVM;
     public Server(ServerVM vm)
     {
-        ServerVM = vm;
+        BindingContext = vm;
 
         InitializeComponent();
     }
