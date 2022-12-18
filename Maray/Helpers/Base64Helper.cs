@@ -10,11 +10,9 @@ namespace Maray.Helpers
 {
     internal class Base64Helper
     {
-        /// <summary>
-        /// Base64编码
-        /// </summary>
-        /// <param name="plainText"></param>
-        /// <returns></returns>
+        /// <summary> Base64编码 </summary>
+        /// <param name="plainText"> </param>
+        /// <returns> </returns>
         public static string Base64Encode(string plainText)
         {
             try
@@ -24,16 +22,15 @@ namespace Maray.Helpers
             }
             catch (Exception ex)
             {
-                Console.WriteLine  ("Base64Encode", ex);
+                Shell.Current.DisplayAlert("Base64Encode", ex.Message, "OK");
+
                 return string.Empty;
             }
         }
 
-        /// <summary>
-        /// Base64解码
-        /// </summary>
-        /// <param name="plainText"></param>
-        /// <returns></returns>
+        /// <summary> Base64解码 </summary>
+        /// <param name="plainText"> </param>
+        /// <returns> </returns>
         public static string Base64Decode(string plainText)
         {
             try

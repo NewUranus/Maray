@@ -4,18 +4,9 @@ namespace Maray.Views;
 
 public partial class SubscribeSettingPage : ContentPage
 {
-
-    public SubscribeSettingPage( )
+    public SubscribeSettingPage(SubscribeSettingPageVM viewModel)
     {
         InitializeComponent();
-        InitVM();
+        BindingContext = viewModel;
     }
-
-    void InitVM()
-    {
-
-        //var vm= MauiApp.CreateBuilder().Services.sing
-        //BindingContext =new SubscribeSettingVM();
-    }
-     
 }

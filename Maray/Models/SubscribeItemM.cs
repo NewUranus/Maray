@@ -10,9 +10,9 @@ namespace Maray.Models
 
         public SubscribeItemVM ToVM()
         {
-            SubscribeItemVM vm=new SubscribeItemVM();
+            SubscribeItemVM vm = new SubscribeItemVM();
 
-            vm.isEnable=IsEnable;
+            vm.isEnable = IsEnable;
             vm.note = Note;
             vm.subscribeUrl = SubscribeUrl;
             return vm;

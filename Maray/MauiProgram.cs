@@ -19,11 +19,16 @@ public static class MauiProgram
 
         var services = builder.Services;
 
+        //Will create a single instance of the object which will be remain for the lifetime of the application.
         services.AddSingleton<MainPageVM>();
         services.AddSingleton<ServerVM>();
         services.AddSingleton<Server>();
-        services.AddSingleton<SubscribeSettingPageVM>();
+
         services.AddSingleton<SubscribeService>();
+
+        services.AddSingleton<SubscribeSettingPage>();
+        services.AddSingleton<SubscribeSettingPageVM>();
+        //Will create a new instance of the object when requested during resolution. Transient objects do not have a pre-defined lifetime, but will typically follow the lifetime of their host.
         //builder.Services.AddTransient<SubscribeSettingVM>();
         //builder.Services.AddTransient<SubscribeSetting>();
         return builder.Build();
