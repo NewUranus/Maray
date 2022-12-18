@@ -9,12 +9,11 @@ using System.Collections.ObjectModel;
 
 namespace Maray.ViewModels
 {
-    public partial class SubscribeSettingVM : ObservableObject
+    public partial class SubscribeSettingPageVM : ObservableObject
     {
-       
         public ObservableCollection<SubscribeItemVM> SubscribeItemsource { get; set; } = new ObservableCollection<SubscribeItemVM>();
 
-        public SubscribeSettingVM()
+        public SubscribeSettingPageVM()
         {
             InitData();
         }
@@ -47,13 +46,11 @@ namespace Maray.ViewModels
                 File.Delete(PathConfig.SettingFilePath);
             }
 
-
             List<SubscribeItemM> list = new List<SubscribeItemM>();
             foreach (var item in SubscribeItemsource)
             {
                 list.Add(item.ToModel());
             }
-
 
             JsonHelper.WriteToJsonFile(PathConfig.SettingFilePath, list);
         }

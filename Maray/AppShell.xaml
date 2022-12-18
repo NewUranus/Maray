@@ -9,8 +9,6 @@
     Shell.FlyoutBehavior="{OnIdiom Phone=Disabled,
                                    Default=Locked}">
 
-
-
     <Shell.FlyoutFooterTemplate>
 
         <DataTemplate>
@@ -47,8 +45,6 @@
             Shell.NavBarIsVisible="False" />
     </FlyoutItem>
 
-
-
     <FlyoutItem FlyoutIcon="icon_about.png">
         <ShellContent Title="About" ContentTemplate="{DataTemplate views:AboutPage}" />
     </FlyoutItem>
@@ -74,5 +70,4 @@
             <ShellContent ContentTemplate="{DataTemplate views:Setting}" />
         </Tab>
     </TabBar>-->
-
 </Shell>

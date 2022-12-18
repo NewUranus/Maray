@@ -6,11 +6,10 @@
     xmlns:localM="clr-namespace:Maray.Models"
     xmlns:localVM="clr-namespace:Maray.ViewModels"
     Title="Subscribe"
-    x:DataType="localVM:SubscribeSettingVM">
+    x:DataType="localVM:SubscribeSettingPageVM">
     <ContentPage.BindingContext>
-        <localVM:SubscribeSettingVM />
+        <localVM:SubscribeSettingPageVM />
     </ContentPage.BindingContext>
-
     <ContentPage.Resources>
         <ControlTemplate x:Key="subItem" />
     </ContentPage.Resources>
@@ -26,7 +25,6 @@
         </HorizontalStackLayout>
         <HorizontalStackLayout Grid.Row="2" HorizontalOptions="End">
             <Button Command="{Binding SaveCommand}" Text="Save" />
-
         </HorizontalStackLayout>
         <CollectionView
             Grid.Row="1"

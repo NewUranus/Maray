@@ -6,6 +6,7 @@ using Maray.Models;
 
 namespace Maray.ViewModels
 {
+    /// <summary> 订阅页面 </summary>
     public partial class SubscribeItemVM : ObservableObject
     {
         [ObservableProperty]
@@ -27,7 +28,6 @@ namespace Maray.ViewModels
         [RelayCommand]
         private async void UpdateSubscribe()
         {
-            //https://api.ndsxfkjfvhzdsfio.quest/link/18tGVscS1aAAfTg8?sub=3&extend=1
             if (string.IsNullOrEmpty(SubscribeUrl))
             {
                 return;
@@ -42,17 +42,15 @@ namespace Maray.ViewModels
             subscribeServerList = arrData.Where(x => !string.IsNullOrEmpty(x)).ToList();
         }
 
-       public SubscribeItemM ToModel()
+        public SubscribeItemM ToModel()
         {
-            SubscribeItemM model=new SubscribeItemM();
-          
+            SubscribeItemM model = new SubscribeItemM();
+
             model.IsEnable = isEnable;
             model.Note = note;
             model.SubscribeUrl = subscribeUrl;
 
             return model;
-
-
         }
     }
 }
