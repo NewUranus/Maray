@@ -9,14 +9,7 @@
     Shell.NavBarIsVisible="False">
 
     <VerticalStackLayout>
-
-        <Entry
-            x:Name="entry"
-            Completed="OnEntryCompleted"
-            Placeholder="Enter Node"
-            TextChanged="OnEntryTextChanged" />
-
-        <CollectionView ItemsSource="{Binding servers}">
+        <CollectionView ItemsSource="{Binding Servers}">
             <CollectionView.Header>
                 <ImageButton
                     BorderColor="Yellow"
@@ -28,9 +21,11 @@
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="localM:ServerM">
-                    <Grid Padding="10">
-                        <Label Text="{Binding v}" />
-                    </Grid>
+                    <Frame>
+                        <Grid Padding="10">
+                            <Label Text="{Binding v}" />
+                        </Grid>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

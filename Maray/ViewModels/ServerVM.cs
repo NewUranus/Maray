@@ -9,32 +9,21 @@ using Maray.Services;
 
 namespace Maray.ViewModels
 {
-    [INotifyPropertyChanged]
-    public partial class ServerVM
+    public partial class ServerVM: ObservableObject
     {
-        private string title;
-        public string Title
-        {
-            get => title;
-            set
-            {
-                if (title == value)
-                    return;
-                title = value;
-                OnPropertyChanged(nameof(title));
-            }
-        }
+        //private string title;
+        [ObservableProperty]
+        public string ttitle;
 
         readonly SubscribeService subscribeService;
-        public ObservableCollection<ServerM> servers;//{ get; } = new();
-        //public event PropertyChangedEventHandler PropertyChanged;
-        //public void OnPropertyChanged([CallerMemberName] string name = "") =>
-        //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+        [ObservableProperty]
+        ObservableCollection<ServerM> servers;
 
         public ServerVM(SubscribeService subService)
         {
             subscribeService = subService;
-
+            ttitle = "Server Page";
             UpdateList();
         }
 
@@ -44,9 +33,7 @@ namespace Maray.ViewModels
             if (list != null)
             {
                 servers = new ObservableCollection<ServerM>(list);
-                OnPropertyChanged("servers");
             }
         }
     }
 }
-
