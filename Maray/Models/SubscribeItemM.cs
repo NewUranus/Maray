@@ -8,6 +8,8 @@ namespace Maray.Models
         public string Note { get; set; }
         public string SubscribeUrl { get; set; }
 
+        public List<string> ServerList { get; set; } = new List<string>();
+
         public SubscribeItemVM ToVM()
         {
             SubscribeItemVM vm = new SubscribeItemVM();

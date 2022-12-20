@@ -19,7 +19,7 @@ namespace Maray.ViewModels
         public string subscribeUrl;
 
         [ObservableProperty]
-        public List<string> subscribeServerList;
+        public List<string> serverList;
 
         public SubscribeItemVM()
         {
@@ -39,7 +39,7 @@ namespace Maray.ViewModels
 
             string[] arrData = serverList.Split(Environment.NewLine.ToCharArray());
 
-            subscribeServerList = arrData.Where(x => !string.IsNullOrEmpty(x)).ToList();
+            this.serverList = arrData.Where(x => !string.IsNullOrEmpty(x)).ToList();
         }
 
         public SubscribeItemM ToModel()
@@ -49,7 +49,7 @@ namespace Maray.ViewModels
             model.IsEnable = isEnable;
             model.Note = note;
             model.SubscribeUrl = subscribeUrl;
-
+            model.ServerList = serverList;
             return model;
         }
     }
