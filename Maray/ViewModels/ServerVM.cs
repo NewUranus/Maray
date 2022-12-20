@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Maray.Models;
 using Maray.Services;
 
@@ -11,7 +12,6 @@ namespace Maray.ViewModels
 {
     public partial class ServerVM: ObservableObject
     {
-        //private string title;
         [ObservableProperty]
         public string ttitle;
 
@@ -19,6 +19,12 @@ namespace Maray.ViewModels
 
         [ObservableProperty]
         ObservableCollection<ServerM> servers;
+
+        [RelayCommand]
+        public void AddServer(string e)
+         {
+            servers.Add(new ServerM("add one"));
+        }
 
         public ServerVM(SubscribeService subService)
         {

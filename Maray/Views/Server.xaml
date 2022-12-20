@@ -9,12 +9,18 @@
     Shell.NavBarIsVisible="False">
 
     <VerticalStackLayout>
+        <Entry
+            x:Name="entry"
+            Completed="OnEntryCompleted"
+            Placeholder="Enter Node"
+            TextChanged="OnEntryTextChanged" />
+
         <CollectionView ItemsSource="{Binding Servers}">
             <CollectionView.Header>
                 <ImageButton
                     BorderColor="Yellow"
                     BorderWidth="2"
-                    Clicked="ImageButton_Clicked"
+                    Command="{Binding AddServerCommand}"
                     HeightRequest="40"
                     Source="plus.png"
                     WidthRequest="40" />
