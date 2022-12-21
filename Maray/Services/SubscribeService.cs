@@ -1,4 +1,7 @@
-﻿using Maray.Models;
+﻿using Maray.Configs;
+using Maray.Helpers;
+using Maray.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +12,31 @@ namespace Maray.Services
 {
     public class SubscribeService
     {
-        private List<ServerM> subscribeList = new();
-        public SubscribeService()
-        { }
+        //private List<ServerM> subscribeList = new();
 
-        public void Subscribe(ServerM server)
+        public SubscribeService()
         {
-            subscribeList.Add(server);
+            InitData();
         }
 
-        public List<ServerM> GetSubscribeList()
+        //public void Subscribe(ServerM server)
+        //{
+        //    subscribeList.Add(server);
+        //}
+
+        public List<SubscribeItemM> GetSubscribeList()
         {
-            subscribeList.Add(new ServerM("sub service 1"));
-            return subscribeList;
+            return SubscribeItemMs;
+        }
+
+        private List<SubscribeItemM> SubscribeItemMs = new();
+
+        private void InitData()
+        {
+            if (File.Exists(PathConfig.SettingFilePath))
+            {
+                SubscribeItemMs = JsonHelper.ReadFromJsonFile<List<SubscribeItemM>>(PathConfig.SettingFilePath);
+            }
         }
     }
 }

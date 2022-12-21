@@ -28,14 +28,11 @@ namespace Maray.ViewModels
 
         private void InitData()
         {
-            if (File.Exists(PathConfig.SettingFilePath))
+            var service = ServicesProvider.GetService<SubscribeService>();
+
+            foreach (var item in service.GetSubscribeList())
             {
-                var temp = JsonHelper.ReadFromJsonFile<List<SubscribeItemM>>(PathConfig.SettingFilePath);
-                SubscribeItemsource.Clear();
-                foreach (var item in temp)
-                {
-                    SubscribeItemsource.Add(item.ToVM());
-                }
+                SubscribeItemsource.Add(item.ToVM());
             }
         }
 

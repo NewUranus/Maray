@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="Maray.Views.Server"
+    x:Class="Maray.Views.ServerPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localM="clr-namespace:Maray.Models"
@@ -28,8 +28,9 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="localM:ServerM">
                     <Frame>
-                        <Grid Padding="10">
+                        <Grid Padding="10" ColumnDefinitions="200,1000">
                             <Label Text="{Binding v}" />
+                            <Label Text="{Binding url}" />
                         </Grid>
                     </Frame>
                 </DataTemplate>

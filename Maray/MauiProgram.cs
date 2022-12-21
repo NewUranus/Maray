@@ -26,8 +26,10 @@ public static class MauiProgram
 
         //Will create a single instance of the object which will be remain for the lifetime of the application.
         services.AddSingleton<MainPageVM>();
-        services.AddSingleton<ServerVM>();
-        services.AddSingleton<Server>();
+
+        //ServerPage
+        services.AddSingleton<ServerPageVM>();
+        services.AddSingleton<ServerPage>();
 
         services.AddSingleton<SubscribeService>();
 
@@ -37,8 +39,9 @@ public static class MauiProgram
         //builder.Services.AddTransient<SubscribeSettingVM>();
         //builder.Services.AddTransient<SubscribeSetting>();
 
-        services.AddTransient<AboutPage>();
         services.AddTransient<AboutVM>();
+        services.AddTransient<AboutPage>();
+
         return builder.Build();
     }
 }

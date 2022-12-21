@@ -55,6 +55,9 @@
 	  <Compile Update="Views\MainPage.xaml.cs">
 	    <DependentUpon>MainPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\ServerPage.xaml.cs">
+	    <DependentUpon>ServerPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\SubscribeSettingPage.xaml.cs">
 	    <DependentUpon>SubscribeSettingPage.xaml</DependentUpon>
 	  </Compile>
@@ -70,7 +73,7 @@
 		<MauiXaml Update="Views\Setting.xaml">
 			<SubType></SubType>
 		</MauiXaml>
-		<MauiXaml Update="Views\Server.xaml">
+		<MauiXaml Update="Views\ServerPage.xaml">
 			<SubType></SubType>
 		</MauiXaml>
 		<MauiXaml Update="Views\Config.xaml">

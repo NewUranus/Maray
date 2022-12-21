@@ -1,4 +1,5 @@
-﻿using Maray.Views;
+﻿using Maray.Services;
+using Maray.Views;
 
 namespace Maray;
 
@@ -9,5 +10,9 @@ public partial class App : Application
         InitializeComponent();
 
         MainPage = new AppShell();
+    }
+
+    private void InitData()
+    {
     }
 }

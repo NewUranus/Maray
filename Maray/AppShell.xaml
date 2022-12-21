@@ -35,7 +35,7 @@
     </FlyoutItem>
 
     <FlyoutItem FlyoutIcon="server.png">
-        <ShellContent Title="Server" ContentTemplate="{DataTemplate views:Server}" />
+        <ShellContent Title="Server" ContentTemplate="{DataTemplate views:ServerPage}" />
     </FlyoutItem>
 
     <FlyoutItem FlyoutIcon="ellipsis.png">
