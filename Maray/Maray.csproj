@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
@@ -27,11 +27,11 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<!--<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion> -->
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
-	  <CreatePackage>false</CreatePackage>
+		<CreatePackage>false</CreatePackage>
 	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
@@ -49,27 +49,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\AboutPage.xaml.cs">
-	    <DependentUpon>AboutPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Views\MainPage.xaml.cs">
-	    <DependentUpon>MainPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Views\ServerPage.xaml.cs">
-	    <DependentUpon>ServerPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Views\SubscribeSettingPage.xaml.cs">
-	    <DependentUpon>SubscribeSettingPage.xaml</DependentUpon>
-	  </Compile>
+		<Compile Update="Views\AboutPage.xaml.cs">
+			<DependentUpon>AboutPage.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\MainPage.xaml.cs">
+			<DependentUpon>MainPage.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\ServerPage.xaml.cs">
+			<DependentUpon>ServerPage.xaml</DependentUpon>
+		</Compile>
+		<Compile Update="Views\SubscribeSettingPage.xaml.cs">
+			<DependentUpon>SubscribeSettingPage.xaml</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\AboutPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\MainPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
+		<MauiXaml Update="Views\AboutPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\MainPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\Setting.xaml">
 			<SubType></SubType>
 		</MauiXaml>
@@ -80,25 +80,25 @@
 			<SubType></SubType>
 		</MauiXaml>
 		<MauiXaml Update="Views\SubscribeSettingPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Model\" />
-	  <None Remove="Resources\Images\ellipsis.svg" />
-	  <None Remove="Resources\Images\more.svg" />
-	  <None Remove="Resources\Images\plus.svg" />
-	  <None Remove="Resources\Images\server.svg" />
-	  <None Remove="ViewModels\" />
+		<None Remove="Model\" />
+		<None Remove="Resources\Images\ellipsis.svg" />
+		<None Remove="Resources\Images\more.svg" />
+		<None Remove="Resources\Images\plus.svg" />
+		<None Remove="Resources\Images\server.svg" />
+		<None Remove="ViewModels\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Views\UserControls\" />
+		<Folder Include="Views\UserControls\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
-	  <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-	  <PackageReference Include="System.Net.Http" Version="4.3.4" />
-	  <PackageReference Include="System.Net.Requests" Version="4.3.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Net.Requests" Version="4.3.0" />
 	</ItemGroup>
 </Project>

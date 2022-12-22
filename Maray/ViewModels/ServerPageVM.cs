@@ -15,7 +15,7 @@ namespace Maray.ViewModels
     public partial class ServerPageVM : ObservableObject
     {
         [ObservableProperty]
-        public string ttitle;
+        public string title;
 
         private readonly SubscribeService subscribeService;
 
@@ -31,7 +31,7 @@ namespace Maray.ViewModels
         public ServerPageVM()
         {
             subscribeService = ServicesProvider.GetService<SubscribeService>();
-            ttitle = "Server Page";
+            title = "Server Page";
             UpdateList();
         }
 

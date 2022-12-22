@@ -2,9 +2,17 @@
 using Maray.ViewModels;
 using Maray.Views;
 
+using Microsoft.Maui.LifecycleEvents;
+using Microsoft.Maui.Platform;
+
 using System;
 
 namespace Maray;
+#if WINDOWS
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
+using Windows.Graphics;
+#endif
 
 public static class MauiProgram
 {
@@ -41,7 +49,44 @@ public static class MauiProgram
 
         services.AddTransient<AboutVM>();
         services.AddTransient<AboutPage>();
+#if WINDOWS
+        builder.ConfigureLifecycleEvents(events =>
+        {
+            events.AddWindows(wndLifeCycleBuilder =>
+            {
+                wndLifeCycleBuilder.OnWindowCreated(window =>
+                {
+                    IntPtr nativeWindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                    WindowId win32WindowsId = Win32Interop.GetWindowIdFromWindow(nativeWindowHandle);
+                    AppWindow winuiAppWindow = AppWindow.GetFromWindowId(win32WindowsId);
+
+                    const int width = 1200;
+                    const int height = 800;
+                    int x = 1920 / 2 - width / 2; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Width)
+                    int y = 1080 / 2 - height / 2; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Height)
+
+                    winuiAppWindow.MoveAndResize(new RectInt32(x, y, width, height));
+                });
+            });
+        });
+#endif
+
+        ModifyEntry();
 
         return builder.Build();
+    }
+
+    public static void ModifyEntry()
+    {
+        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoMoreBorders", (handler, view) =>
+        {
+#if ANDROID
+            handler.PlatformView.SetBackgroundColor(Colors.Transparent.ToPlatform());
+#elif IOS || MACCATALYST
+            handler.PlatformView.BorderStyle = UIKit.UITextBorderStyle.None;
+#elif WINDOWS
+            handler.PlatformView.FontWeight = Microsoft.UI.Text.FontWeights.Thin;
+#endif
+        });
     }
 }

@@ -5,10 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localM="clr-namespace:Maray.Models"
     xmlns:localVM="clr-namespace:Maray.ViewModels"
-    Title="{Binding Title}"
-    Shell.NavBarIsVisible="False">
+    Title="{Binding Title}">
 
-    <VerticalStackLayout>
+    <FlexLayout AlignItems="Center" Direction="Column">
         <Entry
             x:Name="entry"
             Completed="OnEntryCompleted"
@@ -28,13 +27,13 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="localM:ServerM">
                     <Frame>
-                        <Grid Padding="10" ColumnDefinitions="200,1000">
+                        <Grid ColumnDefinitions="100,*">
                             <Label Text="{Binding v}" />
-                            <Label Text="{Binding url}" />
+                            <Label Grid.Column="1" Text="{Binding url}" />
                         </Grid>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+    </FlexLayout>
 </ContentPage>
