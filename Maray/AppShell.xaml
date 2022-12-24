@@ -48,26 +48,4 @@
     <FlyoutItem FlyoutIcon="icon_about.png">
         <ShellContent Title="About" ContentTemplate="{DataTemplate views:AboutPage}" />
     </FlyoutItem>
-
-    <!--<TabBar x:Name="PhoneTabs">
-        <ShellContent
-            Title="Main"
-            ContentTemplate="{DataTemplate local:MainPage}"
-            Icon="icon_notes" />
-
-        <ShellContent
-            Title="About"
-            ContentTemplate="{DataTemplate views:AboutPage}"
-            Icon="icon_about" />
-
-        <Tab Title="Server">
-            <ShellContent ContentTemplate="{DataTemplate views:Server}" />
-        </Tab>
-        <Tab Title="Config">
-            <ShellContent ContentTemplate="{DataTemplate views:Config}" />
-        </Tab>
-        <Tab Title="Setting">
-            <ShellContent ContentTemplate="{DataTemplate views:Setting}" />
-        </Tab>
-    </TabBar>-->
 </Shell>

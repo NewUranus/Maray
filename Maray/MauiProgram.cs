@@ -33,6 +33,7 @@ public static class MauiProgram
         var services = builder.Services;
 
         //Will create a single instance of the object which will be remain for the lifetime of the application.
+        services.AddSingleton<MainPage>();
         services.AddSingleton<MainPageVM>();
 
         //ServerPage

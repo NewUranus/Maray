@@ -6,6 +6,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
+using Maray.Helpers;
 using Maray.Enum;
 using Maray.Models;
 using Maray.Services;
@@ -19,6 +21,9 @@ namespace Maray.ViewModels
         public string title;
 
         private readonly SubscribeService subscribeService;
+
+        [ObservableProperty]
+        private ServerM selectedServer;
 
         [ObservableProperty]
         private ObservableCollection<ServerM> servers = new ObservableCollection<ServerM>();
@@ -39,6 +44,19 @@ namespace Maray.ViewModels
             }
             catch
             { }
+        }
+
+        [RelayCommand]
+        public void SelectionChanged()
+        {
+            if (selectedServer != null)
+            {
+                if (string.IsNullOrEmpty(selectedServer.url))
+                {
+                    return;
+                }
+                var item = VmessHelper.ParseUrlToVmessItem(selectedServer.url);
+            }
         }
 
         public ServerPageVM()

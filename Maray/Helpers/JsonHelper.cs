@@ -22,6 +22,45 @@ namespace Maray.Helpers
             return result;
         }
 
+        #region JsonString
+
+        /// <summary> 反序列化成对象 </summary>
+        /// <typeparam name="T"> </typeparam>
+        /// <param name="strJson"> </param>
+        /// <returns> </returns>
+        public static T FromJsonString<T>(string strJson)
+        {
+            try
+            {
+                T obj = JsonConvert.DeserializeObject<T>(strJson);
+                return obj;
+            }
+            catch
+            {
+                return JsonConvert.DeserializeObject<T>("");
+            }
+        }
+
+        /// <summary> 序列化成Json </summary>
+        /// <param name="obj"> </param>
+        /// <returns> </returns>
+        public static string ToJsonString(Object obj)
+        {
+            string result = string.Empty;
+            try
+            {
+                result = JsonConvert.SerializeObject(obj,
+                                           Formatting.Indented,
+                                           new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            }
+            catch (Exception ex)
+            {
+            }
+            return result;
+        }
+
+        #endregion JsonString
+
         #region JsonFile
 
         /// <summary> 序列化成Json文件 </summary>

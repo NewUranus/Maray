@@ -4,17 +4,29 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localVM="clr-namespace:Maray.ViewModels"
+    xmlns:system="clr-namespace:System;assembly=netstandard"
     Title="MainPage"
     x:DataType="localVM:MainPageVM">
 
-    <ContentPage.BindingContext>
-        <localVM:MainPageVM />
-    </ContentPage.BindingContext>
+    <Grid
+        Margin="24,0,0,0"
+        ColumnDefinitions="*,400"
+        RowDefinitions="100,*"
+        RowSpacing="24">
 
-    <VerticalStackLayout>
-        <Label
-            HorizontalOptions="Center"
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" />
-    </VerticalStackLayout>
+        <!--  left column  -->
+        <VerticalStackLayout Margin="0,24,0,0">
+            <Label FontSize="24" Text="Empty" />
+            <Label Text="{Binding Source={x:Static system:DateTime.Now}, StringFormat='{0:dddd, MMMM dd yyyy}'}" />
+            <BoxView Margin="0,24,0,0" />
+        </VerticalStackLayout>
+
+        <ScrollView Grid.Row="1" Margin="0,24,0,24">
+            <Grid
+                ColumnDefinitions="*,*,*"
+                ColumnSpacing="24"
+                RowDefinitions="150,*"
+                RowSpacing="24" />
+        </ScrollView>
+    </Grid>
 </ContentPage>

@@ -5,7 +5,7 @@ using Maray.Views;
 
 namespace Maray.ViewModels
 {
-    internal partial class MainPageVM : ObservableObject
+    public partial class MainPageVM : ObservableObject
     {
         [ObservableProperty]
         public int aa = 10;

@@ -1,9 +1,12 @@
+using Maray.ViewModels;
+
 namespace Maray.Views;
 
 public partial class MainPage : ContentPage
 {
-	public MainPage()
-	{
-		InitializeComponent();
-	}
+    public MainPage(MainPageVM viewModel)
+    {
+        InitializeComponent();
+        BindingContext = viewModel;
+    }
 }
