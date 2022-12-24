@@ -29,6 +29,11 @@ namespace Maray.Services
             return SubscribeItemMs;
         }
 
+        public void UpdateSubscribeList(List<SubscribeItemM> subscribeItemMs)
+        {
+            this.SubscribeItemMs = subscribeItemMs;
+        }
+
         private List<SubscribeItemM> SubscribeItemMs = new();
 
         private void InitData()

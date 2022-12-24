@@ -39,6 +39,9 @@ namespace Maray.ViewModels
         [RelayCommand]
         private void Save()
         {
+            var service = ServicesProvider.GetService<SubscribeService>();
+            service.UpdateSubscribeList(SubscribeItemsource.Select(x => x.ToModel()).ToList());
+
             if (File.Exists(PathConfig.SettingFilePath))
             {
                 File.Delete(PathConfig.SettingFilePath);

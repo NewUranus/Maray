@@ -9,6 +9,9 @@ namespace Maray.ViewModels
     public partial class ServerVM : ObservableObject
     {
         [ObservableProperty]
+        public int index;
+
+        [ObservableProperty]
         private ServerM serverM;
 
         /// <summary> 延迟测试 </summary>
@@ -25,10 +28,13 @@ namespace Maray.ViewModels
         }
 
         [RelayCommand]
-        private async void PingTest()
+        public async void PingTest()
         {
-            var res = ServerHelper.Ping(serverM.address);
-            Ping = (int)res;
+            await Task.Run(() =>
+              {
+                  var res = ServerHelper.Ping(serverM.address);
+                  Ping = (int)res;
+              });
         }
     }
 }

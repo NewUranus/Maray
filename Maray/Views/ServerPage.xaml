@@ -6,69 +6,41 @@
     xmlns:localM="clr-namespace:Maray.Models"
     xmlns:localVM="clr-namespace:Maray.ViewModels"
     Title="{Binding Title}">
-
+    <!--<ContentPage.MenuBarItems>
+        <MenuBarItem  Grid.Column="2" Text="File">
+            <MenuFlyoutItem Text="Exit"
+                            Command="{Binding ExitCommand}" />
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>-->
     <Grid RowDefinitions="auto,*">
-        <ImageButton
-            BorderColor="Yellow"
-            BorderWidth="2"
-            Command="{Binding AddServerCommand}"
-            HeightRequest="40"
-            Source="plus.png"
-            WidthRequest="40" />
+
+        <Grid ColumnDefinitions="auto,*,auto">
+            <HorizontalStackLayout>
+                <Button Command="{Binding PingTestAllCommand}" Text="PingTestAll" />
+                <Button Command="{Binding PingTestAllCommand}" Text="PingTestAll" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Grid.Column="2">
+                <ImageButton
+                    Command="{Binding AddServerCommand}"
+                    HeightRequest="40"
+                    Source="plus.png"
+                    WidthRequest="40" />
+            </HorizontalStackLayout>
+        </Grid>
 
         <FlexLayout
             Grid.Row="1"
             AlignItems="Center"
             Direction="Column">
 
-            <!--<CollectionView
-                ItemSizingStrategy="MeasureFirstItem"
-                ItemsLayout="VerticalList"
-                ItemsSource="{Binding Servers}"
-                SelectedItem="{Binding SelectedServer}"
-                SelectionChangedCommand="{Binding SelectionChangedCommand}"
-                SelectionMode="Single">
-                <CollectionView.Resources>
-                    <Style TargetType="Frame">
-                        <Setter Property="VisualStateManager.VisualStateGroups">
-                            <VisualStateGroupList>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal" />
-                                    <VisualState x:Name="Selected">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="LightSkyBlue" />
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateGroupList>
-                        </Setter>
-                    </Style>
-                </CollectionView.Resources>
-
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="localVM:ServerVM">
-                        <Frame>
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_Tapped" />
-                            </Frame.GestureRecognizers>
-                            <Grid Padding="10" ColumnDefinitions="200,1000">
-                                <Label Text="{Binding ServerM.indexId}" />
-                            </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>-->
-
             <CollectionView
                 IsGrouped="true"
-                ItemSizingStrategy="MeasureFirstItem"
-                ItemsLayout="VerticalList"
                 ItemsSource="{Binding ServerVMGroupList}"
                 SelectedItem="{Binding SelectedServer}"
                 SelectionChangedCommand="{Binding SelectionChangedCommand}"
                 SelectionMode="Single">
                 <CollectionView.Resources>
-                    <Style TargetType="Frame">
+                    <Style TargetType="Border">
                         <Setter Property="VisualStateManager.VisualStateGroups">
                             <VisualStateGroupList>
                                 <VisualStateGroup x:Name="CommonStates">
@@ -83,28 +55,30 @@
                         </Setter>
                     </Style>
                 </CollectionView.Resources>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
                 <CollectionView.GroupHeaderTemplate>
                     <DataTemplate>
-                        <Grid
-                            Margin="5"
-                            BackgroundColor="Orange"
-                            ColumnDefinitions="50,80,3*,2*,*,*,auto,auto"
-                            ColumnSpacing="5">
-                            <Grid.Resources>
-                                <Style TargetType="Label">
-                                    <Setter Property="FontSize" Value="20" />
-                                    <Setter Property="FontAttributes" Value="Bold" />
-                                    <Setter Property="HorizontalTextAlignment" Value="Start" />
-                                </Style>
-                            </Grid.Resources>
-                            <Label Text="ID" />
-                            <Label Grid.Column="1" Text="Type" />
-                            <Label Grid.Column="2" Text="Remark" />
-                            <Label Grid.Column="3" Text="Address" />
-                            <Label Grid.Column="4" Text="Port" />
-                            <Label Grid.Column="5" Text="Subscribe" />
-                            <Label Grid.Column="6" Text="Ping" />
-                        </Grid>
+                        <Border Margin="-10" BackgroundColor="Orange">
+                            <Grid ColumnDefinitions="50,80,3*,2*,*,*,50">
+                                <Grid.Resources>
+                                    <Style TargetType="Label">
+                                        <Setter Property="FontSize" Value="20" />
+                                        <Setter Property="FontAttributes" Value="Bold" />
+                                        <Setter Property="HorizontalTextAlignment" Value="Start" />
+                                        <Setter Property="VerticalTextAlignment" Value="Center" />
+                                    </Style>
+                                </Grid.Resources>
+                                <Label Text="ID" />
+                                <Label Grid.Column="1" Text="Type" />
+                                <Label Grid.Column="2" Text="Remark" />
+                                <Label Grid.Column="3" Text="Address" />
+                                <Label Grid.Column="4" Text="Port" />
+                                <Label Grid.Column="5" Text="Subscribe" />
+                                <Label Grid.Column="6" Text="Ping" />
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.GroupHeaderTemplate>
 
@@ -113,37 +87,40 @@
                         <Label Margin="5" Text="{Binding Count, StringFormat='Total servers: {0:D}'}" />
                     </DataTemplate>
                 </CollectionView.GroupFooterTemplate>
+
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="localVM:ServerVM">
-                        <Frame>
-                            <!--<Frame.Triggers>
-                                <EventTrigger Event="Click" />
-                            </Frame.Triggers>-->
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_Tapped" />
-                            </Frame.GestureRecognizers>
-                            <Grid ColumnDefinitions="50,80,3*,2*,*,*,auto,auto" ColumnSpacing="5">
+                        <Border
+                            HeightRequest="40"
+                            Stroke="gray"
+                            StrokeShape="RoundRectangle 5"
+                            StrokeThickness="0.1">
+                            <Grid Margin="5" ColumnDefinitions="50,80,3*,2*,*,*,50">
 
                                 <Grid.Resources>
                                     <Style TargetType="Label">
-
+                                        <Setter Property="VerticalTextAlignment" Value="Center" />
                                         <Setter Property="HorizontalTextAlignment" Value="Start" />
                                     </Style>
                                 </Grid.Resources>
                                 <!--<Label Text="{Binding ServerM.indexId}" />-->
 
-                                <Label Text="{Binding Path=ServerM.indexId, StringFormat='No.{0}'}" />
+                                <Label Text="{Binding Path=Index, StringFormat='No.{0}'}" />
                                 <Label Grid.Column="1" Text="{Binding ServerM.configType}" />
                                 <Label Grid.Column="2" Text="{Binding ServerM.remarks}" />
                                 <Label Grid.Column="3" Text="{Binding ServerM.address}" />
                                 <Label Grid.Column="4" Text="{Binding ServerM.port}" />
                                 <Label Grid.Column="5" Text="{Binding ServerM.groupId}" />
-                                <Button
+                                <Label Grid.Column="6" Text="{Binding Ping}" />
+                                <!--<Button
                                     Grid.Column="6"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
                                     Command="{Binding PingTestCommand}"
-                                    Text="{Binding Ping}" />
+                                    Text="{Binding Ping}"
+                                    TextColor="Black" />-->
                             </Grid>
-                        </Frame>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

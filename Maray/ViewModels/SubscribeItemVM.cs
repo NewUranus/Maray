@@ -39,7 +39,7 @@ namespace Maray.ViewModels
 
             string[] arrData = serverList.Split(Environment.NewLine.ToCharArray());
 
-            this.serverList = arrData.Where(x => !string.IsNullOrEmpty(x)).ToList();
+            this.ServerList = arrData.Where(x => !string.IsNullOrEmpty(x)).ToList();
         }
 
         public SubscribeItemM ToModel()

@@ -1,7 +1,6 @@
-﻿using Maray.Datas;
+﻿using Maray.Defines;
 using Maray.Enum;
 using Maray.Models;
-using Maray.ViewModels;
 
 using System.Collections.Specialized;
 using System.Net.NetworkInformation;

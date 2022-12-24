@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Maray.Helpers;
-using Maray.Enum;
-using Maray.Models;
 using Maray.Services;
-using Newtonsoft.Json;
+
+using System.Collections.ObjectModel;
 
 namespace Maray.ViewModels
 {
@@ -34,8 +27,18 @@ namespace Maray.ViewModels
         public ServerPageVM()
         {
             subscribeService = ServicesProvider.GetService<SubscribeService>();
-            title = "Server Page";
-            UpdateList();
+            Title = "Server Page";
+            InitData();
+        }
+
+        #region Init
+
+        private async void InitData()
+        {
+            await Task.Factory.StartNew(() =>
+              {
+                  UpdateList();
+              });
         }
 
         private void UpdateList()
@@ -46,15 +49,34 @@ namespace Maray.ViewModels
                 foreach (var item in list)
                 {
                     AddServerGroupInner(item.Note, item.ServerList);
-                    //foreach (var itemInner in item.ServerList)
-                    //{
-                    //    AddServerInner(itemInner);
-                    //}
                 }
             }
         }
 
+        #endregion Init
+
         #region Command
+
+        [RelayCommand]
+        private async void Active()
+        {
+            if (SelectedServer != null)
+            {
+                //SelectedServer.
+            }
+        }
+
+        [RelayCommand]
+        private async void PingTestAll()
+        {
+            foreach (var item in serverVMGroupList)
+            {
+                foreach (var item1 in item)
+                {
+                    item1.PingTest();
+                }
+            }
+        }
 
         [RelayCommand]
         public async void AddServer()
@@ -67,7 +89,7 @@ namespace Maray.ViewModels
                     return;
                 }
 
-                AddServerInner(result);
+                var serverVM = GetServerVM(result);
             }
             catch
             { }
@@ -81,16 +103,16 @@ namespace Maray.ViewModels
             }
         }
 
-        private void AddServerInner(string url)
+        #endregion Command
+
+        private ServerVM GetServerVM(string url)
         {
             ServerVM serverVM = new ServerVM();
             var item = ServerHelper.ParseUrlToServerItem(url);
-            if (item != null)
-            {
-                serverVM.ServerM = item;
-                //serverVM.ServerM.indexId = servers.Count;
-                //servers.Add(serverVM);
-            }
+
+            serverVM.ServerM = item;
+
+            return serverVM;
         }
 
         private void AddServerGroupInner(string name, List<string> urlList)
@@ -99,22 +121,16 @@ namespace Maray.ViewModels
 
             foreach (var item in urlList)
             {
-                ServerVM serverVM = new ServerVM();
-                var server = ServerHelper.ParseUrlToServerItem(item);
-                if (item != null)
-                {
-                    serverVM.ServerM = server;
-                    serverVM.ServerM.indexId = list.Count;
-                    serverVM.ServerM.groupId = name;
-                    list.Add(serverVM);
-                }
+                var serverVM = GetServerVM(item);
+
+                serverVM.Index = list.Count;
+                serverVM.ServerM.groupId = name;
+                list.Add(serverVM);
             }
 
             ServerVMGroup serverMs = new ServerVMGroup(name, list);
             ServerVMGroupList.Add(serverMs);
         }
-
-        #endregion Command
     }
 
     public class ServerVMGroup : List<ServerVM>

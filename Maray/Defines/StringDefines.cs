@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Maray.Datas
+namespace Maray.Defines
 {
     internal class StringDefines
     {

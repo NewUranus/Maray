@@ -1,5 +1,4 @@
-﻿using Maray.Datas;
-using Maray.Enum;
+﻿using Maray.Enum;
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,6 @@ namespace Maray.Models
 {
     public class ServerM
     {
-        public int indexId { get; set; }
         public ProtocolType configType { get; set; }
         public int configVersion { get; set; }
         public int sort { get; set; }
