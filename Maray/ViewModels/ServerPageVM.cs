@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
+using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
+using Maray.Enum;
 using Maray.Models;
 using Maray.Services;
+using Newtonsoft.Json;
 
 namespace Maray.ViewModels
 {
@@ -25,7 +26,19 @@ namespace Maray.ViewModels
         [RelayCommand]
         public void AddServer(string e)
         {
-            servers.Add(new ServerM("add one", ""));
+            try
+            {
+                ServerM server = new ServerM();
+                if (e.StartsWith("vmess"))
+                {
+                    server.type = ProtocolType.VMESS;
+                }
+                var t = Encoding.Default.GetString(Convert.FromBase64String(e.Replace("vmess://", "")));
+                server.node = JsonConvert.DeserializeObject<Node>(t);
+                servers.Add(server);
+            }
+            catch
+            { }
         }
 
         public ServerPageVM()
@@ -44,7 +57,7 @@ namespace Maray.ViewModels
                 {
                     foreach (var itemInner in item.ServerList)
                     {
-                        servers.Add(new ServerM("aa", itemInner));
+                        servers.Add(new ServerM());
                     }
                 }
             }

@@ -20,6 +20,7 @@
                     BorderColor="Yellow"
                     BorderWidth="2"
                     Command="{Binding AddServerCommand}"
+                    CommandParameter="{Binding Source={x:Reference entry}, Path=Text}"
                     HeightRequest="40"
                     Source="plus.png"
                     WidthRequest="40" />
@@ -27,9 +28,12 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="localM:ServerM">
                     <Frame>
-                        <Grid ColumnDefinitions="100,*">
-                            <Label Text="{Binding v}" />
-                            <Label Grid.Column="1" Text="{Binding url}" />
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
+                                                  NumberOfTapsRequired="1"></TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Grid Padding="10" ColumnDefinitions="200,1000">
+                            <Label Text="{Binding Node.add}" />
                         </Grid>
                     </Frame>
                 </DataTemplate>
