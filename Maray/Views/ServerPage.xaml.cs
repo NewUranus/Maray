@@ -36,6 +36,5 @@ public partial class ServerPage : ContentPage
 
     private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
     {
-
     }
 }

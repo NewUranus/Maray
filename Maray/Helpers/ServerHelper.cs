@@ -1,20 +1,25 @@
 ﻿using Maray.Datas;
+using Maray.Enum;
 using Maray.Models;
+using Maray.ViewModels;
 
 using System.Collections.Specialized;
+using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 using System.Web;
 
 namespace Maray.Helpers
 {
-    internal class VmessHelper
+    internal class ServerHelper
     {
-        private static readonly Regex StdVmessUserInfo = new Regex(
-           @"^(?<network>[a-z]+)(\+(?<streamSecurity>[a-z]+))?:(?<id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$");
+        #region ParseUrl
 
-        public static VmessItemM ParseUrlToVmessItem(string result)
+        private static readonly Regex StdVmessUserInfo = new Regex(
+       @"^(?<network>[a-z]+)(\+(?<streamSecurity>[a-z]+))?:(?<id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$");
+
+        public static ServerM ParseUrlToServerItem(string result)
         {
-            VmessItemM vmessItem = new VmessItemM();
+            ServerM vmessItem = new ServerM();
 
             if (result.StartsWith(StringDefines.vmessProtocol))
             {
@@ -42,7 +47,7 @@ namespace Maray.Helpers
                     return null;
                 }
 
-                vmessItem.configType = NetworkProtocolEnum.Shadowsocks;
+                vmessItem.configType = ProtocolType.Shadowsocks;
             }
             else if (result.StartsWith(StringDefines.socksProtocol))
             {
@@ -56,7 +61,7 @@ namespace Maray.Helpers
                     return null;
                 }
 
-                vmessItem.configType = NetworkProtocolEnum.Socks;
+                vmessItem.configType = ProtocolType.Socks;
             }
             else if (result.StartsWith(StringDefines.trojanProtocol))
             {
@@ -70,17 +75,18 @@ namespace Maray.Helpers
             }
             else
             {
+                Shell.Current.DisplayAlert("Waring", "ParseUrlToServerItem fail!", "OK");
                 return null;
             }
 
             return vmessItem;
         }
 
-        private static VmessItemM ResolveVmess(string result)
+        private static ServerM ResolveVmess(string result)
         {
-            var vmessItem = new VmessItemM
+            var vmessItem = new ServerM
             {
-                configType = NetworkProtocolEnum.VMess
+                configType = ProtocolType.VMess
             };
 
             result = result.Substring(StringDefines.vmessProtocol.Length);
@@ -96,12 +102,12 @@ namespace Maray.Helpers
             vmessItem.network = StringDefines.DefaultNetwork;
             vmessItem.headerType = StringDefines.None;
 
-            vmessItem.configVersion = Convert.ToInt32(vmessQRCode.v);
+            vmessItem.configVersion = NumberHelper.ToInt(vmessQRCode.v);
             vmessItem.remarks = StringHelper.ToString(vmessQRCode.ps);
             vmessItem.address = StringHelper.ToString(vmessQRCode.add);
-            vmessItem.port = Convert.ToInt32(vmessQRCode.port);
+            vmessItem.port = NumberHelper.ToInt(vmessQRCode.port);
             vmessItem.id = StringHelper.ToString(vmessQRCode.id);
-            vmessItem.alterId = Convert.ToInt32(vmessQRCode.aid);
+            vmessItem.alterId = NumberHelper.ToInt(vmessQRCode.aid);
             vmessItem.security = StringHelper.ToString(vmessQRCode.scy);
 
             vmessItem.security = !string.IsNullOrEmpty(vmessQRCode.scy) ? vmessQRCode.scy : StringDefines.DefaultSecurity;
@@ -123,11 +129,11 @@ namespace Maray.Helpers
             return vmessItem;
         }
 
-        private static VmessItemM ResolveStdVLESS(string result)
+        private static ServerM ResolveStdVLESS(string result)
         {
-            VmessItemM item = new VmessItemM
+            ServerM item = new ServerM
             {
-                configType = NetworkProtocolEnum.VLESS,
+                configType = ProtocolType.VLESS,
                 security = "none"
             };
 
@@ -146,11 +152,11 @@ namespace Maray.Helpers
             return item;
         }
 
-        private static VmessItemM ResolveTrojan(string result)
+        private static ServerM ResolveTrojan(string result)
         {
-            VmessItemM item = new VmessItemM
+            ServerM item = new ServerM
             {
-                configType = NetworkProtocolEnum.Trojan
+                configType = ProtocolType.Trojan
             };
 
             Uri url = new Uri(result);
@@ -166,7 +172,7 @@ namespace Maray.Helpers
             return item;
         }
 
-        private static int ResolveStdTransport(NameValueCollection query, ref VmessItemM item)
+        private static int ResolveStdTransport(NameValueCollection query, ref ServerM item)
         {
             item.flow = query["flow"] ?? "";
             item.streamSecurity = query["security"] ?? "";
@@ -215,11 +221,11 @@ namespace Maray.Helpers
             return 0;
         }
 
-        private static VmessItemM ResolveStdVmess(string result)
+        private static ServerM ResolveStdVmess(string result)
         {
-            VmessItemM i = new VmessItemM
+            ServerM i = new ServerM
             {
-                configType = Datas.NetworkProtocolEnum.VMess,
+                configType = ProtocolType.VMess,
                 security = "auto"
             };
 
@@ -298,11 +304,11 @@ namespace Maray.Helpers
             return i;
         }
 
-        private static VmessItemM ResolveVmess4Kitsunebi(string result)
+        private static ServerM ResolveVmess4Kitsunebi(string result)
         {
-            VmessItemM vmessItem = new VmessItemM
+            ServerM vmessItem = new ServerM
             {
-                configType = NetworkProtocolEnum.VMess
+                configType = ProtocolType.VMess
             };
             result = result.Substring(StringDefines.vmessProtocol.Length);
             int indexSplit = result.IndexOf("?");
@@ -325,7 +331,7 @@ namespace Maray.Helpers
             }
 
             vmessItem.address = arr22[0];
-            vmessItem.port = Convert.ToInt32(arr22[1]);
+            vmessItem.port = NumberHelper.ToInt(arr22[1]);
             vmessItem.security = arr21[0];
             vmessItem.id = arr21[1];
 
@@ -339,13 +345,13 @@ namespace Maray.Helpers
         private static readonly Regex UrlFinder = new Regex(@"ss://(?<base64>[A-Za-z0-9+-/=_]+)(?:#(?<tag>\S+))?", RegexOptions.IgnoreCase);
         private static readonly Regex DetailsParser = new Regex(@"^((?<method>.+?):(?<password>.*)@(?<hostname>.+?):(?<port>\d+?))$", RegexOptions.IgnoreCase);
 
-        private static VmessItemM ResolveSSLegacy(string result)
+        private static ServerM ResolveSSLegacy(string result)
         {
             var match = UrlFinder.Match(result);
             if (!match.Success)
                 return null;
 
-            VmessItemM server = new VmessItemM();
+            ServerM server = new ServerM();
             var base64 = match.Groups["base64"].Value.TrimEnd('/');
             var tag = match.Groups["tag"].Value;
             if (!string.IsNullOrEmpty(tag))
@@ -370,7 +376,7 @@ namespace Maray.Helpers
             return server;
         }
 
-        private static VmessItemM ResolveSocksNew(string result)
+        private static ServerM ResolveSocksNew(string result)
         {
             Uri parsedUrl;
             try
@@ -381,7 +387,7 @@ namespace Maray.Helpers
             {
                 return null;
             }
-            VmessItemM server = new VmessItemM
+            ServerM server = new ServerM
             {
                 remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
                 address = parsedUrl.IdnHost,
@@ -401,11 +407,11 @@ namespace Maray.Helpers
             return server;
         }
 
-        private static VmessItemM ResolveSocks(string result)
+        private static ServerM ResolveSocks(string result)
         {
-            VmessItemM vmessItem = new VmessItemM
+            ServerM vmessItem = new ServerM
             {
-                configType = NetworkProtocolEnum.Socks
+                configType = ProtocolType.Socks
             };
             result = result.Substring(StringDefines.socksProtocol.Length);
             //remark
@@ -442,14 +448,14 @@ namespace Maray.Helpers
                 return null;
             }
             vmessItem.address = arr1[1].Substring(0, indexPort);
-            vmessItem.port = Convert.ToInt32(arr1[1].Substring(indexPort + 1, arr1[1].Length - (indexPort + 1)));
+            vmessItem.port = NumberHelper.ToInt(arr1[1].Substring(indexPort + 1, arr1[1].Length - (indexPort + 1)));
             vmessItem.security = arr21[0];
             vmessItem.id = arr21[1];
 
             return vmessItem;
         }
 
-        private static VmessItemM ResolveSip002(string result)
+        private static ServerM ResolveSip002(string result)
         {
             Uri parsedUrl;
             try
@@ -460,7 +466,7 @@ namespace Maray.Helpers
             {
                 return null;
             }
-            VmessItemM server = new VmessItemM
+            ServerM server = new ServerM
             {
                 remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
                 address = parsedUrl.IdnHost,
@@ -510,6 +516,42 @@ namespace Maray.Helpers
             }
 
             return server;
+        }
+
+        #endregion ParseUrl
+
+        /// <summary> Ping </summary>
+        /// <param name="host"> </param>
+        /// <returns> </returns>
+        public static long Ping(string host)
+        {
+            long roundtripTime = -1;
+            try
+            {
+                int timeout = 30;
+                int echoNum = 2;
+                Ping pingSender = new Ping();
+                for (int i = 0; i < echoNum; i++)
+                {
+                    PingReply reply = pingSender.Send(host, timeout);
+                    if (reply.Status == IPStatus.Success)
+                    {
+                        if (reply.RoundtripTime < 0)
+                        {
+                            continue;
+                        }
+                        if (roundtripTime < 0 || reply.RoundtripTime < roundtripTime)
+                        {
+                            roundtripTime = reply.RoundtripTime;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+            return roundtripTime;
         }
     }
 }

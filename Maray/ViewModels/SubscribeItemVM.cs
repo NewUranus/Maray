@@ -10,16 +10,16 @@ namespace Maray.ViewModels
     public partial class SubscribeItemVM : ObservableObject
     {
         [ObservableProperty]
-        public bool isEnable;
+        private bool isEnable;
 
         [ObservableProperty]
-        public string note;
+        private string note;
 
         [ObservableProperty]
-        public string subscribeUrl;
+        private string subscribeUrl;
 
         [ObservableProperty]
-        public List<string> serverList;
+        private List<string> serverList;
 
         public SubscribeItemVM()
         {

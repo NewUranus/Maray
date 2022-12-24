@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace Maray.Models.Configs
 {
-    class ConfigM
+    internal class ConfigM
     {
-        public ConfigM() { }
+        public ConfigM()
+        { }
 
-        public List<SubscribeItemM> SubscribeItemList { get; set; }=new List<SubscribeItemM>();
+        public List<SubscribeItemM> SubscribeItemList { get; set; } = new List<SubscribeItemM>();
     }
 }

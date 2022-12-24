@@ -8,6 +8,11 @@ namespace Maray.Enum
 {
     public enum ProtocolType
     {
-        VMESS = 0
+        VMess = 1,
+        Custom = 2,
+        Shadowsocks = 3,
+        Socks = 4,
+        VLESS = 5,
+        Trojan = 6
     }
 }

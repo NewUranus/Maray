@@ -18,46 +18,18 @@ namespace Maray.ViewModels
     public partial class ServerPageVM : ObservableObject
     {
         [ObservableProperty]
-        public string title;
+        private string title;
 
         private readonly SubscribeService subscribeService;
 
         [ObservableProperty]
-        private ServerM selectedServer;
+        private ServerVM selectedServer;
+
+        //[ObservableProperty]
+        //private ObservableCollection<ServerVM> servers = new ObservableCollection<ServerVM>();
 
         [ObservableProperty]
-        private ObservableCollection<ServerM> servers = new ObservableCollection<ServerM>();
-
-        [RelayCommand]
-        public void AddServer(string e)
-        {
-            try
-            {
-                ServerM server = new ServerM();
-                if (e.StartsWith("vmess"))
-                {
-                    server.type = ProtocolType.VMESS;
-                }
-                var t = Encoding.Default.GetString(Convert.FromBase64String(e.Replace("vmess://", "")));
-                server.node = JsonConvert.DeserializeObject<Node>(t);
-                servers.Add(server);
-            }
-            catch
-            { }
-        }
-
-        [RelayCommand]
-        public void SelectionChanged()
-        {
-            if (selectedServer != null)
-            {
-                if (string.IsNullOrEmpty(selectedServer.url))
-                {
-                    return;
-                }
-                var item = VmessHelper.ParseUrlToVmessItem(selectedServer.url);
-            }
-        }
+        private ObservableCollection<ServerVMGroup> serverVMGroupList = new();
 
         public ServerPageVM()
         {
@@ -73,12 +45,85 @@ namespace Maray.ViewModels
             {
                 foreach (var item in list)
                 {
-                    foreach (var itemInner in item.ServerList)
-                    {
-                        servers.Add(new ServerM());
-                    }
+                    AddServerGroupInner(item.Note, item.ServerList);
+                    //foreach (var itemInner in item.ServerList)
+                    //{
+                    //    AddServerInner(itemInner);
+                    //}
                 }
             }
+        }
+
+        #region Command
+
+        [RelayCommand]
+        public async void AddServer()
+        {
+            string result = await Shell.Current.DisplayPromptAsync("Add Server", "Server url", keyboard: Keyboard.Url);
+            try
+            {
+                if (string.IsNullOrEmpty(result))
+                {
+                    return;
+                }
+
+                AddServerInner(result);
+            }
+            catch
+            { }
+        }
+
+        [RelayCommand]
+        public void SelectionChanged()
+        {
+            if (selectedServer != null)
+            {
+            }
+        }
+
+        private void AddServerInner(string url)
+        {
+            ServerVM serverVM = new ServerVM();
+            var item = ServerHelper.ParseUrlToServerItem(url);
+            if (item != null)
+            {
+                serverVM.ServerM = item;
+                //serverVM.ServerM.indexId = servers.Count;
+                //servers.Add(serverVM);
+            }
+        }
+
+        private void AddServerGroupInner(string name, List<string> urlList)
+        {
+            List<ServerVM> list = new List<ServerVM>();
+
+            foreach (var item in urlList)
+            {
+                ServerVM serverVM = new ServerVM();
+                var server = ServerHelper.ParseUrlToServerItem(item);
+                if (item != null)
+                {
+                    serverVM.ServerM = server;
+                    serverVM.ServerM.indexId = list.Count;
+                    serverVM.ServerM.groupId = name;
+                    list.Add(serverVM);
+                }
+            }
+
+            ServerVMGroup serverMs = new ServerVMGroup(name, list);
+            ServerVMGroupList.Add(serverMs);
+        }
+
+        #endregion Command
+    }
+
+    public class ServerVMGroup : List<ServerVM>
+    {
+        public string Name { get; private set; }
+
+        public ServerVMGroup(string name, List<ServerVM> animals) : base(animals)
+        {
+            Name = name;
         }
     }
 }

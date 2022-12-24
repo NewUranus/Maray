@@ -14,9 +14,9 @@ namespace Maray.Models
         {
             SubscribeItemVM vm = new SubscribeItemVM();
 
-            vm.isEnable = IsEnable;
-            vm.note = Note;
-            vm.subscribeUrl = SubscribeUrl;
+            vm.IsEnable = IsEnable;
+            vm.Note = Note;
+            vm.SubscribeUrl = SubscribeUrl;
             return vm;
         }
     }
