@@ -60,7 +60,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.GroupHeaderTemplate>
                     <DataTemplate>
-                        <Border Margin="-10" BackgroundColor="Orange">
+                        <Border Margin="-10" StrokeThickness="0.1">
                             <Grid ColumnDefinitions="50,80,3*,2*,*,*,50">
                                 <Grid.Resources>
                                     <Style TargetType="Label">

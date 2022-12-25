@@ -8,7 +8,20 @@ namespace Maray.Defines
 {
     internal class StringDefines
     {
+        #region Inbound
+
+        public const string InboundSocks = "socks";
+        public const string InboundSocks2 = "socks2";
+        public const string InboundHttp = "http";
+        public const string InboundHttp2 = "http2";
+        public const string InboundAPITagName = "api";
+        public const string InboundAPIProtocal = "dokodemo-door";
+
+        #endregion Inbound
+
         #region 默认值
+
+        public const string Loopback = "127.0.0.1";
 
         /// <summary> 默认加密方式 </summary>
         public const string DefaultSecurity = "auto";

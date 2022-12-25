@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using Maray.Configs;
+
+using System.Reflection;
 
 namespace Maray.Helpers
 {
@@ -17,8 +19,8 @@ namespace Maray.Helpers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-                return ex.Message;
+                NLogHelper.WriteExceptionLog(ex);
+                return "";
             }
         }
 
@@ -40,9 +42,25 @@ namespace Maray.Helpers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                NLogHelper.WriteExceptionLog(ex);
             }
             return result;
+        }
+
+        public static T GetEmbedText<T>(string res)
+        {
+            string result = DownloadHelper.GetEmbedText(res);
+            if (string.IsNullOrEmpty(result))
+            {
+                throw new Exception(PathConfig.v2raySampleClient);
+            }
+
+            T v2rayConfig = JsonHelper.FromJsonString<T>(result);
+            if (v2rayConfig == null)
+            {
+                throw new Exception(PathConfig.v2raySampleClient);
+            }
+            return v2rayConfig;
         }
     }
 }

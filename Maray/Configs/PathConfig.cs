@@ -9,8 +9,25 @@ namespace Maray.Configs
 {
     internal class PathConfig
     {
-        /// <summary> 客户端配置样例文件名 </summary>
+        #region 嵌入资源
+
+        /// <summary> v2ray客户端配置样例文件名 </summary>
         public const string v2raySampleClient = "Maray.Sample.SampleClientConfig.txt";
+
+        /// <summary> v2ray服务端配置样例文件名 </summary>
+        public const string v2raySampleServer = "Maray.Sample.SampleServerConfig.txt";
+
+        /// <summary> v2ray配置Httprequest文件名 </summary>
+        public const string v2raySampleHttprequestFileName = "Maray.Sample.SampleHttprequest.txt";
+
+        /// <summary> v2ray配置Httpresponse文件名 </summary>
+        public const string v2raySampleHttpresponseFileName = "Maray.Sample.SampleHttpresponse.txt";
+
+        public const string CustomRoutingFileName = "Maray.Sample.custom_routing_";
+
+        public const string v2raySampleInbound = "Maray.Sample.SampleInbound.txt";
+
+        #endregion 嵌入资源
 
         public static string MaraySettingFilePath { get; set; }
 
@@ -26,12 +43,12 @@ namespace Maray.Configs
             var startupPath = GetCurrentDictionary(Assembly.GetExecutingAssembly().Location);
 
             var configPath = appDataPath + "\\Configs\\";
-            CreateDirectoryIfNotExist(configPath);
+            CreateDirectory(configPath);
 
             var cachePath = FileSystem.CacheDirectory;
 
             var logPath = startupPath + "\\Logs\\";
-            CreateDirectoryIfNotExist(logPath);
+            CreateDirectory(logPath);
 
             MaraySettingFilePath = configPath + "Maray.json";
             SubscribeSettingFilePath = configPath + "Subscribe.json";
@@ -39,7 +56,7 @@ namespace Maray.Configs
             v2rayConfig = configPath + "v2rayConfig.json";
         }
 
-        private static void CreateDirectoryIfNotExist(string dir)
+        private static void CreateDirectory(string dir)
         {
             if (!Directory.Exists(dir))
             {

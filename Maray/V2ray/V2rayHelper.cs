@@ -1,4 +1,5 @@
 ﻿using Maray.Configs;
+using Maray.Defines;
 using Maray.Helpers;
 using Maray.Models;
 using Maray.Models.Configs;
@@ -6,6 +7,7 @@ using Maray.Services;
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -180,25 +182,18 @@ namespace Maray.V2ray
             try
             {
                 //取得默认配置
-                string result = DownloadHelper.GetEmbedText(PathConfig.v2raySampleClient);
-                if (string.IsNullOrEmpty(result))
-                {
-                    throw new Exception(PathConfig.v2raySampleClient);
-                }
 
-                V2rayConfig v2rayConfig = JsonHelper.FromJsonString<V2rayConfig>(result);
-                if (v2rayConfig == null)
-                {
-                    throw new Exception(PathConfig.v2raySampleClient);
-                }
+                var v2rayConfig = DownloadHelper.GetEmbedText<V2rayConfig>(PathConfig.v2raySampleClient);
 
                 var config = ServicesProvider.GetService<ConfigService>().GetConfig();
 
                 //开始修改配置
+
+                //log
                 log(config, ref v2rayConfig);
 
                 //本地端口
-                //inbound(config, ref v2rayConfig);
+                inbound(config, ref v2rayConfig);
 
                 //路由
                 //routing(config, ref v2rayConfig);
@@ -230,6 +225,63 @@ namespace Maray.V2ray
             v2rayConfig.log.loglevel = marayConfigM.Loglevel;
             v2rayConfig.log.access = PathConfig.LogPath;
             v2rayConfig.log.error = PathConfig.LogPath;
+        }
+
+        /// <summary> 本地端口 </summary>
+        /// <param name="config">      </param>
+        /// <param name="v2rayConfig"> </param>
+        /// <returns> </returns>
+        private static void inbound(MarayConfigM config, ref V2rayConfig v2rayConfig)
+        {
+            try
+            {
+                v2rayConfig.inbounds = new List<Inbounds>();
+
+                Inbounds inbound = GetInbound(config.inbound[0], StringDefines.InboundSocks, 0, true);
+                v2rayConfig.inbounds.Add(inbound);
+
+                //http
+                Inbounds inbound2 = GetInbound(config.inbound[0], StringDefines.InboundHttp, 1, false);
+                v2rayConfig.inbounds.Add(inbound2);
+
+                if (config.inbound[0].allowLANConn)
+                {
+                    Inbounds inbound3 = GetInbound(config.inbound[0], StringDefines.InboundSocks2, 2, true);
+                    inbound3.listen = "0.0.0.0";
+                    v2rayConfig.inbounds.Add(inbound3);
+
+                    Inbounds inbound4 = GetInbound(config.inbound[0], StringDefines.InboundHttp2, 3, false);
+                    inbound4.listen = "0.0.0.0";
+                    v2rayConfig.inbounds.Add(inbound4);
+
+                    //auth
+                    if (!string.IsNullOrEmpty(config.inbound[0].user) && !string.IsNullOrEmpty(config.inbound[0].pass))
+                    {
+                        inbound3.settings.auth = "password";
+                        inbound3.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
+
+                        inbound4.settings.auth = "password";
+                        inbound4.settings.accounts = new List<AccountsItem> { new AccountsItem() { user = config.inbound[0].user, pass = config.inbound[0].pass } };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                NLogHelper.WriteExceptionLog(ex);
+            }
+        }
+
+        private static Inbounds GetInbound(InItem inItem, string tag, int offset, bool bSocks)
+        {
+            var inbound = DownloadHelper.GetEmbedText<Inbounds>(PathConfig.v2raySampleInbound);
+
+            inbound.tag = tag;
+            inbound.port = inItem.localPort + offset;
+            inbound.protocol = bSocks ? StringDefines.InboundSocks : StringDefines.InboundHttp;
+            inbound.settings.udp = inItem.udpEnabled;
+            inbound.sniffing.enabled = inItem.sniffingEnabled;
+
+            return inbound;
         }
     }
 }
