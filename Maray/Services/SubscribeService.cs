@@ -38,9 +38,9 @@ namespace Maray.Services
 
         private void InitData()
         {
-            if (File.Exists(PathConfig.SettingFilePath))
+            if (File.Exists(PathConfig.SubscribeSettingFilePath))
             {
-                SubscribeItemMs = JsonHelper.ReadFromJsonFile<List<SubscribeItemM>>(PathConfig.SettingFilePath);
+                SubscribeItemMs = JsonHelper.ReadFromJsonFile<List<SubscribeItemM>>(PathConfig.SubscribeSettingFilePath);
             }
         }
     }

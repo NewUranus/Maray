@@ -17,7 +17,7 @@
         <Grid ColumnDefinitions="auto,*,auto">
             <HorizontalStackLayout>
                 <Button Command="{Binding PingTestAllCommand}" Text="PingTestAll" />
-                <Button Command="{Binding PingTestAllCommand}" Text="PingTestAll" />
+                <Button Command="{Binding ActiveCommand}" Text="Active" />
             </HorizontalStackLayout>
             <HorizontalStackLayout Grid.Column="2">
                 <ImageButton

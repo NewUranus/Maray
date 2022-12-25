@@ -1,9 +1,12 @@
-﻿using Maray.Services;
+﻿using Maray.Helpers;
+using Maray.Services;
 using Maray.ViewModels;
 using Maray.Views;
 
 using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.Platform;
+
+using NLog;
 
 using System;
 
@@ -32,6 +35,10 @@ public static class MauiProgram
 
         var services = builder.Services;
 
+        //Services
+        services.AddSingleton<SubscribeService>();
+        services.AddSingleton<ConfigService>();
+
         //Will create a single instance of the object which will be remain for the lifetime of the application.
         services.AddSingleton<MainPage>();
         services.AddSingleton<MainPageVM>();
@@ -39,8 +46,6 @@ public static class MauiProgram
         //ServerPage
         services.AddSingleton<ServerPageVM>();
         services.AddSingleton<ServerPage>();
-
-        services.AddSingleton<SubscribeService>();
 
         services.AddSingleton<SubscribeSettingPage>();
         services.AddSingleton<SubscribeSettingPageVM>();
@@ -50,6 +55,13 @@ public static class MauiProgram
 
         services.AddTransient<AboutVM>();
         services.AddTransient<AboutPage>();
+
+        NLog.LogManager.Setup().LoadConfiguration(builder =>
+        {
+            // builder.ForLogger().FilterMinLevel(LogLevel.Info).WriteToConsole();
+            builder.ForLogger().FilterMinLevel(LogLevel.Debug).WriteToFile(fileName: "Logs\\" + DateTime.Now.ToString("yyyy_MM_dd") + ".txt");
+        });
+
 #if WINDOWS
         builder.ConfigureLifecycleEvents(events =>
         {

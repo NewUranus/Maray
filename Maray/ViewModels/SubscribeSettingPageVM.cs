@@ -42,9 +42,9 @@ namespace Maray.ViewModels
             var service = ServicesProvider.GetService<SubscribeService>();
             service.UpdateSubscribeList(SubscribeItemsource.Select(x => x.ToModel()).ToList());
 
-            if (File.Exists(PathConfig.SettingFilePath))
+            if (File.Exists(PathConfig.SubscribeSettingFilePath))
             {
-                File.Delete(PathConfig.SettingFilePath);
+                File.Delete(PathConfig.SubscribeSettingFilePath);
             }
 
             List<SubscribeItemM> list = new List<SubscribeItemM>();
@@ -53,7 +53,7 @@ namespace Maray.ViewModels
                 list.Add(item.ToModel());
             }
 
-            JsonHelper.WriteToJsonFile(PathConfig.SettingFilePath, list);
+            JsonHelper.WriteToJsonFile(PathConfig.SubscribeSettingFilePath, list);
         }
     }
 }

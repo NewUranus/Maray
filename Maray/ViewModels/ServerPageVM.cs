@@ -62,7 +62,11 @@ namespace Maray.ViewModels
         {
             if (SelectedServer != null)
             {
-                //SelectedServer.
+                var configServece = ServicesProvider.GetService<ConfigService>();
+
+                var config = configServece.GetConfig();
+                config.DefaultServer = SelectedServer.ServerM;
+                configServece.SetConfig(config);
             }
         }
 

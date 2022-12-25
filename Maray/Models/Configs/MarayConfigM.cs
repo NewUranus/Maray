@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace Maray.Models.Configs
 {
-    internal class ConfigM
+    internal class MarayConfigM
     {
-        public ConfigM()
+        public MarayConfigM()
         { }
 
-        public List<SubscribeItemM> SubscribeItemList { get; set; } = new List<SubscribeItemM>();
+        public string Loglevel { get; set; }
+        public ServerM DefaultServer { get; set; }
     }
 }

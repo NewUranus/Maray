@@ -1,4 +1,6 @@
-﻿namespace Maray.Helpers
+﻿using System.Reflection;
+
+namespace Maray.Helpers
 {
     internal class DownloadHelper
     {
@@ -18,7 +20,29 @@
                 Console.WriteLine(ex);
                 return ex.Message;
             }
-            
+        }
+
+        /// <summary> 获取嵌入文本资源 </summary>
+        /// <param name="res"> </param>
+        /// <returns> </returns>
+        public static string GetEmbedText(string res)
+        {
+            string result = string.Empty;
+
+            try
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                using (Stream stream = assembly.GetManifestResourceStream(res))
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    result = reader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return result;
         }
     }
 }
