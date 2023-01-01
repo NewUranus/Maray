@@ -17,18 +17,13 @@ using System.Threading.Tasks;
 
 namespace Maray.V2ray
 {
+    /// <summary> 底层隔离 </summary>
     internal class V2rayHelper
     {
-        /*
         /// <summary> 载入V2ray </summary>
-        public void LoadV2ray(ServerM config)
+        public void LoadV2ray(ServerM serverM)
         {
-            var item = ConfigHandler.GetDefaultServer(ref config);
-            if (item == null)
-            {
-                ShowMsg(false, ResUI.CheckServerSettings);
-                return;
-            }
+            /*
 
             if (SetCore(config, item) != 0)
             {
@@ -61,8 +56,8 @@ namespace Maray.V2ray
                     processId = V2rayStartNew(configStr);
                 }
             }
+            */
         }
-        */
 
         /// <summary> 生成v2ray的客户端配置文件 </summary>
         /// <param name="node">     </param>
@@ -187,7 +182,7 @@ namespace Maray.V2ray
 
                 var v2rayConfig = DownloadHelper.GetEmbedText<V2rayConfig>(PathConfig.v2raySampleClient);
 
-                var config = Services.ServiceProvider.GetService<ConfigService>().GetConfig();
+                var config = Helpers.ServiceProviderHelper.GetService<ConfigService>().GetMarayConfig();
 
                 //开始修改配置
 
@@ -204,10 +199,10 @@ namespace Maray.V2ray
                 outbound(config, node, ref v2rayConfig);
 
                 //dns
-                //dns(config, ref v2rayConfig);
+                dns(config, ref v2rayConfig);
 
                 //stat
-                //statistic(config, ref v2rayConfig);
+                statistic(config, ref v2rayConfig);
 
                 return new V2rayConfig();
             }
@@ -955,5 +950,114 @@ namespace Maray.V2ray
         }
 
         #endregion outbound
+
+        #region dns
+
+        /// <summary> remoteDNS </summary>
+        /// <param name="config">      </param>
+        /// <param name="v2rayConfig"> </param>
+        /// <returns> </returns>
+        private static int dns(MarayConfigM config, ref V2rayConfig v2rayConfig)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(config.remoteDNS))
+                {
+                    return 0;
+                }
+
+                //Outbound Freedom domainStrategy
+                if (!string.IsNullOrWhiteSpace(config.domainStrategy4Freedom))
+                {
+                    var outbound = v2rayConfig.outbounds[1];
+                    outbound.settings.domainStrategy = config.domainStrategy4Freedom;
+                    outbound.settings.userLevel = 0;
+                }
+                //待测试
+                var obj = JsonHelper.FromJsonString<object>(config.remoteDNS);
+                if (obj != null && obj.ToString().Contains("servers"))
+                {
+                    v2rayConfig.dns = obj;
+                }
+                else
+                {
+                    List<string> servers = new List<string>();
+
+                    string[] arrDNS = config.remoteDNS.Split(',');
+                    foreach (string str in arrDNS)
+                    {
+                        //if (Utils.IsIP(str))
+                        //{
+                        servers.Add(str);
+                        //}
+                    }
+                    //servers.Add("localhost");
+                    v2rayConfig.dns = new V2ray.Dns
+                    {
+                        servers = servers
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                NLogHelper.WriteExceptionLog(ex);
+            }
+            return 0;
+        }
+
+        #endregion dns
+
+        #region statistic
+
+        private static int statistic(MarayConfigM config, ref V2rayConfig v2rayConfig)
+        {
+            if (config.enableStatistics)
+            {
+                string tag = StringDefines.InboundAPITagName;
+                API apiObj = new API();
+                Policy policyObj = new Policy();
+                SystemPolicy policySystemSetting = new SystemPolicy();
+
+                string[] services = { "StatsService" };
+
+                v2rayConfig.stats = new Stats();
+
+                apiObj.tag = tag;
+                apiObj.services = services.ToList();
+                v2rayConfig.api = apiObj;
+
+                policySystemSetting.statsOutboundDownlink = true;
+                policySystemSetting.statsOutboundUplink = true;
+                policyObj.system = policySystemSetting;
+                v2rayConfig.policy = policyObj;
+
+                if (!v2rayConfig.inbounds.Exists(item => item.tag == tag))
+                {
+                    Inbounds apiInbound = new Inbounds();
+                    Inboundsettings apiInboundSettings = new Inboundsettings();
+                    apiInbound.tag = tag;
+                    apiInbound.listen = StringDefines.Loopback;
+                    apiInbound.port = GlobalVariable.statePort;
+                    apiInbound.protocol = StringDefines.InboundAPIProtocal;
+                    apiInboundSettings.address = StringDefines.Loopback;
+                    apiInbound.settings = apiInboundSettings;
+                    v2rayConfig.inbounds.Add(apiInbound);
+                }
+
+                if (!v2rayConfig.routing.rules.Exists(item => item.outboundTag == tag))
+                {
+                    RulesItem apiRoutingRule = new RulesItem
+                    {
+                        inboundTag = new List<string> { tag },
+                        outboundTag = tag,
+                        type = "field"
+                    };
+                    v2rayConfig.routing.rules.Add(apiRoutingRule);
+                }
+            }
+            return 0;
+        }
+
+        #endregion statistic
     }
 }

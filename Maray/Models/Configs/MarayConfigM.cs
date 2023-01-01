@@ -1,4 +1,5 @@
-﻿using Maray.Models;
+﻿using Maray.Defines;
+using Maray.Models;
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,51 @@ namespace Maray.Models.Configs
     internal class MarayConfigM
     {
         public MarayConfigM()
-        { }
+        {
+        }
+
+        public void InitDefaultData()
+        {
+            Loglevel = "warning";
+
+            //本地监听
+            if (inbound == null)
+            {
+                inbound = new List<InItem>();
+                InItem inItem = new InItem();
+                inItem.protocol = StringDefines.InboundSocks;
+                inItem.localPort = 10808;
+                inItem.udpEnabled = true;
+                inItem.sniffingEnabled = true;
+
+                inbound.Add(inItem);
+            }
+
+            //路由规则
+            if (string.IsNullOrEmpty(domainStrategy))
+            {
+                domainStrategy = "IPIfNonMatch";
+            }
+
+            //kcp
+            if (kcpItem == null)
+            {
+                kcpItem = new KcpItem
+                {
+                    mtu = 1350,
+                    tti = 50,
+                    uplinkCapacity = 12,
+                    downlinkCapacity = 100,
+                    readBufferSize = 2,
+                    writeBufferSize = 2,
+                    congestion = false
+                };
+            }
+        }
+
+        public List<SubscribeItemM> Subscribe { get; set; } = new List<SubscribeItemM>();
+
+        public bool logEnabled { get; set; }
 
         public string Loglevel { get; set; }
         public ServerM DefaultServer { get; set; }
@@ -36,5 +81,11 @@ namespace Maray.Models.Configs
         public List<CoreTypeItem> coreTypeItem { get; set; }
 
         public KcpItem kcpItem { get; set; }
+
+        /// <summary> Outbound Freedom domainStrategy </summary>
+        public string domainStrategy4Freedom { get; set; }
+
+        /// <summary> 自定义远程DNS </summary>
+        public string remoteDNS { get; set; }
     }
 }

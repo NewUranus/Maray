@@ -1,10 +1,6 @@
-﻿using Maray.Services;
+﻿using CommunityToolkit.WinUI.Notifications;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Maray.Services;
 
 namespace Maray.Platforms.Windows;
 

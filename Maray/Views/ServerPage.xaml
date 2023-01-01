@@ -28,10 +28,7 @@
             </HorizontalStackLayout>
         </Grid>
 
-        <FlexLayout
-            Grid.Row="1"
-            AlignItems="Center"
-            Direction="Column">
+        <FlexLayout Grid.Row="1" Direction="Column">
 
             <CollectionView
                 IsGrouped="true"
@@ -60,7 +57,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.GroupHeaderTemplate>
                     <DataTemplate>
-                        <Border Margin="-10" StrokeThickness="0.1">
+                        <Border Margin="-10,-5,0,0" StrokeThickness="0.1">
                             <Grid ColumnDefinitions="50,80,3*,2*,*,*,50">
                                 <Grid.Resources>
                                     <Style TargetType="Label">

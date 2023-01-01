@@ -31,8 +31,6 @@ namespace Maray.Configs
 
         public static string MaraySettingFilePath { get; set; }
 
-        public static string SubscribeSettingFilePath { get; set; }
-
         public static string LogPath { get; set; }
 
         public static string v2rayConfig { get; set; }
@@ -51,7 +49,6 @@ namespace Maray.Configs
             CreateDirectory(logPath);
 
             MaraySettingFilePath = configPath + "Maray.json";
-            SubscribeSettingFilePath = configPath + "Subscribe.json";
 
             v2rayConfig = configPath + "v2rayConfig.json";
         }

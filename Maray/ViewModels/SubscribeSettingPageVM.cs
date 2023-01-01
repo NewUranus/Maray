@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-using Maray.Configs;
 using Maray.Helpers;
 using Maray.Models;
 using Maray.Services;
@@ -28,7 +27,7 @@ namespace Maray.ViewModels
 
         private void InitData()
         {
-            var service = Services.ServiceProvider.GetService<SubscribeService>();
+            var service = Helpers.ServiceProviderHelper.GetService<SubscribeService>();
 
             foreach (var item in service.GetSubscribeList())
             {
@@ -39,21 +38,15 @@ namespace Maray.ViewModels
         [RelayCommand]
         private void Save()
         {
-            var service = Services.ServiceProvider.GetService<SubscribeService>();
-            service.UpdateSubscribeList(SubscribeItemsource.Select(x => x.ToModel()).ToList());
-
-            if (File.Exists(PathConfig.SubscribeSettingFilePath))
-            {
-                File.Delete(PathConfig.SubscribeSettingFilePath);
-            }
-
             List<SubscribeItemM> list = new List<SubscribeItemM>();
             foreach (var item in SubscribeItemsource)
             {
                 list.Add(item.ToModel());
             }
 
-            JsonHelper.WriteToJsonFile(PathConfig.SubscribeSettingFilePath, list);
+            var subscribeService = ServiceProviderHelper.GetService<SubscribeService>();
+            subscribeService.SetSubscribeList(list);
+            subscribeService.SaveSubscribeList();
         }
     }
 }

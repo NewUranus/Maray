@@ -12,36 +12,31 @@ namespace Maray.Services
 {
     public class SubscribeService
     {
-        //private List<ServerM> subscribeList = new();
+        private List<SubscribeItemM> SubscribeItemMs = new();
 
         public SubscribeService()
         {
-            InitData();
         }
-
-        //public void Subscribe(ServerM server)
-        //{
-        //    subscribeList.Add(server);
-        //}
 
         public List<SubscribeItemM> GetSubscribeList()
         {
+            SubscribeItemMs = ServiceProviderHelper.GetService<ConfigService>().GetMarayConfig().Subscribe;
+
             return SubscribeItemMs;
         }
 
-        public void UpdateSubscribeList(List<SubscribeItemM> subscribeItemMs)
+        public void SetSubscribeList(List<SubscribeItemM> subscribeItemMs)
         {
             this.SubscribeItemMs = subscribeItemMs;
         }
 
-        private List<SubscribeItemM> SubscribeItemMs = new();
-
-        private void InitData()
+        public void SaveSubscribeList()
         {
-            if (File.Exists(PathConfig.SubscribeSettingFilePath))
-            {
-                SubscribeItemMs = JsonHelper.ReadFromJsonFile<List<SubscribeItemM>>(PathConfig.SubscribeSettingFilePath);
-            }
+            var configService = ServiceProviderHelper.GetService<ConfigService>();
+
+            var config = configService.GetMarayConfig();
+            config.Subscribe = SubscribeItemMs;
+            configService.SetMarayConfig(config);
         }
     }
 }

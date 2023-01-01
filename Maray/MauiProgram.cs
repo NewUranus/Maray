@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Maui;
-
-using Maray.Helpers;
+﻿using Maray.Helpers;
 using Maray.Services;
 using Maray.ViewModels;
 using Maray.Views;
@@ -29,7 +27,6 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
-            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -71,7 +68,7 @@ public static class MauiProgram
 #if WINDOWS
 
         services.AddSingleton<ITrayService, Maray.Platforms.Windows.TrayService>();
-
+        services.AddSingleton<INotificationService, Maray.Platforms.Windows.NotificationService>();
         builder.ConfigureLifecycleEvents(lifecycleEvents =>
         {
             lifecycleEvents.AddWindows(wndLifeCycleBuilder =>

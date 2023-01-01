@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Maray.Services
+namespace Maray.Helpers
 {
     //调用平台的容器服务
-    public static class ServiceProvider
+    public static class ServiceProviderHelper
     {
         public static TService GetService<TService>()
             => Current.GetService<TService>();

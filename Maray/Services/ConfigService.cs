@@ -16,7 +16,7 @@ namespace Maray.Services
         {
         }
 
-        public MarayConfigM GetConfig()
+        public MarayConfigM GetMarayConfig()
         {
             if (File.Exists(PathConfig.MaraySettingFilePath))
             {
@@ -28,7 +28,7 @@ namespace Maray.Services
             }
         }
 
-        public void SetConfig(MarayConfigM marayConfigM)
+        public void SetMarayConfig(MarayConfigM marayConfigM)
         {
             if (File.Exists(PathConfig.MaraySettingFilePath))
             {

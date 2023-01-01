@@ -31,13 +31,13 @@ public partial class AppShell : Shell
 
     private void SetupTrayIcon()
     {
-        var trayService = Services.ServiceProvider.GetService<ITrayService>();
+        var trayService = Helpers.ServiceProviderHelper.GetService<ITrayService>();
 
         if (trayService != null)
         {
             trayService.Initialize();
             trayService.ClickHandler = () =>
-                Services.ServiceProvider.GetService<INotificationService>()
+                Helpers.ServiceProviderHelper.GetService<INotificationService>()
                     ?.ShowNotification("Hello Build! 😻 From .NET MAUI", "How's your weather?  It's sunny where we are 🌞");
         }
     }

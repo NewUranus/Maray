@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 using Maray.Configs;
 using Maray.Services;
@@ -9,18 +10,21 @@ namespace Maray.ViewModels
 {
     public partial class MainPageVM : ObservableObject
     {
-        [ObservableProperty]
-        public int aa = 10;
-
         public MainPageVM()
         {
+            ShowRunningServer();
             Test();
         }
 
         private void Test()
         {
-            var config = Services.ServiceProvider.GetService<ConfigService>().GetConfig();
+            //var config = Helpers.ServiceProviderHelper.GetService<ConfigService>().GetMarayConfig();
             //V2rayHelper.GenerateClientConfig(config.DefaultServer, PathConfig.v2rayConfig);
+        }
+
+        [RelayCommand]
+        private void ShowRunningServer()
+        {
         }
     }
 }

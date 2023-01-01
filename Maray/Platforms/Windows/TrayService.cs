@@ -17,6 +17,11 @@ namespace Maray.Platforms.Windows
                 WindowExtensions.BringToFront();
                 ClickHandler?.Invoke();
             };
+
+            tray.RightClick = () =>
+            {
+                WindowExtensions.ShowMiniMenu();
+            };
         }
     }
 }

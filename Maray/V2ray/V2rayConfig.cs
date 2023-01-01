@@ -427,4 +427,10 @@
         /// <summary> </summary>
         public string seed { get; set; }
     }
+
+    public class Dns
+    {
+        /// <summary> </summary>
+        public List<string> servers { get; set; }
+    }
 }

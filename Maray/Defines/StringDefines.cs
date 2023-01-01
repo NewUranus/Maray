@@ -106,6 +106,16 @@ namespace Maray.Defines
         public static readonly List<string> fingerprints = new List<string> { "chrome", "firefox", "safari", "randomized", "" };
         public static readonly List<string> domainStrategy4Freedoms = new List<string> { "AsIs", "UseIP", "UseIPv4", "UseIPv6", "" };
 
+        public const string IEProxyExceptions = "localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;192.168.*";
+
+        public static readonly List<string> IEProxyProtocols = new List<string> {
+                        "{ip}:{http_port}",
+                        "socks={ip}:{socks_port}",
+                        "http={ip}:{http_port};https={ip}:{http_port};ftp={ip}:{http_port};socks={ip}:{socks_port}",
+                        "http=http://{ip}:{http_port};https=http://{ip}:{http_port}",
+                        ""
+                    };
+
         #endregion List<string>
     }
 }
