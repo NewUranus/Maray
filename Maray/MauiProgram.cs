@@ -1,4 +1,6 @@
-﻿using Maray.Helpers;
+﻿using CommunityToolkit.Maui;
+
+using Maray.Helpers;
 using Maray.Services;
 using Maray.ViewModels;
 using Maray.Views;
@@ -11,10 +13,13 @@ using NLog;
 using System;
 
 namespace Maray;
+
 #if WINDOWS
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
+
 using Windows.Graphics;
+
 #endif
 
 public static class MauiProgram
@@ -24,6 +29,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -32,6 +38,12 @@ public static class MauiProgram
             {
                 essentials.UseVersionTracking();
             });
+
+        NLog.LogManager.Setup().LoadConfiguration(builder =>
+        {
+            // builder.ForLogger().FilterMinLevel(LogLevel.Info).WriteToConsole();
+            builder.ForLogger().FilterMinLevel(LogLevel.Debug).WriteToFile(fileName: "Logs\\" + DateTime.Now.ToString("yyyy_MM_dd") + ".txt");
+        });
 
         var services = builder.Services;
 
@@ -53,19 +65,16 @@ public static class MauiProgram
         //builder.Services.AddTransient<SubscribeSettingVM>();
         //builder.Services.AddTransient<SubscribeSetting>();
 
-        services.AddTransient<AboutVM>();
+        services.AddTransient<AboutPageVM>();
         services.AddTransient<AboutPage>();
 
-        NLog.LogManager.Setup().LoadConfiguration(builder =>
-        {
-            // builder.ForLogger().FilterMinLevel(LogLevel.Info).WriteToConsole();
-            builder.ForLogger().FilterMinLevel(LogLevel.Debug).WriteToFile(fileName: "Logs\\" + DateTime.Now.ToString("yyyy_MM_dd") + ".txt");
-        });
-
 #if WINDOWS
-        builder.ConfigureLifecycleEvents(events =>
+
+        services.AddSingleton<ITrayService, Maray.Platforms.Windows.TrayService>();
+
+        builder.ConfigureLifecycleEvents(lifecycleEvents =>
         {
-            events.AddWindows(wndLifeCycleBuilder =>
+            lifecycleEvents.AddWindows(wndLifeCycleBuilder =>
             {
                 wndLifeCycleBuilder.OnWindowCreated(window =>
                 {
@@ -79,6 +88,8 @@ public static class MauiProgram
                     int y = 1080 / 2 - height / 2; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Height)
 
                     winuiAppWindow.MoveAndResize(new RectInt32(x, y, width, height));
+
+                    window.ExtendsContentIntoTitleBar = true;
                 });
             });
         });

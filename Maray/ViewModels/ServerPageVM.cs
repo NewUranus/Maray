@@ -26,7 +26,7 @@ namespace Maray.ViewModels
 
         public ServerPageVM()
         {
-            subscribeService = ServicesProvider.GetService<SubscribeService>();
+            subscribeService = Services.ServiceProvider.GetService<SubscribeService>();
             Title = "Server Page";
             InitData();
         }
@@ -62,7 +62,7 @@ namespace Maray.ViewModels
         {
             if (SelectedServer != null)
             {
-                var configServece = ServicesProvider.GetService<ConfigService>();
+                var configServece = Services.ServiceProvider.GetService<ConfigService>();
 
                 var config = configServece.GetConfig();
                 config.DefaultServer = SelectedServer.ServerM;

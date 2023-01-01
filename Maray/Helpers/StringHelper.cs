@@ -30,8 +30,21 @@ namespace Maray.Helpers
             }
             catch (Exception ex)
             {
-                throw ex;
+                NLogHelper.WriteExceptionLog(ex);
                 return string.Empty;
+            }
+        }
+
+        public static bool ToBool(object obj)
+        {
+            try
+            {
+                return Convert.ToBoolean(obj);
+            }
+            catch (Exception ex)
+            {
+                NLogHelper.WriteExceptionLog(ex);
+                return false;
             }
         }
     }

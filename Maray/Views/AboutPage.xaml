@@ -6,7 +6,7 @@
     xmlns:localM="clr-namespace:Maray.Models"
     xmlns:localVM="clr-namespace:Maray.ViewModels"
     Title="AboutPage"
-    x:DataType="localVM:AboutVM">
+    x:DataType="localVM:AboutPageVM">
     <Grid ColumnDefinitions="300,*" RowDefinitions="*,*,*,*,*,*,*,*,*,*,*">
         <Label
             FontAttributes="Bold"

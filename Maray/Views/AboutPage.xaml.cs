@@ -4,7 +4,7 @@ namespace Maray.Views;
 
 public partial class AboutPage : ContentPage
 {
-    public AboutPage(AboutVM viewModel)
+    public AboutPage(AboutPageVM viewModel)
     {
         InitializeComponent();
         BindingContext = viewModel;

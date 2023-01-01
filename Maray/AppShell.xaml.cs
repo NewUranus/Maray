@@ -1,9 +1,14 @@
-﻿using Maray.Views;
+﻿using Maray.Services;
+using Maray.Views;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Maray;
 
 public partial class AppShell : Shell
 {
+    private static bool isSetup = false;
+
     public AppShell()
     {
         InitializeComponent();
@@ -15,5 +20,25 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(Setting), typeof(Setting));
 
         Routing.RegisterRoute(nameof(SubscribeSettingPage), typeof(SubscribeSettingPage));
+
+        if (!isSetup)
+        {
+            isSetup = true;
+
+            SetupTrayIcon();
+        }
+    }
+
+    private void SetupTrayIcon()
+    {
+        var trayService = Services.ServiceProvider.GetService<ITrayService>();
+
+        if (trayService != null)
+        {
+            trayService.Initialize();
+            trayService.ClickHandler = () =>
+                Services.ServiceProvider.GetService<INotificationService>()
+                    ?.ShowNotification("Hello Build! 😻 From .NET MAUI", "How's your weather?  It's sunny where we are 🌞");
+        }
     }
 }

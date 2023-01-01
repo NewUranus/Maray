@@ -1,4 +1,6 @@
-﻿using Maray.Enum;
+﻿using Maray.Defines;
+using Maray.Enum;
+using Maray.ExtensionMethods;
 
 using System;
 using System.Collections.Generic;
@@ -8,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Maray.Models
 {
+    /// <summary> 对应VmessItem </summary>
     public class ServerM
     {
         public ProtocolType configType { get; set; }
@@ -63,5 +66,30 @@ namespace Maray.Models
 
         /// <summary> tls alpn </summary>
         public List<string> alpn { get; set; }
+
+        public CoreType? coreType { get; set; }
+
+        public string fingerprint { get; set; }
+
+        public string GetNetwork()
+        {
+            if (string.IsNullOrEmpty(network) || !StringDefines.networks.Contains(network))
+            {
+                return StringDefines.DefaultNetwork;
+            }
+            return network.TrimEx();
+        }
+
+        public List<string> GetAlpn()
+        {
+            if (alpn != null && alpn.Count > 0)
+            {
+                return alpn;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

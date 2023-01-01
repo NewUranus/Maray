@@ -28,7 +28,7 @@ namespace Maray.ViewModels
 
         private void InitData()
         {
-            var service = ServicesProvider.GetService<SubscribeService>();
+            var service = Services.ServiceProvider.GetService<SubscribeService>();
 
             foreach (var item in service.GetSubscribeList())
             {
@@ -39,7 +39,7 @@ namespace Maray.ViewModels
         [RelayCommand]
         private void Save()
         {
-            var service = ServicesProvider.GetService<SubscribeService>();
+            var service = Services.ServiceProvider.GetService<SubscribeService>();
             service.UpdateSubscribeList(SubscribeItemsource.Select(x => x.ToModel()).ToList());
 
             if (File.Exists(PathConfig.SubscribeSettingFilePath))

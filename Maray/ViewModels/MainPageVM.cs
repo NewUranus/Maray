@@ -19,8 +19,8 @@ namespace Maray.ViewModels
 
         private void Test()
         {
-            var config = ServicesProvider.GetService<ConfigService>().GetConfig();
-            V2rayHelper.GenerateClientConfig(config.DefaultServer, PathConfig.v2rayConfig);
+            var config = Services.ServiceProvider.GetService<ConfigService>().GetConfig();
+            //V2rayHelper.GenerateClientConfig(config.DefaultServer, PathConfig.v2rayConfig);
         }
     }
 }

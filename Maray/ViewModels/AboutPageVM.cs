@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Maray.ViewModels
 {
-    public partial class AboutVM : ObservableObject
+    public partial class AboutPageVM : ObservableObject
     {
         [ObservableProperty]
         public string isFirst;
@@ -43,7 +43,7 @@ namespace Maray.ViewModels
         [ObservableProperty]
         public string previousBuild;
 
-        public AboutVM()
+        public AboutPageVM()
         {
             isFirst = VersionTracking.Default.IsFirstLaunchEver.ToString();
             currentVersionIsFirst = VersionTracking.Default.IsFirstLaunchForCurrentVersion.ToString();

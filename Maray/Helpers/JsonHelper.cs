@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 
+using System.Runtime.Serialization.Formatters.Binary;
+
 namespace Maray.Helpers
 {
     internal class JsonHelper
@@ -55,6 +57,7 @@ namespace Maray.Helpers
             }
             catch (Exception ex)
             {
+                NLogHelper.WriteExceptionLog(ex);
             }
             return result;
         }
@@ -102,5 +105,23 @@ namespace Maray.Helpers
         }
 
         #endregion JsonFile
+
+        /// <summary> 深度拷贝 </summary>
+        /// <typeparam name="T"> </typeparam>
+        /// <param name="obj"> </param>
+        /// <returns> </returns>
+        public static T DeepCopy<T>(T obj)
+        {
+            try
+            {
+                var temp = JsonConvert.SerializeObject(obj);
+                return (T)JsonConvert.DeserializeObject<T>(temp);
+            }
+            catch (Exception ex)
+            {
+                NLogHelper.WriteExceptionLog(ex);
+                return default(T);
+            }
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Maray.Services
 {
     //调用平台的容器服务
-    public static class ServicesProvider
+    public static class ServiceProvider
     {
         public static TService GetService<TService>()
             => Current.GetService<TService>();

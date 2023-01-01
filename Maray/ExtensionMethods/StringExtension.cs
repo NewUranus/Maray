@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Maray.ExtensionMethods
 {
-    static class StringExtension
+    internal static class StringExtension
     {
         public static string TrimEx(this string value)
         {
