@@ -3,6 +3,8 @@ using Maray.Views;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using System.Diagnostics;
+
 namespace Maray;
 
 public partial class AppShell : Shell
@@ -27,6 +29,19 @@ public partial class AppShell : Shell
 
             SetupTrayIcon();
         }
+    }
+
+    protected override void OnNavigated(ShellNavigatedEventArgs args)
+    {
+        if (CurrentPage is ServerPage serverPage)
+        {
+            serverPage.serverPageVM.InitData();
+        }
+        else if (CurrentPage is SubscribeSettingPage subscribeSettingPage)
+        {
+        }
+
+        base.OnNavigated(args);
     }
 
     private void SetupTrayIcon()

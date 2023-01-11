@@ -71,7 +71,11 @@
                                 HorizontalOptions="EndAndExpand"
                                 Spacing="5">
                                 <Button Command="{Binding UpdateSubscribeCommand}" Text="更新" />
-                                <Button Text="移除" />
+                                <Button
+                                    Command="{Binding RemoveCommand}"
+                                    CommandParameter="{Binding}"
+                                    Text="移除" />
+                                <!--  Source={RelativeSource Self}  -->
                             </HorizontalStackLayout>
                         </Grid>
                     </Frame>

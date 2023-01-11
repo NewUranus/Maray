@@ -4,37 +4,26 @@ using Maray.Models;
 using Maray.ViewModels;
 
 using System;
+using System.Diagnostics;
 using System.Text;
 
 public partial class ServerPage : ContentPage
 {
+    public ServerPageVM serverPageVM;
+
     public ServerPage(ServerPageVM vm)
     {
-        BindingContext = vm;
-
         InitializeComponent();
+
+        BindingContext = serverPageVM = vm;
     }
 
-    private void OnEntryCompleted(object sender, EventArgs e)
+    protected override void OnAppearing()
     {
-        try
-        {
-            ((Entry)sender).Text = Encoding.Default.GetString(Convert.FromBase64String(((Entry)sender).Text));
-        }
-        catch
-        { }
-    }
+        base.OnAppearing();
 
-    private void OnEntryTextChanged(System.Object sender, Microsoft.Maui.Controls.TextChangedEventArgs e)
-    {
-    }
+        Debug.WriteLine("OnAppearing");
 
-    private void ImageButton_Clicked(object sender, EventArgs e)
-    {
-        Shell.Current.GoToAsync(nameof(AboutPage));
-    }
-
-    private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
-    {
+        //serverPageVM.InitData();
     }
 }

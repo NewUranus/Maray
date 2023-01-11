@@ -3,15 +3,15 @@
     x:Class="Maray.Views.ServerPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:action="clr-namespace:Maray.Actions"
     xmlns:localM="clr-namespace:Maray.Models"
     xmlns:localVM="clr-namespace:Maray.ViewModels"
     Title="{Binding Title}">
-    <!--<ContentPage.MenuBarItems>
-        <MenuBarItem  Grid.Column="2" Text="File">
-            <MenuFlyoutItem Text="Exit"
-                            Command="{Binding ExitCommand}" />
-        </MenuBarItem>
-    </ContentPage.MenuBarItems>-->
+    <ContentPage.Triggers>
+        <EventTrigger Event="Appearing">
+            <action:AppearingTriggerAction />
+        </EventTrigger>
+    </ContentPage.Triggers>
     <Grid RowDefinitions="auto,*">
 
         <Grid ColumnDefinitions="auto,*,auto">

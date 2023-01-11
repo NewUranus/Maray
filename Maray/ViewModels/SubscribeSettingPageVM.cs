@@ -11,28 +11,25 @@ namespace Maray.ViewModels
 {
     public partial class SubscribeSettingPageVM : ObservableObject
     {
-        public ObservableCollection<SubscribeItemVM> SubscribeItemsource { get; set; } = new ObservableCollection<SubscribeItemVM>();
+        [ObservableProperty]
+        public ObservableCollection<SubscribeItemVM> subscribeItemsource;
 
         public SubscribeSettingPageVM()
         {
+            SubscribeItemsource = new ObservableCollection<SubscribeItemVM>();
             InitData();
         }
+
+        #region Command
 
         [RelayCommand]
         private void AddNew()
         {
             SubscribeItemsource.Add(new SubscribeItemVM()
-            { Note = "待定" });
-        }
-
-        private void InitData()
-        {
-            var service = Helpers.ServiceProviderHelper.GetService<SubscribeService>();
-
-            foreach (var item in service.GetSubscribeList())
             {
-                SubscribeItemsource.Add(item.ToVM());
-            }
+                Index = SubscribeItemsource.Count,
+                Note = "待定"
+            });
         }
 
         [RelayCommand]
@@ -41,12 +38,28 @@ namespace Maray.ViewModels
             List<SubscribeItemM> list = new List<SubscribeItemM>();
             foreach (var item in SubscribeItemsource)
             {
+                item.UpdateSubscribe();
                 list.Add(item.ToModel());
             }
 
             var subscribeService = ServiceProviderHelper.GetService<SubscribeService>();
             subscribeService.SetSubscribeList(list);
             subscribeService.SaveSubscribeList();
+
+            ServiceProviderHelper.GetService<ServerPageVM>().NeedRefresh = true;
+        }
+
+        #endregion Command
+
+        public void InitData()
+        {
+            SubscribeItemsource.Clear();
+            var service = Helpers.ServiceProviderHelper.GetService<SubscribeService>();
+
+            foreach (var item in service.GetSubscribeList())
+            {
+                SubscribeItemsource.Add(item.ToVM());
+            }
         }
     }
 }

@@ -10,10 +10,10 @@ namespace Maray.ViewModels
 {
     public partial class ServerPageVM : ObservableObject
     {
+        public bool NeedRefresh { get; set; } = true;
+
         [ObservableProperty]
         private string title;
-
-        private readonly SubscribeService subscribeService;
 
         [ObservableProperty]
         private ServerVM selectedServer;
@@ -26,24 +26,24 @@ namespace Maray.ViewModels
 
         public ServerPageVM()
         {
-            subscribeService = Helpers.ServiceProviderHelper.GetService<SubscribeService>();
             Title = "Server Page";
-            InitData();
         }
 
         #region Init
 
-        private async void InitData()
+        public async void InitData()
         {
-            await Task.Factory.StartNew(() =>
-              {
-                  UpdateList();
-              });
+            if (NeedRefresh)
+            {
+                UpdateList();
+                NeedRefresh = false;
+            }
         }
 
         private void UpdateList()
         {
-            var list = subscribeService.GetSubscribeList();
+            ServerVMGroupList.Clear();
+            var list = Helpers.ServiceProviderHelper.GetService<SubscribeService>().GetSubscribeList();
             if (list != null)
             {
                 foreach (var item in list)
