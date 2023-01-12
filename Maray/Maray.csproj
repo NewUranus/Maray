@@ -66,6 +66,7 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
 		<PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
+		<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0-beta.700" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 		<PackageReference Include="NLog" Version="5.1.1" />
 		<PackageReference Include="PInvoke.User32" Version="0.7.124" />
@@ -76,5 +77,10 @@
 	  <PackageReference Include="CommunityToolkit.WinUI.UI">
 	    <Version>7.1.2</Version>
 	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Views\SettingPage.xaml.cs">
+	    <DependentUpon>SettingPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 </Project>

@@ -92,6 +92,9 @@
                             Stroke="gray"
                             StrokeShape="RoundRectangle 5"
                             StrokeThickness="0.1">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PingTestCommand}" NumberOfTapsRequired="2" />
+                            </Border.GestureRecognizers>
                             <Grid Margin="5" ColumnDefinitions="50,80,3*,2*,*,*,50">
 
                                 <Grid.Resources>

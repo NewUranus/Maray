@@ -41,7 +41,7 @@
     <FlyoutItem FlyoutIcon="ellipsis.png">
         <ShellContent
             Title="Setting"
-            ContentTemplate="{DataTemplate views:Setting}"
+            ContentTemplate="{DataTemplate views:SettingPage}"
             Shell.NavBarIsVisible="False" />
     </FlyoutItem>
 

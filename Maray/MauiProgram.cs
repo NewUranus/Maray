@@ -8,6 +8,8 @@ using Microsoft.Maui.Platform;
 
 using NLog;
 
+using SkiaSharp.Views.Maui.Controls.Hosting;
+
 using System;
 
 namespace Maray;
@@ -26,6 +28,7 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
         builder
+            .UseSkiaSharp(true)
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
             {
@@ -61,6 +64,9 @@ public static class MauiProgram
         //Will create a new instance of the object when requested during resolution. Transient objects do not have a pre-defined lifetime, but will typically follow the lifetime of their host.
         //builder.Services.AddTransient<SubscribeSettingVM>();
         //builder.Services.AddTransient<SubscribeSetting>();
+
+        services.AddTransient<SettingPage>();
+        services.AddTransient<SettingPageVM>();
 
         services.AddTransient<AboutPageVM>();
         services.AddTransient<AboutPage>();
