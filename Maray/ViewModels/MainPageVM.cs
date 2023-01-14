@@ -40,26 +40,6 @@ namespace Maray.ViewModels
 
         #region LiveCharts
 
-        public Axis[] XAxes { get; set; } =
-        {
-            new Axis
-            {
-                Labeler = value => TimeSpan.FromSeconds((long)value).ToString("fff") + " s",
-
-                // when using a date time type, let the library know your unit
-                 UnitWidth = TimeSpan.FromSeconds(1).Ticks,
-
-                // if the difference between our points is in hours then we would: UnitWidth = TimeSpan.FromHours(1).Ticks,
-
-                // since all the months and years have a different number of days we can use the average, it would not cause any visible error in the user interface
-                // Months: TimeSpan.FromDays(30.4375).Ticks
-                // Years: TimeSpan.FromDays(365.25).Ticks
-
-                // The MinStep property forces the separator to be greater than 1 ms.
-                MinStep = TimeSpan.FromSeconds(1).Ticks,
-            }
-        };
-
         [ObservableProperty]
         public ObservableCollection<ISeries> series;
 
