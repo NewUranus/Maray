@@ -48,7 +48,10 @@ namespace Maray.ViewModels
             {
                 foreach (var item in list)
                 {
-                    AddServerGroupInner(item.Note, item.ServerList);
+                    if (item.IsEnable)
+                    {
+                        AddServerGroupInner(item.Note, item.ServerList);
+                    }
                 }
             }
         }

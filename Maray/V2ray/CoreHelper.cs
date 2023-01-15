@@ -16,6 +16,11 @@ namespace Maray.V2ray
 
         private static List<CoreInfo> coreInfos;
 
+        /// <summary>
+        /// 获取核心信息
+        /// </summary>
+        /// <param name="coreType"></param>
+        /// <returns></returns>
         public CoreInfo GetCoreInfo(CoreType coreType)
         {
             if (coreInfos == null)

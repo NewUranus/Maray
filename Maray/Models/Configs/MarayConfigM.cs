@@ -56,8 +56,6 @@ namespace Maray.Models.Configs
             }
         }
 
-        public List<SubscribeItemM> Subscribe { get; set; } = new List<SubscribeItemM>();
-
         public bool logEnabled { get; set; }
 
         public string Loglevel { get; set; }

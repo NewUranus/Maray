@@ -48,6 +48,7 @@
 		<None Remove="Resources\Images\plus.svg" />
 		<None Remove="Resources\Images\server.svg" />
 		<None Remove="Sample\SampleClientConfig.txt" />
+		<None Remove="Sample\SampleInbound.txt" />
 		<None Remove="ViewModels\" />
 	</ItemGroup>
 	<ItemGroup>
@@ -58,6 +59,7 @@
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Sample\SampleClientConfig.txt" />
+	  <EmbeddedResource Include="Sample\SampleInbound.txt" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Views\UserControls\" />
@@ -82,5 +84,46 @@
 	  <Compile Update="Views\SettingPage.xaml.cs">
 	    <DependentUpon>SettingPage.xaml</DependentUpon>
 	  </Compile>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="Resources\Third\v2ray-windows-64\config.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Third\v2ray-windows-64\geoip-only-cn-private.dat">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Third\v2ray-windows-64\geoip.dat">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Third\v2ray-windows-64\geosite.dat">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Third\v2ray-windows-64\v2ray.exe">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Third\v2ray-windows-64\vpoint_socks_vmess.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Third\v2ray-windows-64\vpoint_vmess_freedom.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Third\Xray-windows-64\geoip.dat">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Third\Xray-windows-64\geosite.dat">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Third\Xray-windows-64\LICENSE">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Third\Xray-windows-64\README.md">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Third\Xray-windows-64\wxray.exe">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\Third\Xray-windows-64\xray.exe">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 </Project>

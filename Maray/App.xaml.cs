@@ -23,6 +23,6 @@ public partial class App : Application
     private void RunV2ray()
     {
         var config = Helpers.ServiceProviderHelper.GetService<ConfigService>().GetMarayConfig();
-        v2RayHelper.LoadV2ray(config);
+        v2RayHelper.LoadCore(config);
     }
 }

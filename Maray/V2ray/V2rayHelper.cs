@@ -20,10 +20,7 @@ namespace Maray.V2ray
     /// <summary> 底层隔离 </summary>
     internal class V2rayHelper
     {
-        private ProcessHelper processHelper;
-
-        /// <summary> 载入V2ray </summary>
-        public void LoadV2ray(MarayConfigM serverM)
+        public void LoadCore(MarayConfigM serverM)
         {
             //var config = Helpers.ServiceProviderHelper.GetService<ConfigService>().GetMarayConfig();
 
@@ -33,15 +30,14 @@ namespace Maray.V2ray
                 return;
             }
 
-            var config = GenerateClientConfig(serverM, serverM.DefaultServer);
-            if (config != null)
+            var res = GenerateClientConfig(serverM, serverM.DefaultServer);
+            if (!res)
             {
-                NLogHelper.WriteLog("GenerateClientConfig success.");
+                NLogHelper.WriteLog("GenerateClientConfig fail.");
             }
             else
             {
-                NLogHelper.WriteLog("GenerateClientConfig fail.");
-                V2rayRestart();
+                V2rayStart();
             }
 
             //start a socks service
@@ -55,15 +51,15 @@ namespace Maray.V2ray
                 };
 
                 var config2 = GenerateClientConfig(serverM, itemSocks);
-                if (config2 != null)
+                if (config2)
                 {
-                    V2rayStartNew(config2);
+                    V2rayStartNew();
                 }
             }
         }
 
         /// <summary> V2ray重启 </summary>
-        private void V2rayRestart()
+        private void V2rayRestart(V2rayConfig config)
         {
             V2rayStop();
             V2rayStart();
@@ -72,9 +68,11 @@ namespace Maray.V2ray
         /// <summary> V2ray启动 </summary>
         private void V2rayStart()
         {
+            ProcessHelper processHelper = new ProcessHelper(null);
+            processHelper.StartCore(coreInfo);
         }
 
-        private void V2rayStartNew(V2rayConfig config)
+        private void V2rayStartNew()
         {
         }
 
@@ -101,28 +99,31 @@ namespace Maray.V2ray
             return 0;
         }
 
-        /// <summary> 生成v2ray的客户端配置文件 </summary>
+        /// <summary> 生成v2ray.exe的配置文件 </summary>
         /// <param name="node">     </param>
         /// <param name="fileName"> </param>
         /// <param name="msg">      </param>
         /// <returns> </returns>
-        public static V2rayConfig GenerateClientConfig(MarayConfigM config, ServerM item)
+        public static bool GenerateClientConfig(MarayConfigM config, ServerM item)
         {
             try
             {
                 if (item.configType == Enum.ProtocolType.Custom)
                 {
-                    return GenerateClientCustomConfig(config, item);
+                    var localconfig = GenerateClientCustomConfig(config, item);
                 }
                 else
                 {
-                    return GenerateClientConfigContent(item, false);
+                    var localconfig = GenerateClientConfigContent(item, false);
+                    JsonHelper.WriteToJsonFile(PathConfig.v2rayExeConfigPath, localconfig);
                 }
+
+                return true;
             }
             catch (Exception ex)
             {
                 NLogHelper.WriteExceptionLog(ex);
-                return null;
+                return false;
             }
         }
 
@@ -193,7 +194,8 @@ namespace Maray.V2ray
                 //stat
                 statistic(config, ref v2rayConfig);
 
-                return new V2rayConfig();
+                NLogHelper.WriteLog("GenerateClientConfigContent success.");
+                return v2rayConfig;
             }
             catch (Exception ex)
             {
@@ -1003,7 +1005,7 @@ namespace Maray.V2ray
             if (config.enableStatistics)
             {
                 string tag = StringDefines.InboundAPITagName;
-                API apiObj = new API();
+                //API apiObj = new API();
                 Policy policyObj = new Policy();
                 SystemPolicy policySystemSetting = new SystemPolicy();
 
@@ -1011,9 +1013,9 @@ namespace Maray.V2ray
 
                 v2rayConfig.stats = new Stats();
 
-                apiObj.tag = tag;
-                apiObj.services = services.ToList();
-                v2rayConfig.api = apiObj;
+                //apiObj.tag = tag;
+                //apiObj.services = services.ToList();
+                //v2rayConfig.api = apiObj;
 
                 policySystemSetting.statsOutboundDownlink = true;
                 policySystemSetting.statsOutboundUplink = true;

@@ -6,6 +6,9 @@
         /// <summary> 日志配置 </summary>
         public Log log { get; set; }
 
+        /// <summary> 内置的 DNS 服务器，若此项不存在，则默认使用本机的 DNS 设置。 </summary>
+        public object dns { get; set; }
+
         /// <summary> 一个数组，每个元素是一个入站连接配置。 </summary>
         public List<Inbounds> inbounds { get; set; }
 
@@ -15,14 +18,8 @@
         /// <summary> 统计需要， 空对象 </summary>
         public Stats stats { get; set; }
 
-        /// <summary> 远程控制 </summary>
-        public API api { get; set; }
-
         /// <summary> 本地策略，可进行一些权限相关的配置。 </summary>
         public Policy policy;
-
-        /// <summary> 内置的 DNS 服务器，若此项不存在，则默认使用本机的 DNS 设置。 </summary>
-        public object dns { get; set; }
 
         /// <summary> 路由功能。 </summary>
         public Routing routing { get; set; }
@@ -70,22 +67,28 @@
         public bool statsOutboundDownlink;
     }
 
+    /// <summary> 出站连接用于向远程网站或下一级代理服务器发送数据，可用的协议请见协议列表。 </summary>
     public class Outbounds
     {
-        /// <summary> 默认值agentout </summary>
+        /// <summary> 此出站连接的标识，用于在其它的配置中定位此连接。当其值不为空时，必须在所有 tag 中唯一。 </summary>
         public string tag { get; set; }
 
-        /// <summary> </summary>
+        /// <summary> 连接协议名称，可选的值见协议列表。 </summary>
         public string protocol { get; set; }
 
-        /// <summary> </summary>
+        /// <summary> 具体的配置内容，视协议不同而不同。详见每个协议中的 OutboundConfigurationObject。 </summary>
         public Outboundsettings settings { get; set; }
 
-        /// <summary> </summary>
+        /// <summary> 底层传输配置 </summary>
         public StreamSettings streamSettings { get; set; }
 
-        /// <summary> </summary>
+        /// <summary> Mux 配置。 </summary>
         public Mux mux { get; set; }
+
+        /// <summary>
+        ///用于发送数据的 IP 地址，当主机有多个 IP 地址时有效，默认值为 "0.0.0.0"。
+        /// </summary>
+        public string sendThrough { get; set; }
     }
 
     public class Mux
@@ -186,46 +189,61 @@
 
     public class Log
     {
-        /// <summary> </summary>
+        /// <summary> 访问日志的文件地址，其值是一个合法的文件地址，如"/var/log/v2ray/access.log"（Linux）或者"C:\\Temp\\v2ray\\_access.log"（Windows）。当此项不指定或为空值时，表示将日志输出至 stdout。V2Ray 4.20 加入了特殊值none，即关闭 access log。 </summary>
         public string access { get; set; }
 
-        /// <summary> </summary>
+        /// <summary> 错误日志的文件地址，其值是一个合法的文件地址，如"/var/log/v2ray/error.log"（Linux）或者"C:\\Temp\\v2ray\\_error.log"（Windows）。当此项不指定或为空值时，表示将日志输出至 stdout。V2Ray 4.20 加入了特殊值none，即关闭 error log（跟loglevel: "none"等价）。 </summary>
         public string error { get; set; }
 
-        /// <summary> </summary>
+        /// <summary>
+        /// 日志的级别。默认值为 "warning"。
+        /// <para> "debug" | "info" | "warning" | "error" | "none" </para>
+        /// </summary>
         public string loglevel { get; set; }
     }
 
     /// <summary> https://www.v2fly.org/config/inbounds.html </summary>
     public class Inbounds
     {
+        /// <summary> 此入站连接的标识，用于在其它的配置中定位此连接。当其不为空时，其值必须在所有 tag 中唯一。 </summary>
         public string tag { get; set; }
 
-        /// <summary> </summary>
+        /// <summary>
+        /// 端口。接受的格式如下:
+        /// <para> 整型数值：实际的端口号。 </para>
+        /// <para> 环境变量：以 "env:" 开头，后面是一个环境变量的名称，如 "env:PORT"。V2Ray 会以字符串形式解析这个环境变量。 </para>
+        /// <para> 字符串：可以是一个数值类型的字符串，如 "1234"；或者一个数值范围，如 "5-10" 表示端口 5 到端口 10，这 6 个端口。 </para>
+        /// </summary>
         public int port { get; set; }
 
-        /// <summary> </summary>
+        /// <summary> 监听地址，只允许 IP 地址，默认值为 "0.0.0.0"，表示接收所有网卡上的连接。除此之外，必须指定一个现有网卡的地址。 </summary>
         public string listen { get; set; }
 
-        /// <summary> </summary>
+        /// <summary> 连接协议名称，可选的值见协议列表。 </summary>
         public string protocol { get; set; }
 
-        /// <summary> </summary>
+        /// <summary> 尝试探测流量的类型 </summary>
         public Sniffing sniffing { get; set; }
 
-        /// <summary> </summary>
+        /// <summary> 具体的配置内容，视协议不同而不同。详见每个协议中的 InboundConfigurationObject。 </summary>
         public Inboundsettings settings { get; set; }
 
-        /// <summary> </summary>
+        /// <summary> 底层传输配置 </summary>
         public StreamSettings streamSettings { get; set; }
+
+        /// <summary> 端口分配设置 </summary>
+        public string allocate { get; set; }
     }
 
     public class Sniffing
     {
-        /// <summary> </summary>
+        /// <summary> 是否开启流量探测。 </summary>
         public bool enabled { get; set; }
 
-        /// <summary> </summary>
+        /// <summary>
+        /// 当流量为指定类型时，按其中包括的目标地址重置当前连接的目标。
+        /// <para> ["http" | "tls" | "quic" | "fakedns" | "fakedns+others"] </para>
+        /// </summary>
         public List<string> destOverride { get; set; }
     }
 

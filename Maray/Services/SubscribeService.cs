@@ -1,6 +1,7 @@
 ﻿using Maray.Configs;
 using Maray.Helpers;
 using Maray.Models;
+using Maray.Models.Configs;
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Maray.Services
 {
     public class SubscribeService
     {
-        private List<SubscribeItemM> SubscribeItemMs = new();
+        public SubscribeSettingM SubscribeSetting { get; set; } = new SubscribeSettingM();
 
         public SubscribeService()
         {
@@ -20,23 +21,40 @@ namespace Maray.Services
 
         public List<SubscribeItemM> GetSubscribeList()
         {
-            SubscribeItemMs = ServiceProviderHelper.GetService<ConfigService>().GetMarayConfig().Subscribe;
+            if (File.Exists(PathConfig.SubscribeSettingFilePath))
+            {
+                var config = JsonHelper.ReadFromJsonFile<SubscribeSettingM>(PathConfig.SubscribeSettingFilePath);
+                return config.Subscribe;
+            }
+            else
+            {
+                var defaultConfig = new SubscribeSettingM();
 
-            return SubscribeItemMs;
+                return defaultConfig.Subscribe;
+            }
         }
 
-        public void SetSubscribeList(List<SubscribeItemM> subscribeItemMs)
+        public void Remove(SubscribeItemM subscribeItemM)
         {
-            this.SubscribeItemMs = subscribeItemMs;
+            SubscribeSetting.Subscribe.Remove(subscribeItemM);
+
+            SaveSubscribeList(SubscribeSetting);
         }
 
-        public void SaveSubscribeList()
+        public void SaveSubscribeList(SubscribeSettingM marayConfigM)
         {
-            var configService = ServiceProviderHelper.GetService<ConfigService>();
+            if (File.Exists(PathConfig.SubscribeSettingFilePath))
+            {
+                File.Delete(PathConfig.SubscribeSettingFilePath);
+            }
+            JsonHelper.WriteToJsonFile(PathConfig.SubscribeSettingFilePath, marayConfigM);
+        }
 
-            var config = configService.GetMarayConfig();
-            config.Subscribe = SubscribeItemMs;
-            configService.SetMarayConfig(config);
+        public void SetSubscribeList(List<SubscribeItemM> marayConfigM)
+        {
+            SubscribeSetting.Subscribe = marayConfigM;
+
+            SaveSubscribeList(SubscribeSetting);
         }
     }
 }

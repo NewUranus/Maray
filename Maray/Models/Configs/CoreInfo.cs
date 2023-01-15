@@ -28,5 +28,7 @@ namespace Maray.Models.Configs
         public string versionArg { get; set; }
 
         public bool redirectInfo { get; set; }
+
+        public string exePath { get; set; }
     }
 }
