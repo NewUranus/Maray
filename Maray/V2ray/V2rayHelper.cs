@@ -155,7 +155,7 @@ namespace Maray.V2ray
             }
         }
 
-        private static XrayConfig GenerateClientXrayConfig(ServerM node)
+        private static bool GenerateClientXrayConfig(ServerM node)
         {
             try
             {
@@ -166,13 +166,14 @@ namespace Maray.V2ray
 
                 //开始修改配置
 
+                JsonHelper.WriteToJsonFile(PathConfig.XrayExeConfigPath, xrayConfig);
                 NLogHelper.WriteLog("GenerateClientXrayConfig success.");
-                return xrayConfig;
+                return true;
             }
             catch (Exception ex)
             {
                 NLogHelper.WriteExceptionLog(ex);
-                return null;
+                return false;
             }
         }
 
