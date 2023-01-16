@@ -1,4 +1,5 @@
-﻿using Maray.Defines;
+﻿using Maray.Configs;
+using Maray.Defines;
 using Maray.Enum;
 using Maray.Models.Configs;
 
@@ -16,11 +17,9 @@ namespace Maray.V2ray
 
         private static List<CoreInfo> coreInfos;
 
-        /// <summary>
-        /// 获取核心信息
-        /// </summary>
-        /// <param name="coreType"></param>
-        /// <returns></returns>
+        /// <summary> 获取核心信息 </summary>
+        /// <param name="coreType"> </param>
+        /// <returns> </returns>
         public CoreInfo GetCoreInfo(CoreType coreType)
         {
             if (coreInfos == null)
@@ -88,6 +87,7 @@ namespace Maray.V2ray
             coreInfos.Add(new CoreInfo
             {
                 coreType = CoreType.Xray,
+                exePath = PathConfig.XrayExePath,
                 coreExes = new List<string> { "xray" },
                 arguments = "",
                 coreUrl = StringDefines.xrayCoreUrl,

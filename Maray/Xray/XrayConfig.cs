@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Maray.Xray
+﻿namespace Maray.Xray
 {
+    /// <summary> https://xtls.github.io/config/#%E6%A6%82%E8%BF%B0 </summary>
     public class XrayConfig
     {
         public List<Inbound> inbounds { get; set; }

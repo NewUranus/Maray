@@ -63,7 +63,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Views\UserControls\" />
-		<Folder Include="Xray\" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
