@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Maray.ViewModels
 {
-    public partial class SettingVM : ObservableObject
+    public partial class SettingPageVM : ObservableObject
     {
         /// <summary> 延迟测试 </summary>
         [ObservableProperty]

@@ -5,16 +5,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localVM="clr-namespace:Maray.ViewModels"
     Title="Setting"
-    x:DataType="localVM:SettingVM">
+    x:DataType="localVM:SettingPageVM">
 
     <VerticalStackLayout>
         <HorizontalStackLayout>
-            <Label>Dark Mode</Label>
+            <Label Margin="5" VerticalOptions="Center">Dark Mode</Label>
             <Switch Toggled="Switch_Toggled" />
         </HorizontalStackLayout>
 
         <HorizontalStackLayout>
-            <Label>Show NetSpeed</Label>
+            <Label Margin="5" VerticalOptions="Center">Show NetSpeed</Label>
             <Switch IsToggled="{Binding ShowNetSpeed}" />
         </HorizontalStackLayout>
     </VerticalStackLayout>
