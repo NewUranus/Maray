@@ -20,11 +20,15 @@ namespace Maray.Services
         {
             if (File.Exists(PathConfig.MaraySettingFilePath))
             {
-                return JsonHelper.ReadFromJsonFile<MarayConfigM>(PathConfig.MaraySettingFilePath);
+                var config = JsonHelper.ReadFromJsonFile<MarayConfigM>(PathConfig.MaraySettingFilePath);
+                return config;
             }
             else
             {
-                return new MarayConfigM();
+                var defaultConfig = new MarayConfigM();
+                defaultConfig.InitDefaultData();
+
+                return defaultConfig;
             }
         }
 

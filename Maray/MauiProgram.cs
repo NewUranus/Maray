@@ -8,6 +8,8 @@ using Microsoft.Maui.Platform;
 
 using NLog;
 
+using SkiaSharp.Views.Maui.Controls.Hosting;
+
 using System;
 
 namespace Maray;
@@ -26,6 +28,7 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
         builder
+            .UseSkiaSharp(true)
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
             {
@@ -62,8 +65,8 @@ public static class MauiProgram
         //builder.Services.AddTransient<SubscribeSettingVM>();
         //builder.Services.AddTransient<SubscribeSetting>();
 
-        services.AddSingleton<Setting>();
-        services.AddSingleton<SettingVM>();
+        services.AddTransient<SettingPage>();
+        services.AddTransient<SettingPageVM>();
 
         services.AddTransient<AboutPageVM>();
         services.AddTransient<AboutPage>();

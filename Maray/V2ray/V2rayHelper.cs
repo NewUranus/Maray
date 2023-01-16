@@ -20,76 +20,110 @@ namespace Maray.V2ray
     /// <summary> 底层隔离 </summary>
     internal class V2rayHelper
     {
-        /// <summary> 载入V2ray </summary>
-        public void LoadV2ray(ServerM serverM)
+        public void LoadCore(MarayConfigM serverM)
         {
-            /*
+            //var config = Helpers.ServiceProviderHelper.GetService<ConfigService>().GetMarayConfig();
 
-            if (SetCore(config, item) != 0)
+            if (SetCore(serverM, serverM.DefaultServer) != 0)
             {
-                ShowMsg(false, ResUI.CheckServerSettings);
+                NLogHelper.WriteExceptionLog("CheckServerSettings");
                 return;
             }
-            string fileName = Utils.GetPath(v2rayConfigRes);
-            if (V2rayConfigHandler.GenerateClientConfig(item, fileName, out string msg, out string content) != 0)
+
+            var res = GenerateClientConfig(serverM, serverM.DefaultServer);
+            if (!res)
             {
-                ShowMsg(false, msg);
+                NLogHelper.WriteLog("GenerateClientConfig fail.");
             }
             else
             {
-                ShowMsg(false, msg);
-                ShowMsg(true, $"[{config.GetGroupRemarks(item.groupId)}] {item.GetSummary()}");
-                V2rayRestart();
+                V2rayStart();
             }
 
             //start a socks service
-            if (_process != null && !_process.HasExited && item.configType == EConfigType.Custom && item.preSocksPort > 0)
+            if (serverM.DefaultServer.configType == ProtocolType.Custom && serverM.DefaultServer.preSocksPort > 0)
             {
-                var itemSocks = new VmessItem()
+                var itemSocks = new ServerM()
                 {
-                    configType = EConfigType.Socks,
-                    address = Global.Loopback,
-                    port = item.preSocksPort
+                    configType = ProtocolType.Socks,
+                    address = StringDefines.Loopback,
+                    port = serverM.DefaultServer.preSocksPort
                 };
-                if (V2rayConfigHandler.GenerateClientConfig(itemSocks, null, out string msg2, out string configStr) == 0)
+
+                var config2 = GenerateClientConfig(serverM, itemSocks);
+                if (config2)
                 {
-                    processId = V2rayStartNew(configStr);
+                    V2rayStartNew();
                 }
             }
-            */
         }
 
-        /// <summary> 生成v2ray的客户端配置文件 </summary>
+        /// <summary> V2ray重启 </summary>
+        private void V2rayRestart(V2rayConfig config)
+        {
+            V2rayStop();
+            V2rayStart();
+        }
+
+        /// <summary> V2ray启动 </summary>
+        private void V2rayStart()
+        {
+            ProcessHelper processHelper = new ProcessHelper(null);
+            processHelper.StartCore(coreInfo);
+        }
+
+        private void V2rayStartNew()
+        {
+        }
+
+        public void V2rayStop()
+        {
+        }
+
+        private CoreInfo coreInfo;
+
+        private int SetCore(MarayConfigM config, ServerM item)
+        {
+            if (item == null)
+            {
+                return -1;
+            }
+            var coreType = GetCoreType(config, item, item.configType);
+
+            coreInfo = CoreHelper.Instance.GetCoreInfo(coreType);
+
+            if (coreInfo == null)
+            {
+                return -1;
+            }
+            return 0;
+        }
+
+        /// <summary> 生成v2ray.exe的配置文件 </summary>
         /// <param name="node">     </param>
         /// <param name="fileName"> </param>
         /// <param name="msg">      </param>
         /// <returns> </returns>
-        public static void GenerateClientConfig(ServerM node, string fileName)
+        public static bool GenerateClientConfig(MarayConfigM config, ServerM item)
         {
             try
             {
-                if (node.configType == Enum.ProtocolType.Custom)
+                if (item.configType == Enum.ProtocolType.Custom)
                 {
-                    GenerateClientCustomConfig(node, fileName);
+                    var localconfig = GenerateClientCustomConfig(config, item);
                 }
                 else
                 {
-                    V2rayConfig v2rayConfig = null;
-                    GenerateClientConfigContent(node, false);
-
-                    //if (Utils.IsNullOrEmpty(fileName))
-                    //{
-                    //    content = Utils.ToJson(v2rayConfig);
-                    //}
-                    //else
-                    //{
-                    //    Utils.ToJsonFile(v2rayConfig, fileName, false);
-                    //}
+                    var localconfig = GenerateClientConfigContent(item, false);
+                    JsonHelper.WriteToJsonFile(PathConfig.v2rayExeConfigPath, localconfig);
                 }
+
+                return true;
             }
             catch (Exception ex)
             {
                 NLogHelper.WriteExceptionLog(ex);
+                return false;
             }
         }
 
@@ -98,80 +132,36 @@ namespace Maray.V2ray
         /// <param name="fileName"> </param>
         /// <param name="msg">      </param>
         /// <returns> </returns>
-        private static void GenerateClientCustomConfig(ServerM node, string fileName)
+        private static V2rayConfig GenerateClientCustomConfig(MarayConfigM config, ServerM item)
         {
-            /*
-           try
-           {
-               if (File.Exists(fileName))
-               {
-                   File.Delete(fileName);
-               }
+            try
+            {
+                if (item.preSocksPort <= 0)
+                {
+                    var coreType = GetCoreType(config, item, item.configType);
+                    //var coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
+                    switch (coreType)
+                    {
+                        case CoreType.v2fly:
+                        case CoreType.SagerNet:
+                        case CoreType.Xray:
+                        case CoreType.v2fly_v5:
+                            break;
 
-               string addressFileName = node.address;
-               if (!File.Exists(addressFileName))
-               {
-                   addressFileName = PathConfig.GetConfigPath(addressFileName);
-               }
-               if (!File.Exists(addressFileName))
-               {
-                   msg = ResUI.FailedGenDefaultConfiguration;
-                   return -1;
-               }
-               File.Copy(addressFileName, fileName);
+                        case CoreType.clash:
+                        case CoreType.clash_meta:
 
-               //check again
-               if (!File.Exists(fileName))
-               {
-                   msg = ResUI.FailedGenDefaultConfiguration;
-                   return -1;
-               }
+                            break;
+                    }
+                }
 
-               //overwrite port
-               if (node.preSocksPort <= 0)
-               {
-                   var fileContent = File.ReadAllLines(fileName).ToList();
-                   var coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
-                   switch (coreType)
-                   {
-                       case ECoreType.v2fly:
-                       case ECoreType.SagerNet:
-                       case ECoreType.Xray:
-                       case ECoreType.v2fly_v5:
-                           break;
-
-                       case ECoreType.clash:
-                       case ECoreType.clash_meta:
-                           //remove the original
-                           var indexPort = fileContent.FindIndex(t => t.Contains("port:"));
-                           if (indexPort >= 0)
-                           {
-                               fileContent.RemoveAt(indexPort);
-                           }
-                           indexPort = fileContent.FindIndex(t => t.Contains("socks-port:"));
-                           if (indexPort >= 0)
-                           {
-                               fileContent.RemoveAt(indexPort);
-                           }
-
-                           fileContent.Add($"port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundHttp)}");
-                           fileContent.Add($"socks-port: {LazyConfig.Instance.GetConfig().GetLocalPort(Global.InboundSocks)}");
-                           break;
-                   }
-                   File.WriteAllLines(fileName, fileContent);
-               }
-
-               //msg = string.Format(ResUI.SuccessfulConfiguration, $"[{LazyConfig.Instance.GetConfig().GetGroupRemarks(node.groupId)}] {node.GetSummary()}");
-               msg = string.Format(ResUI.SuccessfulConfiguration, "");
-           }
-           catch (Exception ex)
-           {
-               Utils.SaveLog("GenerateClientCustomConfig", ex);
-               msg = ResUI.FailedGenDefaultConfiguration;
-               return -1;
-           }
-            return 0;
-            */
+                return new V2rayConfig();
+            }
+            catch (Exception ex)
+            {
+                NLogHelper.WriteExceptionLog(ex);
+                return null;
+            }
         }
 
         private static V2rayConfig GenerateClientConfigContent(ServerM node, bool blExport)
@@ -204,7 +194,8 @@ namespace Maray.V2ray
                 //stat
                 statistic(config, ref v2rayConfig);
 
-                return new V2rayConfig();
+                NLogHelper.WriteLog("GenerateClientConfigContent success.");
+                return v2rayConfig;
             }
             catch (Exception ex)
             {
@@ -1014,7 +1005,7 @@ namespace Maray.V2ray
             if (config.enableStatistics)
             {
                 string tag = StringDefines.InboundAPITagName;
-                API apiObj = new API();
+                //API apiObj = new API();
                 Policy policyObj = new Policy();
                 SystemPolicy policySystemSetting = new SystemPolicy();
 
@@ -1022,9 +1013,9 @@ namespace Maray.V2ray
 
                 v2rayConfig.stats = new Stats();
 
-                apiObj.tag = tag;
-                apiObj.services = services.ToList();
-                v2rayConfig.api = apiObj;
+                //apiObj.tag = tag;
+                //apiObj.services = services.ToList();
+                //v2rayConfig.api = apiObj;
 
                 policySystemSetting.statsOutboundDownlink = true;
                 policySystemSetting.statsOutboundUplink = true;

@@ -55,8 +55,8 @@ namespace Maray.ViewModels
 
             if (subscribeItemVM != null)
             {
-                ServiceProviderHelper.GetService<SubscribeService>().GetSubscribeList().RemoveAt(subscribeItemVM.Index);
-                ServiceProviderHelper.GetService<SubscribeService>().SaveSubscribeList();
+                ServiceProviderHelper.GetService<SubscribeService>().Remove(subscribeItemVM.ToModel());
+
                 ServiceProviderHelper.GetService<SubscribeSettingPageVM>().InitData();
             }
         }

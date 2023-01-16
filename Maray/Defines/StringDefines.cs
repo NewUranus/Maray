@@ -8,6 +8,25 @@ namespace Maray.Defines
 {
     internal class StringDefines
     {
+        #region Urls
+
+        public const string v2rayWebsiteUrl = @"https://www.v2fly.org/";
+        public const string AboutUrl = @"https://github.com/2dust/v2rayN";
+        public const string UpdateUrl = AboutUrl + @"/releases";
+        public const string v2flyCoreUrl = "https://github.com/v2fly/v2ray-core/releases";
+        public const string xrayCoreUrl = "https://github.com/XTLS/Xray-core/releases";
+        public const string SagerNetCoreUrl = "https://github.com/SagerNet/v2ray-core/releases";
+        public const string NUrl = @"https://github.com/2dust/v2rayN/releases";
+        public const string clashCoreUrl = "https://github.com/Dreamacro/clash/releases";
+        public const string clashMetaCoreUrl = "https://github.com/MetaCubeX/Clash.Meta/releases";
+        public const string hysteriaCoreUrl = "https://github.com/HyNetwork/hysteria/releases";
+        public const string naiveproxyCoreUrl = "https://github.com/klzgrad/naiveproxy/releases";
+        public const string tuicCoreUrl = "https://github.com/EAimTY/tuic/releases";
+        public const string singboxCoreUrl = "https://github.com/SagerNet/sing-box/releases";
+        public const string geoUrl = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/{0}.dat";
+
+        #endregion Urls
+
         public const string Loopback = "127.0.0.1";
 
         /// <summary> Tcp伪装http </summary>

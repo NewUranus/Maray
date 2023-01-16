@@ -15,6 +15,8 @@ namespace Maray.Models.Configs
         {
         }
 
+        public ServerM DefaultServer { get; set; }
+
         public void InitDefaultData()
         {
             Loglevel = "warning";
@@ -54,12 +56,9 @@ namespace Maray.Models.Configs
             }
         }
 
-        public List<SubscribeItemM> Subscribe { get; set; } = new List<SubscribeItemM>();
-
         public bool logEnabled { get; set; }
 
         public string Loglevel { get; set; }
-        public ServerM DefaultServer { get; set; }
 
         /// <summary> 本地监听 </summary>
         public List<InItem> inbound { get; set; }

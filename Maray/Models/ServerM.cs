@@ -69,6 +69,7 @@ namespace Maray.Models
 
         public CoreType? coreType { get; set; }
 
+        public int preSocksPort { get; set; }
         public string fingerprint { get; set; }
 
         public string GetNetwork()

@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localVM="clr-namespace:Maray.ViewModels"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
     xmlns:system="clr-namespace:System;assembly=netstandard"
     Title="MainPage"
     x:DataType="localVM:MainPageVM">
@@ -11,7 +12,7 @@
     <Grid
         Margin="24,0,0,0"
         ColumnDefinitions="*,400"
-        RowDefinitions="100,*"
+        RowDefinitions="100,*,200"
         RowSpacing="24">
 
         <!--  left column  -->
@@ -21,6 +22,9 @@
             <BoxView Margin="0,24,0,0" />
         </VerticalStackLayout>
 
+        <Border Grid.Row="2" Grid.ColumnSpan="2">
+            <lvc:CartesianChart Series="{Binding Series}" />
+        </Border>
         <ScrollView Grid.Row="1" Margin="0,24,0,24">
             <Grid
                 ColumnDefinitions="*,*,*"

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using Maray.Helpers;
 using Maray.Models;
+using Maray.Models.Configs;
 using Maray.Services;
 
 using System.Collections.ObjectModel;
@@ -27,6 +28,7 @@ namespace Maray.ViewModels
         {
             SubscribeItemsource.Add(new SubscribeItemVM()
             {
+                IsEnable = true,
                 Index = SubscribeItemsource.Count,
                 Note = "待定"
             });
@@ -43,8 +45,8 @@ namespace Maray.ViewModels
             }
 
             var subscribeService = ServiceProviderHelper.GetService<SubscribeService>();
+
             subscribeService.SetSubscribeList(list);
-            subscribeService.SaveSubscribeList();
 
             ServiceProviderHelper.GetService<ServerPageVM>().NeedRefresh = true;
         }
