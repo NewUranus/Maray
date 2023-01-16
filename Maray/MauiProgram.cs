@@ -62,6 +62,9 @@ public static class MauiProgram
         //builder.Services.AddTransient<SubscribeSettingVM>();
         //builder.Services.AddTransient<SubscribeSetting>();
 
+        services.AddSingleton<Setting>();
+        services.AddSingleton<SettingVM>();
+
         services.AddTransient<AboutPageVM>();
         services.AddTransient<AboutPage>();
 

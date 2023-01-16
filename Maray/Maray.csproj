@@ -77,4 +77,9 @@
 	    <Version>7.1.2</Version>
 	  </PackageReference>
 	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Views\NetSpeedPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
 </Project>

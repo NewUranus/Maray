@@ -1,11 +1,14 @@
-﻿namespace Maray.Views;
+﻿using Maray.ViewModels;
+
+namespace Maray.Views;
 
 public partial class Setting : ContentPage
 {
-	public Setting()
-	{
-		InitializeComponent();
-	}
+    public Setting(SettingVM viewModel)
+    {
+        InitializeComponent();
+        BindingContext = viewModel;
+    }
 
     private void Switch_Toggled(object sender, ToggledEventArgs e)
     {
