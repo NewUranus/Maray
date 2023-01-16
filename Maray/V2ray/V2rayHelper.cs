@@ -6,6 +6,7 @@ using Maray.Helpers;
 using Maray.Models;
 using Maray.Models.Configs;
 using Maray.Services;
+using Maray.Xray;
 
 using System;
 using System.Collections.Generic;
@@ -20,17 +21,17 @@ namespace Maray.V2ray
     /// <summary> 底层隔离 </summary>
     internal class V2rayHelper
     {
-        public void LoadCore(MarayConfigM serverM)
+        public void LoadCore(MarayConfigM marayConfig)
         {
             //var config = Helpers.ServiceProviderHelper.GetService<ConfigService>().GetMarayConfig();
 
-            if (SetCore(serverM, serverM.DefaultServer) != 0)
+            if (SetCore(marayConfig, marayConfig.DefaultServer) != 0)
             {
                 NLogHelper.WriteExceptionLog("CheckServerSettings");
                 return;
             }
 
-            var res = GenerateClientConfig(serverM, serverM.DefaultServer);
+            var res = GenerateClientConfig(marayConfig);
             if (!res)
             {
                 NLogHelper.WriteLog("GenerateClientConfig fail.");
@@ -41,20 +42,20 @@ namespace Maray.V2ray
             }
 
             //start a socks service
-            if (serverM.DefaultServer.configType == ProtocolType.Custom && serverM.DefaultServer.preSocksPort > 0)
+            if (marayConfig.DefaultServer.configType == ProtocolType.Custom && marayConfig.DefaultServer.preSocksPort > 0)
             {
                 var itemSocks = new ServerM()
                 {
                     configType = ProtocolType.Socks,
                     address = StringDefines.Loopback,
-                    port = serverM.DefaultServer.preSocksPort
+                    port = marayConfig.DefaultServer.preSocksPort
                 };
 
-                var config2 = GenerateClientConfig(serverM, itemSocks);
-                if (config2)
-                {
-                    V2rayStartNew();
-                }
+                //var config2 = GenerateClientConfig(serverM, itemSocks);
+                //if (config2)
+                //{
+                //    V2rayStartNew();
+                //}
             }
         }
 
@@ -104,19 +105,46 @@ namespace Maray.V2ray
         /// <param name="fileName"> </param>
         /// <param name="msg">      </param>
         /// <returns> </returns>
-        public static bool GenerateClientConfig(MarayConfigM config, ServerM item)
+        public static bool GenerateClientConfig(MarayConfigM config)
         {
             try
             {
-                if (item.configType == Enum.ProtocolType.Custom)
+                var coreType = GetCoreType(config, config.DefaultServer, config.DefaultServer.configType);
+                //var coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
+                switch (coreType)
                 {
-                    var localconfig = GenerateClientCustomConfig(config, item);
+                    case CoreType.v2fly:
+
+                        GenerateClientConfigContent(config.DefaultServer, true);
+                        break;
+
+                    case CoreType.SagerNet:
+
+                        break;
+
+                    case CoreType.Xray:
+
+                        GenerateClientXrayConfig(config.DefaultServer);
+                        break;
+
+                    case CoreType.v2fly_v5:
+                        break;
+
+                    case CoreType.clash:
+                        break;
+
+                    case CoreType.clash_meta:
+
+                        break;
+
+                    default:
+                        return false;
                 }
-                else
-                {
-                    var localconfig = GenerateClientConfigContent(item, false);
-                    JsonHelper.WriteToJsonFile(PathConfig.v2rayExeConfigPath, localconfig);
-                }
+
+                return true;
+
+                var localconfig = GenerateClientConfigContent(config.DefaultServer, false);
+                JsonHelper.WriteToJsonFile(PathConfig.v2rayExeConfigPath, localconfig);
 
                 return true;
             }
@@ -127,35 +155,19 @@ namespace Maray.V2ray
             }
         }
 
-        /// <summary> 生成v2ray的客户端配置文件(自定义配置) </summary>
-        /// <param name="node">     </param>
-        /// <param name="fileName"> </param>
-        /// <param name="msg">      </param>
-        /// <returns> </returns>
-        private static V2rayConfig GenerateClientCustomConfig(MarayConfigM config, ServerM item)
+        private static XrayConfig GenerateClientXrayConfig(ServerM node)
         {
             try
             {
-                if (item.preSocksPort <= 0)
-                {
-                    var coreType = GetCoreType(config, item, item.configType);
-                    //var coreType = LazyConfig.Instance.GetCoreType(node, node.configType);
-                    switch (coreType)
-                    {
-                        case CoreType.v2fly:
-                        case CoreType.SagerNet:
-                        case CoreType.Xray:
-                        case CoreType.v2fly_v5:
-                            break;
+                //取得默认配置
+                XrayConfig xrayConfig = new XrayConfig();
 
-                        case CoreType.clash:
-                        case CoreType.clash_meta:
+                var config = Helpers.ServiceProviderHelper.GetService<ConfigService>().GetMarayConfig();
 
-                            break;
-                    }
-                }
+                //开始修改配置
 
-                return new V2rayConfig();
+                NLogHelper.WriteLog("GenerateClientXrayConfig success.");
+                return xrayConfig;
             }
             catch (Exception ex)
             {

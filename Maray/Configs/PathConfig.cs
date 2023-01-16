@@ -50,6 +50,7 @@ namespace Maray.Configs
         public static string v2rayExePath { get; set; }
         public static string v2rayExeConfigPath { get; set; }
         public static string XrayExePath { get; set; }
+        public static string XrayExeConfigPath { get; set; }
 
         #endregion v2rayexe&config
 
@@ -68,19 +69,25 @@ namespace Maray.Configs
             var logPath = startupPath + "\\Logs\\";
             CreateDirectory(logPath);
 
+            ResourcePath = GetParentDirectory(startupPath, 1) + "Resources";
+
             #endregion folder
 
             #region v2rayexe&config
-
-            ResourcePath = GetParentDirectory(startupPath, 1) + "Resources";
 
             var v2rayfolder = ResourcePath + "\\Third\\v2ray-windows-64\\";
             v2rayExePath = v2rayfolder + "v2ray.exe";
             v2rayExeConfigPath = v2rayfolder + "config.json";
 
-            XrayExePath = ResourcePath + "\\Third\\Xray-windows-64\\xray.exe";
-
             #endregion v2rayexe&config
+
+            #region Xrayexe&config
+
+            var xrayfolder = ResourcePath + "\\Third\\Xray-windows-64\\";
+            XrayExePath = xrayfolder + "xray.exe";
+            XrayExeConfigPath = xrayfolder + "config.json";
+
+            #endregion Xrayexe&config
 
             #region MarayConfig
 
