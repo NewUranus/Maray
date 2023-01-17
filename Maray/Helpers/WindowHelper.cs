@@ -23,32 +23,26 @@ namespace Maray.Helpers
     {
         public static WindowHelper Instance = new Lazy<WindowHelper>(() => new WindowHelper()).Value;
 
+        private Microsoft.Maui.Controls.Window secondWindow;
+#if WINDOWS
+        //private Microsoft.UI.Xaml.Window secondwindow;
+#endif
+
         public void ShowNetSpeedWindow()
         {
-            Window secondWindow = new Window(new NetSpeedPage());
-            secondWindow.Created += SecondWindow_Created;
+            secondWindow = new Window(new NetSpeedPage());
+
+            secondWindow.Title = "mini";
+#if WINDOWS
+
+#endif
 
             Application.Current.OpenWindow(secondWindow);
         }
 
-        private void SecondWindow_Created(object sender, EventArgs e)
+        public void CloseNetSpeedWindow()
         {
-            var window = (Window)sender;
-
-#if WINDOWS
-
-            IntPtr nativeWindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(window.Handler);
-            WindowId win32WindowsId = Win32Interop.GetWindowIdFromWindow(nativeWindowHandle);
-            AppWindow winuiAppWindow = AppWindow.GetFromWindowId(win32WindowsId);
-
-            const int width = 1200;
-            const int height = 800;
-            int x = 1920 / 2 - width / 2; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Width)
-            int y = 1080 / 2 - height / 2; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Height)
-
-            winuiAppWindow.MoveAndResize(new RectInt32(x, y, width, height));
-
-#endif
+            Application.Current.CloseWindow(secondWindow);
         }
     }
 }

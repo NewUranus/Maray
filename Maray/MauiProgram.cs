@@ -81,18 +81,56 @@ public static class MauiProgram
             {
                 wndLifeCycleBuilder.OnWindowCreated(window =>
                 {
-                    IntPtr nativeWindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(window);
-                    WindowId win32WindowsId = Win32Interop.GetWindowIdFromWindow(nativeWindowHandle);
-                    AppWindow winuiAppWindow = AppWindow.GetFromWindowId(win32WindowsId);
+                    if (window.Title == "mini")
+                    {
+                        IntPtr nativeWindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                        WindowId win32WindowsId = Win32Interop.GetWindowIdFromWindow(nativeWindowHandle);
+                        AppWindow winuiAppWindow = AppWindow.GetFromWindowId(win32WindowsId);
 
-                    const int width = 1200;
-                    const int height = 800;
-                    int x = 1920 / 2 - width / 2; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Width)
-                    int y = 1080 / 2 - height / 2; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Height)
+                        const int width = 300;
+                        const int height = 200;
+                        int x = Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Width) - 300; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Width)
+                        int y = Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Height) - 200; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Height)
 
-                    winuiAppWindow.MoveAndResize(new RectInt32(x, y, width, height));
+                        winuiAppWindow.MoveAndResize(new RectInt32(x, y, width, height));
 
-                    window.ExtendsContentIntoTitleBar = true;
+                        window.ExtendsContentIntoTitleBar = true;
+                        SetTitleBar(winuiAppWindow);
+
+                        void SetTitleBar(AppWindow window)
+                        {
+                            var titleBar = window.TitleBar;
+                            if (titleBar == null)
+                            {
+                                return;
+                            }
+                            titleBar.ExtendsContentIntoTitleBar = true;
+                            titleBar.ForegroundColor = Microsoft.UI.Colors.Black;
+                            titleBar.BackgroundColor = Microsoft.UI.Colors.Transparent;
+                        }
+                    }
+                    else
+                    {
+                        IntPtr nativeWindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                        WindowId win32WindowsId = Win32Interop.GetWindowIdFromWindow(nativeWindowHandle);
+                        AppWindow winuiAppWindow = AppWindow.GetFromWindowId(win32WindowsId);
+
+                        const int width = 1200;
+                        const int height = 800;
+                        int x = 1920 / 2 - width / 2; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Width)
+                        int y = 1080 / 2 - height / 2; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Height)
+
+                        winuiAppWindow.MoveAndResize(new RectInt32(x, y, width, height));
+
+                        window.ExtendsContentIntoTitleBar = true;
+                    }
+                });
+
+                wndLifeCycleBuilder.OnResumed(del =>
+                {
+                });
+                wndLifeCycleBuilder.OnActivated((window, args) =>
+                {
                 });
             });
         });

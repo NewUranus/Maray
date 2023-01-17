@@ -25,5 +25,7 @@ namespace Maray.Models.Configs
         public string user { get; set; }
 
         public string pass { get; set; }
+
+        public string listen { get; set; }
     }
 }

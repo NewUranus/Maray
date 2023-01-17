@@ -28,6 +28,7 @@ namespace Maray.ViewModels
             }
             else
             {
+                WindowHelper.Instance.CloseNetSpeedWindow();
             }
         }
 

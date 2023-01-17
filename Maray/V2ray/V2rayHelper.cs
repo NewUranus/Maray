@@ -124,7 +124,7 @@ namespace Maray.V2ray
 
                     case CoreType.Xray:
 
-                        GenerateClientXrayConfig(config.DefaultServer);
+                        GenerateClientXrayConfig(config);
                         break;
 
                     case CoreType.v2fly_v5:
@@ -155,16 +155,136 @@ namespace Maray.V2ray
             }
         }
 
-        private static bool GenerateClientXrayConfig(ServerM node)
+        private static bool GenerateClientXrayConfig(MarayConfigM config)
         {
             try
             {
                 //取得默认配置
                 XrayConfig xrayConfig = new XrayConfig();
 
-                var config = Helpers.ServiceProviderHelper.GetService<ConfigService>().GetMarayConfig();
-
                 //开始修改配置
+                //log
+                if (config.logEnabled)
+                {
+                    xrayConfig.log.loglevel = config.Loglevel;
+                }
+
+                //inbound
+                if (config.inbound.Count > 0)
+                {
+                    xrayConfig.inbounds.Clear();
+                    foreach (var item in config.inbound)
+                    {
+                        Xray.Inbound inbound = new Xray.Inbound();
+                        inbound.listen = item.listen;
+                        inbound.protocol = item.protocol;
+                        inbound.port = item.localPort;
+
+                        switch (inbound.protocol)
+                        {
+                            case StringDefines.socksProtocolLite:
+
+                                inbound.settings = new InboundSocksSettings()
+                                {
+                                };
+                                break;
+
+                            case StringDefines.ssProtocolLite:
+
+                                break;
+
+                            case StringDefines.vlessProtocolLite:
+
+                                break;
+
+                            case StringDefines.vmessProtocolLite:
+                                inbound.settings = new InboundVMessSettings()
+                                {
+                                };
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        xrayConfig.inbounds.Add(inbound);
+                    }
+                }
+
+                //outbound
+                xrayConfig.outbounds.Clear();
+                Outbound outbound = new Outbound();
+
+                switch (config.DefaultServer.configType)
+                {
+                    case ProtocolType.VMess:
+
+                        outbound.protocol = "vmess";
+                        outbound.settings = new OutboundVMessSettings()
+                        {
+                            vnext = new List<Vnext>()
+                            {
+                                new Vnext()
+                                {
+                                    address=config.DefaultServer.address,
+                                    port=config.DefaultServer.port,
+                                    users=new List<User>()
+                                    {
+                                      new User()
+                                      {
+                                          id=config.DefaultServer.id,
+                                          security = config.DefaultServer.security,
+                                          alterId=config.DefaultServer.alterId,
+                                      }
+                                    }
+                                }
+                            }
+                        };
+
+                        break;
+
+                    case ProtocolType.Custom:
+                        break;
+
+                    case ProtocolType.Shadowsocks:
+                        break;
+
+                    case ProtocolType.Socks:
+                        break;
+
+                    case ProtocolType.VLESS:
+
+                        outbound.protocol = "vless";
+                        outbound.settings = new OutboundVLessSettings()
+                        {
+                            vnext = new List<Vnext>()
+                            {
+                                new Vnext()
+                                {
+                                    address=config.DefaultServer.address,
+                                    port=config.DefaultServer.port,
+                                    users=new List<User>()
+                                    {
+                                      new User()
+                                      {
+                                          id=config.DefaultServer.id,
+                                          encryption = config.DefaultServer.security,
+                                          flow=config.DefaultServer.flow,
+                                      }
+                                    }
+                                }
+                            }
+                        };
+
+                        break;
+
+                    case ProtocolType.Trojan:
+                        break;
+
+                    default:
+                        break;
+                }
+                xrayConfig.outbounds.Add(outbound);
 
                 JsonHelper.WriteToJsonFile(PathConfig.XrayExeConfigPath, xrayConfig);
                 NLogHelper.WriteLog("GenerateClientXrayConfig success.");

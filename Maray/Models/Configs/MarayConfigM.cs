@@ -30,6 +30,7 @@ namespace Maray.Models.Configs
                 inItem.localPort = 10808;
                 inItem.udpEnabled = true;
                 inItem.sniffingEnabled = true;
+                inItem.listen = "127.0.0.1";
 
                 inbound.Add(inItem);
             }
