@@ -30,5 +30,7 @@ namespace Maray.Models.Configs
         public bool redirectInfo { get; set; }
 
         public string exePath { get; set; }
+
+        public string exeDirectory { get; set; }
     }
 }

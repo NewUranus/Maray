@@ -88,6 +88,7 @@ namespace Maray.V2ray
             {
                 coreType = CoreType.Xray,
                 exePath = PathConfig.XrayExePath,
+                exeDirectory = PathConfig.GetParentDirectory(PathConfig.XrayExePath),
                 coreExes = new List<string> { "xray" },
                 arguments = "",
                 coreUrl = StringDefines.xrayCoreUrl,

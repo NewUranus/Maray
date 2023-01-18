@@ -100,7 +100,7 @@ namespace Maray.V2ray
             return 0;
         }
 
-        /// <summary> 生成v2ray.exe的配置文件 </summary>
+        /// <summary> 生成core.exe的配置文件 </summary>
         /// <param name="node">     </param>
         /// <param name="fileName"> </param>
         /// <param name="msg">      </param>
@@ -169,7 +169,8 @@ namespace Maray.V2ray
                     xrayConfig.log.loglevel = config.Loglevel;
                 }
 
-                //inbound
+                #region inbound
+
                 if (config.inbound.Count > 0)
                 {
                     xrayConfig.inbounds.Clear();
@@ -211,14 +212,20 @@ namespace Maray.V2ray
                     }
                 }
 
-                //outbound
+                #endregion inbound
+
+                #region outbound
+
                 xrayConfig.outbounds.Clear();
                 Outbound outbound = new Outbound();
+
+                outbound.streamSettings = new Xray.StreamSettings();
 
                 switch (config.DefaultServer.configType)
                 {
                     case ProtocolType.VMess:
 
+                        outbound.tag = "proxy";
                         outbound.protocol = "vmess";
                         outbound.settings = new OutboundVMessSettings()
                         {
@@ -284,6 +291,17 @@ namespace Maray.V2ray
                     default:
                         break;
                 }
+
+                #endregion outbound
+
+                #region routing
+
+                xrayConfig.routing = new Xray.Routing()
+                {
+                };
+
+                #endregion routing
+
                 xrayConfig.outbounds.Add(outbound);
 
                 JsonHelper.WriteToJsonFile(PathConfig.XrayExeConfigPath, xrayConfig);

@@ -63,18 +63,39 @@ namespace Maray.Xray
 
     public class Routing
     {
+        /// <summary>
+        /// 域名解析策略，根据不同的设置使用不同的策略。
+        /// <para> "AsIs" | "IPIfNonMatch" | "IPOnDemand" </para>
+        /// </summary>
         public string domainStrategy { get; set; }
 
+        /// <summary>
+        /// 域名匹配算法，根据不同的设置使用不同的算法。此处选项会影响所有未单独指定匹配算法的 RuleObject。
+        /// <para> "hybrid" | "linear" </para>
+        /// </summary>
+        public string domainMatcher { get; set; }
+
+        /// <summary>
+        /// 对应一个数组，数组中每一项是一个规则。
+        /// <para> 对于每一个连接，路由将根据这些规则依次进行判断，当一个规则生效时，即将这个连接转发至它所指定的 outboundTag或 balancerTag。 </para>
+        /// </summary>
         public List<Rule> rules { get; set; }
+
+        public Routing()
+        {
+            //只使用域名进行路由选择。默认值。
+            domainStrategy = "AsIs";
+            //使用新的域名匹配算法，速度更快且占用更少。默认值。
+            domainMatcher = "hybrid";
+        }
     }
 
     public class Rule
     {
-        public string type { get; set; }
-
         public List<String> domain { get; set; }
         public List<String> ip { get; set; }
         public string outboundTag { get; set; }
+        public string type { get; set; }
     }
 
     #endregion Routing
@@ -209,10 +230,10 @@ namespace Maray.Xray
         public object settings { get; set; }
 
         /// <summary> 底层传输方式（transport）是当前 Xray 节点和其它节点对接的方式 </summary>
-        public StreamSettings streamSettings { get; set; } = new StreamSettings();
+        public StreamSettings streamSettings { get; set; }
 
         /// <summary> 出站代理配置。当出站代理生效时，此 outbound 的 streamSettings 将不起作用。 </summary>
-        public ProxySettings proxySettings { get; set; } = new ProxySettings();
+        public ProxySettings proxySettings { get; set; }
 
         /// <summary> Mux 相关的具体配置。 </summary>
         public Mux mux { get; set; } = new Mux();
@@ -241,11 +262,26 @@ namespace Maray.Xray
 
     public class StreamSettings
     {
+        /// <summary>
+        /// 连接的数据流所使用的传输方式类型，默认值为 "tcp"
+        /// <para> "tcp" | "kcp" | "ws" | "http" | "domainsocket" | "quic" | "grpc" </para>
+        /// </summary>
         public string network { get; set; }
 
+        /// <summary>
+        /// 是否启用传输层加密，支持的选项有
+        /// <para> "none" | "tls" | "xtls" </para>
+        /// </summary>
         public string security { get; set; }
 
-        public TlsSettings tlsSettings { get; set; }
+        /// <summary> TLS 配置。TLS 由 Golang 提供，通常情况下 TLS 协商的结果为使用 TLS 1.3，不支持 DTLS。 </summary>
+        public TlsSettings tlsSettings { get; set; } = new TlsSettings();
+
+        public StreamSettings()
+        {
+            network = "tcp";
+            security = "none";
+        }
     }
 
     public class TlsSettings

@@ -18,9 +18,6 @@ namespace Maray.Helpers
         public ProcessHelper(Action<object> LogDelegate)
         {
             logAction = LogDelegate;
-
-            v2rayCorePath = PathConfig.v2rayExePath;
-            v2ratCoreWorkingPath = PathConfig.GetParentDirectory(v2rayCorePath);
         }
 
         public void ShowMessage(object strMsg)
@@ -28,17 +25,14 @@ namespace Maray.Helpers
             logAction?.Invoke(strMsg);
         }
 
-        public string v2rayCorePath { get; set; }
-        public string v2ratCoreWorkingPath { get; set; }
-
         public void StartCore(CoreInfo coreInfo)
         {
             Process = new Process();
             Process.StartInfo = new ProcessStartInfo()
             {
-                FileName = v2rayCorePath,
+                FileName = coreInfo.exePath,
                 Arguments = coreInfo.arguments,
-                WorkingDirectory = v2ratCoreWorkingPath,
+                WorkingDirectory = coreInfo.exeDirectory,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
