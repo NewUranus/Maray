@@ -94,7 +94,7 @@ public static class MauiProgram
 
                         winuiAppWindow.MoveAndResize(new RectInt32(x, y, width, height));
 
-                        window.ExtendsContentIntoTitleBar = true;
+                        window.ExtendsContentIntoTitleBar = false;
                         SetTitleBar(winuiAppWindow);
 
                         void SetTitleBar(AppWindow window)
@@ -104,9 +104,10 @@ public static class MauiProgram
                             {
                                 return;
                             }
+
                             titleBar.ExtendsContentIntoTitleBar = true;
-                            titleBar.ForegroundColor = Microsoft.UI.Colors.Black;
-                            titleBar.BackgroundColor = Microsoft.UI.Colors.Transparent;
+
+                            titleBar.IconShowOptions=IconShowOptions.HideIconAndSystemMenu;
                         }
                     }
                     else
