@@ -41,13 +41,13 @@ namespace Maray.ViewModels
         #region LiveCharts
 
         [ObservableProperty]
-        public ObservableCollection<ISeries> series;
+        public ObservableCollection<ISeries> seriesList;
 
         private readonly ObservableCollection<ObservableValue> _observableValues = new ObservableCollection<ObservableValue>();
 
         private void InitSeries()
         {
-            Series = new ObservableCollection<ISeries>()
+            SeriesList = new ObservableCollection<ISeries>()
             {
                 new LineSeries<ObservableValue>()
                 {

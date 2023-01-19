@@ -10,6 +10,7 @@
     x:DataType="localVM:MainPageVM">
 
     <Grid
+        x:Name="grid"
         Margin="24,0,0,0"
         ColumnDefinitions="*,400"
         RowDefinitions="100,*,200"
@@ -23,7 +24,7 @@
         </VerticalStackLayout>
 
         <Border Grid.Row="2" Grid.ColumnSpan="2">
-            <lvc:CartesianChart Series="{Binding Series}" />
+            <lvc:CartesianChart Series="{Binding SeriesList}" />
         </Border>
         <ScrollView Grid.Row="1" Margin="0,24,0,24">
             <Grid

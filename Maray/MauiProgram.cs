@@ -71,6 +71,9 @@ public static class MauiProgram
         services.AddTransient<AboutPageVM>();
         services.AddTransient<AboutPage>();
 
+        services.AddTransient<NetSpeedPageVM>();
+        services.AddTransient<NetSpeedPage>();
+
 #if WINDOWS
 
         services.AddSingleton<ITrayService, Maray.Platforms.Windows.TrayService>();
@@ -87,15 +90,22 @@ public static class MauiProgram
                         WindowId win32WindowsId = Win32Interop.GetWindowIdFromWindow(nativeWindowHandle);
                         AppWindow winuiAppWindow = AppWindow.GetFromWindowId(win32WindowsId);
 
-                        const int width = 300;
-                        const int height = 200;
+                        const int width = 110;
+                        const int height = 50;
                         int x = Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Width) - 300; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Width)
                         int y = Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Height) - 200; //Convert.ToInt32(DeviceDisplay.MainDisplayInfo.Height)
+
+                        if (winuiAppWindow.Presenter is OverlappedPresenter p)
+                        {
+                            p.IsResizable = false;
+                            p.SetBorderAndTitleBar(false, false);
+                        }
 
                         winuiAppWindow.MoveAndResize(new RectInt32(x, y, width, height));
 
                         window.ExtendsContentIntoTitleBar = false;
-                        SetTitleBar(winuiAppWindow);
+
+                        //SetTitleBar(winuiAppWindow);
 
                         void SetTitleBar(AppWindow window)
                         {
@@ -106,8 +116,6 @@ public static class MauiProgram
                             }
 
                             titleBar.ExtendsContentIntoTitleBar = true;
-
-                            titleBar.IconShowOptions=IconShowOptions.HideIconAndSystemMenu;
                         }
                     }
                     else
@@ -123,7 +131,8 @@ public static class MauiProgram
 
                         winuiAppWindow.MoveAndResize(new RectInt32(x, y, width, height));
 
-                        window.ExtendsContentIntoTitleBar = true;
+                        //winuiAppWindow.TitleBar.IconShowOptions = IconShowOptions.HideIconAndSystemMenu;
+                        window.ExtendsContentIntoTitleBar = false;
                     }
                 });
 
