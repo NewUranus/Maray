@@ -33,6 +33,15 @@ namespace Maray.Models.Configs
                 inItem.listen = "127.0.0.1";
 
                 inbound.Add(inItem);
+
+                InItem inItem2 = new InItem();
+                inItem2.protocol = StringDefines.InboundHttp;
+                inItem2.localPort = 10809;
+                inItem2.udpEnabled = true;
+                inItem2.sniffingEnabled = true;
+                inItem2.listen = "127.0.0.1";
+
+                inbound.Add(inItem2);
             }
 
             //路由规则

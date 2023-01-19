@@ -70,6 +70,8 @@ namespace Maray.ViewModels
                 var config = configServece.GetMarayConfig();
                 config.DefaultServer = SelectedServer.ServerM;
                 configServece.SetMarayConfig(config);
+
+                ServiceProviderHelper.GetService<CoreService>().RunCore();
             }
         }
 

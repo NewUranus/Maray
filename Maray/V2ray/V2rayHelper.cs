@@ -21,26 +21,31 @@ namespace Maray.V2ray
     /// <summary> 底层隔离 </summary>
     internal class V2rayHelper
     {
-        public void LoadCore(MarayConfigM marayConfig)
-        {
-            //var config = Helpers.ServiceProviderHelper.GetService<ConfigService>().GetMarayConfig();
+        private CoreInfo coreInfo;
 
-            if (SetCore(marayConfig, marayConfig.DefaultServer) != 0)
+        public bool InitCore(MarayConfigM marayConfig)
+        {
+            if (!SetCore(marayConfig, marayConfig.DefaultServer))
             {
                 NLogHelper.WriteExceptionLog("CheckServerSettings");
-                return;
+                return false;
             }
 
             var res = GenerateClientConfig(marayConfig);
             if (!res)
             {
                 NLogHelper.WriteLog("GenerateClientConfig fail.");
+                return false;
             }
             else
             {
-                V2rayStart();
             }
 
+            return true;
+        }
+
+        private void LoadCore(MarayConfigM marayConfig)
+        {
             //start a socks service
             if (marayConfig.DefaultServer.configType == ProtocolType.Custom && marayConfig.DefaultServer.preSocksPort > 0)
             {
@@ -63,11 +68,11 @@ namespace Maray.V2ray
         private void V2rayRestart(V2rayConfig config)
         {
             V2rayStop();
-            V2rayStart();
+            StartCore();
         }
 
         /// <summary> V2ray启动 </summary>
-        private void V2rayStart()
+        public void StartCore()
         {
             ProcessHelper processHelper = new ProcessHelper(null);
             processHelper.StartCore(coreInfo);
@@ -81,13 +86,11 @@ namespace Maray.V2ray
         {
         }
 
-        private CoreInfo coreInfo;
-
-        private int SetCore(MarayConfigM config, ServerM item)
+        private bool SetCore(MarayConfigM config, ServerM item)
         {
             if (item == null)
             {
-                return -1;
+                return false;
             }
             var coreType = GetCoreType(config, item, item.configType);
 
@@ -95,9 +98,9 @@ namespace Maray.V2ray
 
             if (coreInfo == null)
             {
-                return -1;
+                return false;
             }
-            return 0;
+            return true;
         }
 
         /// <summary> 生成core.exe的配置文件 </summary>
@@ -105,7 +108,7 @@ namespace Maray.V2ray
         /// <param name="fileName"> </param>
         /// <param name="msg">      </param>
         /// <returns> </returns>
-        public static bool GenerateClientConfig(MarayConfigM config)
+        private static bool GenerateClientConfig(MarayConfigM config)
         {
             try
             {
@@ -177,9 +180,13 @@ namespace Maray.V2ray
                     foreach (var item in config.inbound)
                     {
                         Xray.Inbound inbound = new Xray.Inbound();
+                        inbound.tag = item.protocol;
+
                         inbound.listen = item.listen;
-                        inbound.protocol = item.protocol;
                         inbound.port = item.localPort;
+                        inbound.protocol = item.protocol;
+
+                        inbound.sniffing.enabled = item.sniffingEnabled;
 
                         switch (inbound.protocol)
                         {
@@ -200,6 +207,12 @@ namespace Maray.V2ray
 
                             case StringDefines.vmessProtocolLite:
                                 inbound.settings = new InboundVMessSettings()
+                                {
+                                };
+                                break;
+
+                            case "http":
+                                inbound.settings = new InboundHttpSettings()
                                 {
                                 };
                                 break;

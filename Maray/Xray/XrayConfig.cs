@@ -1,4 +1,5 @@
 ﻿using Maray.Defines;
+using Maray.V2ray;
 
 namespace Maray.Xray
 {
@@ -114,11 +115,37 @@ namespace Maray.Xray
 
         /// <summary> 具体的配置内容，视协议不同而不同。详见每个协议中的 InboundConfigurationObject。 </summary>
         public object settings { get; set; }
+
+        public Sniffing sniffing { get; set; }
+
+        public Inbound()
+        {
+            sniffing = new Sniffing();
+            sniffing.enabled = true;
+            sniffing.destOverride = new List<string>() { "http", "tls" };
+        }
     }
 
     #endregion Inbound
 
     #region InboundSettings
+
+    #region InboundHttpSettings
+
+    internal class InboundHttpSettings
+    {
+        public int timeout { get; set; }
+        public List<Account> accounts { get; set; }
+        public bool allowTransparent { get; set; }
+        public int userLevel { get; set; }
+
+        public InboundHttpSettings()
+        {
+            timeout = 300;
+        }
+    }
+
+    #endregion InboundHttpSettings
 
     #region InboundSocksSettings
 
@@ -137,7 +164,7 @@ namespace Maray.Xray
         /// 一个数组，数组中每个元素为一个用户帐号。
         /// <para> 此选项仅当 auth 为 password 时有效。 </para>
         /// </summary>
-        public List<Account> accounts { get; set; } = new List<Account>();
+        public List<Account> accounts { get; set; }
 
         /// <summary> 用户等级，连接会使用这个用户等级对应的 本地策略。 </summary>
         public int userLevel { get; set; }
@@ -168,12 +195,12 @@ namespace Maray.Xray
         /// 一个数组，代表一组服务端认可的用户.
         /// <para> 其中每一项是一个用户ClientObject。 </para>
         /// </summary>
-        public Clients clients { get; set; } = new Clients();
+        public Clients clients { get; set; }
 
         /// <summary> 可选，clients 的默认配置。仅在配合detour时有效。 </summary>
-        public Default @default { get; set; } = new Default();
+        public Default @default { get; set; }
 
-        public Detour detour { get; set; } = new Detour();
+        public Detour detour { get; set; }
 
         public InboundVMessSettings()
         {
@@ -218,11 +245,11 @@ namespace Maray.Xray
 
     public class Outbound
     {
-        /// <summary> 用于发送数据的 IP 地址，当主机有多个 IP 地址时有效，默认值为 "0.0.0.0"。 </summary>
-        public string sendThrough { get; set; }
-
         /// <summary> 此出站连接的标识，用于在其它的配置中定位此连接。 </summary>
         public string tag { get; set; }
+
+        /// <summary> 用于发送数据的 IP 地址，当主机有多个 IP 地址时有效，默认值为 "0.0.0.0"。 </summary>
+        public string sendThrough { get; set; }
 
         /// <summary> 连接协议名称，可选的协议类型见 出站协议。 </summary>
         public string protocol { get; set; }
@@ -241,6 +268,11 @@ namespace Maray.Xray
         public Outbound()
         {
             sendThrough = "0.0.0.0";
+            streamSettings = new StreamSettings()
+            {
+                network = "tcp",
+                security = "none",
+            };
         }
     }
 
@@ -275,7 +307,7 @@ namespace Maray.Xray
         public string security { get; set; }
 
         /// <summary> TLS 配置。TLS 由 Golang 提供，通常情况下 TLS 协商的结果为使用 TLS 1.3，不支持 DTLS。 </summary>
-        public TlsSettings tlsSettings { get; set; } = new TlsSettings();
+        public TlsSettings tlsSettings { get; set; }  
 
         public StreamSettings()
         {

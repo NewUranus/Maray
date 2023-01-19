@@ -50,6 +50,7 @@ public static class MauiProgram
         //Services
         services.AddSingleton<SubscribeService>();
         services.AddSingleton<ConfigService>();
+        services.AddSingleton<CoreService>();
 
         //Will create a single instance of the object which will be remain for the lifetime of the application.
         services.AddSingleton<MainPage>();

@@ -1,4 +1,5 @@
-﻿using Maray.Services;
+﻿using Maray.Helpers;
+using Maray.Services;
 using Maray.V2ray;
 using Maray.Views;
 
@@ -6,8 +7,6 @@ namespace Maray;
 
 public partial class App : Application
 {
-    private V2rayHelper v2RayHelper = new V2rayHelper();
-
     public App()
     {
         InitializeComponent();
@@ -22,7 +21,6 @@ public partial class App : Application
 
     private void RunV2ray()
     {
-        var config = Helpers.ServiceProviderHelper.GetService<ConfigService>().GetMarayConfig();
-        v2RayHelper.LoadCore(config);
+        ServiceProviderHelper.GetService<CoreService>().RunCore();
     }
 }
