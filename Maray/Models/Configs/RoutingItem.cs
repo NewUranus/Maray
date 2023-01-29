@@ -1,4 +1,4 @@
-﻿using Maray.V2ray;
+﻿using Maray.Models.V2rayConfig;
 
 using System;
 using System.Collections.Generic;

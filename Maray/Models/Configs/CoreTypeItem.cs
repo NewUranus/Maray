@@ -10,7 +10,7 @@ namespace Maray.Models.Configs
 {
     public class CoreTypeItem
     {
-        public ProtocolType configType { get; set; }
+        public ProtocolEnum configType { get; set; }
 
         public CoreType coreType { get; set; }
     }

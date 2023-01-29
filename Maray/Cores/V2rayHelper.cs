@@ -1,20 +1,14 @@
 ﻿using Maray.Configs;
+using Maray.Cores;
 using Maray.Defines;
 using Maray.Enum;
 using Maray.ExtensionMethods;
 using Maray.Helpers;
 using Maray.Models;
 using Maray.Models.Configs;
+using Maray.Models.V2rayConfig;
+using Maray.Models.XrayConfigs;
 using Maray.Services;
-using Maray.Xray;
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Maray.V2ray
 {
@@ -47,11 +41,11 @@ namespace Maray.V2ray
         private void LoadCore(MarayConfigM marayConfig)
         {
             //start a socks service
-            if (marayConfig.DefaultServer.configType == ProtocolType.Custom && marayConfig.DefaultServer.preSocksPort > 0)
+            if (marayConfig.DefaultServer.configType == ProtocolEnum.Custom && marayConfig.DefaultServer.preSocksPort > 0)
             {
                 var itemSocks = new ServerM()
                 {
-                    configType = ProtocolType.Socks,
+                    configType = ProtocolEnum.Socks,
                     address = StringDefines.Loopback,
                     port = marayConfig.DefaultServer.preSocksPort
                 };
@@ -127,7 +121,7 @@ namespace Maray.V2ray
 
                     case CoreType.Xray:
 
-                        GenerateClientXrayConfig(config);
+                        XrayHelper.GenerateClientXrayConfig(config);
                         break;
 
                     case CoreType.v2fly_v5:
@@ -149,176 +143,6 @@ namespace Maray.V2ray
                 var localconfig = GenerateClientConfigContent(config.DefaultServer, false);
                 JsonHelper.WriteToJsonFile(PathConfig.v2rayExeConfigPath, localconfig);
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                NLogHelper.WriteExceptionLog(ex);
-                return false;
-            }
-        }
-
-        private static bool GenerateClientXrayConfig(MarayConfigM config)
-        {
-            try
-            {
-                //取得默认配置
-                XrayConfig xrayConfig = new XrayConfig();
-
-                //开始修改配置
-                //log
-                if (config.logEnabled)
-                {
-                    xrayConfig.log.loglevel = config.Loglevel;
-                }
-
-                #region inbound
-
-                if (config.inbound.Count > 0)
-                {
-                    xrayConfig.inbounds.Clear();
-                    foreach (var item in config.inbound)
-                    {
-                        Xray.Inbound inbound = new Xray.Inbound();
-                        inbound.tag = item.protocol;
-
-                        inbound.listen = item.listen;
-                        inbound.port = item.localPort;
-                        inbound.protocol = item.protocol;
-
-                        inbound.sniffing.enabled = item.sniffingEnabled;
-
-                        switch (inbound.protocol)
-                        {
-                            case StringDefines.socksProtocolLite:
-
-                                inbound.settings = new InboundSocksSettings()
-                                {
-                                };
-                                break;
-
-                            case StringDefines.ssProtocolLite:
-
-                                break;
-
-                            case StringDefines.vlessProtocolLite:
-
-                                break;
-
-                            case StringDefines.vmessProtocolLite:
-                                inbound.settings = new InboundVMessSettings()
-                                {
-                                };
-                                break;
-
-                            case "http":
-                                inbound.settings = new InboundHttpSettings()
-                                {
-                                };
-                                break;
-
-                            default:
-                                break;
-                        }
-
-                        xrayConfig.inbounds.Add(inbound);
-                    }
-                }
-
-                #endregion inbound
-
-                #region outbound
-
-                xrayConfig.outbounds.Clear();
-                Outbound outbound = new Outbound();
-
-                outbound.streamSettings = new Xray.StreamSettings();
-
-                switch (config.DefaultServer.configType)
-                {
-                    case ProtocolType.VMess:
-
-                        outbound.tag = "proxy";
-                        outbound.protocol = "vmess";
-                        outbound.settings = new OutboundVMessSettings()
-                        {
-                            vnext = new List<Vnext>()
-                            {
-                                new Vnext()
-                                {
-                                    address=config.DefaultServer.address,
-                                    port=config.DefaultServer.port,
-                                    users=new List<User>()
-                                    {
-                                      new User()
-                                      {
-                                          id=config.DefaultServer.id,
-                                          security = config.DefaultServer.security,
-                                          alterId=config.DefaultServer.alterId,
-                                      }
-                                    }
-                                }
-                            }
-                        };
-
-                        break;
-
-                    case ProtocolType.Custom:
-                        break;
-
-                    case ProtocolType.Shadowsocks:
-                        break;
-
-                    case ProtocolType.Socks:
-                        break;
-
-                    case ProtocolType.VLESS:
-
-                        outbound.protocol = "vless";
-                        outbound.settings = new OutboundVLessSettings()
-                        {
-                            vnext = new List<Vnext>()
-                            {
-                                new Vnext()
-                                {
-                                    address=config.DefaultServer.address,
-                                    port=config.DefaultServer.port,
-                                    users=new List<User>()
-                                    {
-                                      new User()
-                                      {
-                                          id=config.DefaultServer.id,
-                                          encryption = config.DefaultServer.security,
-                                          flow=config.DefaultServer.flow,
-                                      }
-                                    }
-                                }
-                            }
-                        };
-
-                        break;
-
-                    case ProtocolType.Trojan:
-                        break;
-
-                    default:
-                        break;
-                }
-
-                #endregion outbound
-
-                #region routing
-
-                xrayConfig.routing = new Xray.Routing()
-                {
-                };
-
-                #endregion routing
-
-                xrayConfig.outbounds.Add(outbound);
-
-                JsonHelper.WriteToJsonFile(PathConfig.XrayExeConfigPath, xrayConfig);
-                NLogHelper.WriteLog("GenerateClientXrayConfig success.");
                 return true;
             }
             catch (Exception ex)
@@ -614,7 +438,7 @@ namespace Maray.V2ray
             try
             {
                 Outbounds outbound = v2rayConfig.outbounds[0];
-                if (node.configType == Enum.ProtocolType.VMess)
+                if (node.configType == Enum.ProtocolEnum.VMess)
                 {
                     VnextItem vnextItem;
                     if (outbound.settings.vnext.Count <= 0)
@@ -662,7 +486,7 @@ namespace Maray.V2ray
                     outbound.protocol = StringDefines.vmessProtocolLite;
                     outbound.settings.servers = null;
                 }
-                else if (node.configType == Enum.ProtocolType.Shadowsocks)
+                else if (node.configType == Enum.ProtocolEnum.Shadowsocks)
                 {
                     ServersItem serversItem;
                     if (outbound.settings.servers.Count <= 0)
@@ -691,7 +515,7 @@ namespace Maray.V2ray
                     outbound.protocol = StringDefines.ssProtocolLite;
                     outbound.settings.vnext = null;
                 }
-                else if (node.configType == ProtocolType.Socks)
+                else if (node.configType == ProtocolEnum.Socks)
                 {
                     ServersItem serversItem;
                     if (outbound.settings.servers.Count <= 0)
@@ -728,7 +552,7 @@ namespace Maray.V2ray
                     outbound.protocol = StringDefines.socksProtocolLite;
                     outbound.settings.vnext = null;
                 }
-                else if (node.configType == ProtocolType.VLESS)
+                else if (node.configType == ProtocolEnum.VLESS)
                 {
                     VnextItem vnextItem;
                     if (outbound.settings.vnext.Count <= 0)
@@ -795,7 +619,7 @@ namespace Maray.V2ray
                     outbound.protocol = StringDefines.vlessProtocolLite;
                     outbound.settings.servers = null;
                 }
-                else if (node.configType == ProtocolType.Trojan)
+                else if (node.configType == ProtocolEnum.Trojan)
                 {
                     ServersItem serversItem;
                     if (outbound.settings.servers.Count <= 0)
@@ -852,7 +676,7 @@ namespace Maray.V2ray
         /// <param name="iobound">        </param>
         /// <param name="streamSettings"> </param>
         /// <returns> </returns>
-        private static int boundStreamSettings(MarayConfigM config, ServerM node, string iobound, StreamSettings streamSettings)
+        private static int boundStreamSettings(MarayConfigM config, ServerM node, string iobound, Models.V2rayConfig.StreamSettings streamSettings)
         {
             try
             {
@@ -865,7 +689,7 @@ namespace Maray.V2ray
                 {
                     streamSettings.security = node.streamSecurity;
 
-                    TlsSettings tlsSettings = new TlsSettings
+                    Models.V2rayConfig.TlsSettings tlsSettings = new Models.V2rayConfig.TlsSettings
                     {
                         allowInsecure = StringHelper.ToBool(node.allowInsecure),
                         alpn = node.GetAlpn(),
@@ -887,7 +711,7 @@ namespace Maray.V2ray
                 {
                     streamSettings.security = node.streamSecurity;
 
-                    TlsSettings xtlsSettings = new TlsSettings
+                    Models.V2rayConfig.TlsSettings xtlsSettings = new Models.V2rayConfig.TlsSettings
                     {
                         allowInsecure = StringHelper.ToBool(node.allowInsecure),
                         alpn = node.GetAlpn(),
@@ -1073,11 +897,11 @@ namespace Maray.V2ray
 
         public static List<string> GetShadowsocksSecuritys(MarayConfigM config, ServerM vmessItem)
         {
-            if (GetCoreType(config, vmessItem, ProtocolType.Shadowsocks) == CoreType.v2fly)
+            if (GetCoreType(config, vmessItem, ProtocolEnum.Shadowsocks) == CoreType.v2fly)
             {
                 return StringDefines.ssSecuritys;
             }
-            if (GetCoreType(config, vmessItem, ProtocolType.Shadowsocks) == CoreType.Xray)
+            if (GetCoreType(config, vmessItem, ProtocolEnum.Shadowsocks) == CoreType.Xray)
             {
                 return StringDefines.ssSecuritysInXray;
             }
@@ -1085,7 +909,7 @@ namespace Maray.V2ray
             return StringDefines.ssSecuritysInSagerNet;
         }
 
-        public static CoreType GetCoreType(MarayConfigM config, ServerM vmessItem, Enum.ProtocolType eConfigType)
+        public static CoreType GetCoreType(MarayConfigM config, ServerM vmessItem, Enum.ProtocolEnum eConfigType)
         {
             if (vmessItem != null && vmessItem.coreType != null)
             {
@@ -1147,7 +971,7 @@ namespace Maray.V2ray
                         //}
                     }
                     //servers.Add("localhost");
-                    v2rayConfig.dns = new V2ray.Dns
+                    v2rayConfig.dns = new Models.V2rayConfig.Dns
                     {
                         servers = servers
                     };

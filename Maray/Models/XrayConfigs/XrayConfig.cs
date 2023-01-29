@@ -1,7 +1,7 @@
 ﻿using Maray.Defines;
-using Maray.V2ray;
+using Maray.Models.V2rayConfig;
 
-namespace Maray.Xray
+namespace Maray.Models.XrayConfigs
 {
     /// <summary> https://xtls.github.io/config/ </summary>
     public class XrayConfig
@@ -93,8 +93,8 @@ namespace Maray.Xray
 
     public class Rule
     {
-        public List<String> domain { get; set; }
-        public List<String> ip { get; set; }
+        public List<string> domain { get; set; }
+        public List<string> ip { get; set; }
         public string outboundTag { get; set; }
         public string type { get; set; }
     }
@@ -307,7 +307,7 @@ namespace Maray.Xray
         public string security { get; set; }
 
         /// <summary> TLS 配置。TLS 由 Golang 提供，通常情况下 TLS 协商的结果为使用 TLS 1.3，不支持 DTLS。 </summary>
-        public TlsSettings tlsSettings { get; set; }  
+        public TlsSettings tlsSettings { get; set; }
 
         public StreamSettings()
         {
@@ -391,7 +391,7 @@ namespace Maray.Xray
     {
         public string address { get; set; }
 
-        public List<String> domains { get; set; }
+        public List<string> domains { get; set; }
     }
 
     #endregion Dns

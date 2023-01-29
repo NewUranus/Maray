@@ -1,4 +1,4 @@
-﻿namespace Maray.V2ray
+﻿namespace Maray.Models.V2rayConfig
 {
     /// <summary> 配置文件格式 https://www.v2fly.org/config/overview.html </summary>
     public class V2rayConfig

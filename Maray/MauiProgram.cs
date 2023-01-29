@@ -1,16 +1,12 @@
-﻿using Maray.Helpers;
-using Maray.Services;
+﻿using Maray.Services;
 using Maray.ViewModels;
 using Maray.Views;
 
 using Microsoft.Maui.LifecycleEvents;
-using Microsoft.Maui.Platform;
 
 using NLog;
 
 using SkiaSharp.Views.Maui.Controls.Hosting;
-
-using System;
 
 namespace Maray;
 

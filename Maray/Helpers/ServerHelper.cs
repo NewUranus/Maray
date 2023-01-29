@@ -46,7 +46,7 @@ namespace Maray.Helpers
                     return null;
                 }
 
-                vmessItem.configType = ProtocolType.Shadowsocks;
+                vmessItem.configType = ProtocolEnum.Shadowsocks;
             }
             else if (result.StartsWith(StringDefines.socksProtocol))
             {
@@ -60,7 +60,7 @@ namespace Maray.Helpers
                     return null;
                 }
 
-                vmessItem.configType = ProtocolType.Socks;
+                vmessItem.configType = ProtocolEnum.Socks;
             }
             else if (result.StartsWith(StringDefines.trojanProtocol))
             {
@@ -85,7 +85,7 @@ namespace Maray.Helpers
         {
             var vmessItem = new ServerM
             {
-                configType = ProtocolType.VMess
+                configType = ProtocolEnum.VMess
             };
 
             result = result.Substring(StringDefines.vmessProtocol.Length);
@@ -132,7 +132,7 @@ namespace Maray.Helpers
         {
             ServerM item = new ServerM
             {
-                configType = ProtocolType.VLESS,
+                configType = ProtocolEnum.VLESS,
                 security = "none"
             };
 
@@ -155,7 +155,7 @@ namespace Maray.Helpers
         {
             ServerM item = new ServerM
             {
-                configType = ProtocolType.Trojan
+                configType = ProtocolEnum.Trojan
             };
 
             Uri url = new Uri(result);
@@ -224,7 +224,7 @@ namespace Maray.Helpers
         {
             ServerM i = new ServerM
             {
-                configType = ProtocolType.VMess,
+                configType = ProtocolEnum.VMess,
                 security = "auto"
             };
 
@@ -307,7 +307,7 @@ namespace Maray.Helpers
         {
             ServerM vmessItem = new ServerM
             {
-                configType = ProtocolType.VMess
+                configType = ProtocolEnum.VMess
             };
             result = result.Substring(StringDefines.vmessProtocol.Length);
             int indexSplit = result.IndexOf("?");
@@ -410,7 +410,7 @@ namespace Maray.Helpers
         {
             ServerM vmessItem = new ServerM
             {
-                configType = ProtocolType.Socks
+                configType = ProtocolEnum.Socks
             };
             result = result.Substring(StringDefines.socksProtocol.Length);
             //remark

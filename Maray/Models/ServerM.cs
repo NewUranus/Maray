@@ -13,7 +13,7 @@ namespace Maray.Models
     /// <summary> 对应VmessItem </summary>
     public class ServerM
     {
-        public ProtocolType configType { get; set; }
+        public ProtocolEnum configType { get; set; }
         public int configVersion { get; set; }
         public int sort { get; set; }
 
