@@ -13,7 +13,7 @@ public partial class SettingPage : ContentPage
 
     private void Switch_Toggled(object sender, ToggledEventArgs e)
     {
-        var s = sender as Switch;
-        App.Current.UserAppTheme = s.IsToggled ? AppTheme.Dark : AppTheme.Light;
+        var s = sender as SwitchCell;
+        App.Current.UserAppTheme = s.On ? AppTheme.Dark : AppTheme.Light;
     }
 }

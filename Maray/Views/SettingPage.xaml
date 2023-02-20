@@ -3,19 +3,95 @@
     x:Class="Maray.Views.SettingPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localSettingVM="clr-namespace:Maray.ViewModels.SettingViewModels"
     xmlns:localVM="clr-namespace:Maray.ViewModels"
     Title="Setting"
     x:DataType="localVM:SettingPageVM">
 
-    <VerticalStackLayout>
-        <HorizontalStackLayout>
-            <Label Margin="5" VerticalOptions="Center">Dark Mode</Label>
-            <Switch Toggled="Switch_Toggled" />
-        </HorizontalStackLayout>
+    <Grid ColumnDefinitions="100,*">
+        <!--<CollectionView ItemsSource="{Binding SettingList}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="localSettingVM:BaseSettingVM">
+                    <Grid>
+                        <Label Text="{Binding Header}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>-->
+        <!--<ContentView Grid.Column="1" Content="{Binding SelectedSettingVM}">
+            <ContentView.Resources>
+                <DataTemplate x:Key="a">
+                    <Grid ColumnDefinitions="*,2*">
+                        <HorizontalStackLayout>
+                            <Label Margin="5" VerticalOptions="Center">Dark Mode</Label>
+                            <Switch Toggled="Switch_Toggled" />
+                        </HorizontalStackLayout>
 
-        <HorizontalStackLayout>
-            <Label Margin="5" VerticalOptions="Center">Show NetSpeed</Label>
-            <Switch IsToggled="{Binding ShowNetSpeed}" />
-        </HorizontalStackLayout>
-    </VerticalStackLayout>
+                        <HorizontalStackLayout>
+                            <Label Margin="5" VerticalOptions="Center">Show NetSpeed</Label>
+                            <Switch IsToggled="{Binding ShowNetSpeed}" />
+                        </HorizontalStackLayout>
+                    </Grid>
+                </DataTemplate>
+                <DataTemplate x:Key="b">
+                    <Grid ColumnDefinitions="*,2*">
+                        <Label>123</Label>
+                    </Grid>
+                </DataTemplate>
+            </ContentView.Resources>
+        </ContentView>-->
+
+        <!--<VerticalStackLayout Grid.Column="1">
+        </VerticalStackLayout>-->
+
+        <TableView Grid.ColumnSpan="2" Intent="Settings">
+            <TableView.Resources>
+                <!--<ControlTemplate x:Key="myPicker">
+
+                </ControlTemplate>-->
+            </TableView.Resources>
+            <TableSection Title="通用设置">
+
+                <SwitchCell OnChanged="Switch_Toggled" Text="Dark Mode" />
+                <SwitchCell On="{Binding ShowNetSpeed}" Text="Show NetSpeed" />
+            </TableSection>
+            <TableSection Title="Core基础设置">
+
+                <SwitchCell On="{Binding}" Text="开启UDP" />
+                <SwitchCell On="{Binding}" Text="开启流量探测" />
+                <SwitchCell On="{Binding}" Text="允许来自局域网的连接" />
+                <SwitchCell On="{Binding}" Text="为局域网开启新的端口" />
+                <SwitchCell On="{Binding}" Text="开启Mux多路复用" />
+                <EntryCell Label="认证用户名" />
+                <EntryCell Label="认证密码" />
+                <!--<TextCell Detail="测试Detail" Text="测试" />-->
+
+                <ViewCell>
+
+                    <Picker
+                        Title="日志等级"
+                        ItemsSource="{Binding LogLevelList}"
+                        SelectedItem="{Binding SelectedLogLevel}" />
+                </ViewCell>
+            </TableSection>
+
+            <TableSection Title="Maray设置">
+
+                <SwitchCell On="{Binding}" Text="开机启动" />
+                <SwitchCell On="{Binding}" Text="自动更新Geo文件的间隔（单位小时）" />
+                <SwitchCell On="{Binding}" Text="自动更新订阅的间隔（单位小时）" />
+                <SwitchCell On="{Binding}" Text="自动更新订阅的间隔（单位小时）" />
+                <ViewCell>
+                    <Picker
+                        Title="测速文件地址"
+                        ItemsSource="{Binding}"
+                        SelectedItem="{Binding}" />
+                </ViewCell>
+            </TableSection>
+            <TableSection Title="Routing设置">
+
+                <EntryCell />
+            </TableSection>
+        </TableView>
+    </Grid>
 </ContentPage>

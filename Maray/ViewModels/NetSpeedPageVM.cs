@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
+using Maray.Models.V2rayConfig;
+using Maray.ViewModels.SettingViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Maray.ViewModels
 {
-    public partial class NetSpeedPageVM : ObservableObject
+    public partial class NetSpeedPageVM : BaseSettingVM
     {
         [ObservableProperty]
         private NetSpeedItemVM netSpeedSelectItemVM;
@@ -19,6 +22,8 @@ namespace Maray.ViewModels
 
         public NetSpeedPageVM()
         {
+            Header = "sds";
+
             CancellationTokenSource cts = new CancellationTokenSource();
 
             var interfaces = NetworkInterface.GetAllNetworkInterfaces();

@@ -45,6 +45,7 @@ namespace Maray.Cores
 
                                 inbound.settings = new InboundSocksSettings()
                                 {
+                                    udp = true,
                                 };
                                 break;
 
@@ -83,7 +84,21 @@ namespace Maray.Cores
                 xrayConfig.outbounds.Clear();
                 Outbound outbound = new Outbound();
 
-                outbound.streamSettings = new Models.XrayConfigs.StreamSettings();
+                outbound.streamSettings = new Models.XrayConfigs.StreamSettings()
+                {
+                    network = config.DefaultServer.GetNetwork(),
+                };
+                if (outbound.streamSettings.network == "ws")
+                {
+                    outbound.streamSettings.wsSettings = new WebSocketObject()
+                    {
+                        path = config.DefaultServer.path,
+                        headers = new Headers()
+                        {
+                            Host = config.DefaultServer.requestHost,
+                        },
+                    };
+                }
 
                 switch (config.DefaultServer.configType)
                 {

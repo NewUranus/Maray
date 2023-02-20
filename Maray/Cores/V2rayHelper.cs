@@ -757,7 +757,7 @@ namespace Maray.V2ray
                         kcpSettings.congestion = config.kcpItem.congestion;
                         kcpSettings.readBufferSize = config.kcpItem.readBufferSize;
                         kcpSettings.writeBufferSize = config.kcpItem.writeBufferSize;
-                        kcpSettings.header = new Header
+                        kcpSettings.header = new V2rayHeader
                         {
                             type = node.headerType
                         };
@@ -776,7 +776,7 @@ namespace Maray.V2ray
                         string path = node.path;
                         if (!string.IsNullOrWhiteSpace(host))
                         {
-                            wsSettings.headers = new Headers
+                            wsSettings.headers = new V2rayHeaders
                             {
                                 Host = host
                             };
@@ -817,7 +817,7 @@ namespace Maray.V2ray
                         {
                             security = host,
                             key = node.path,
-                            header = new Header
+                            header = new V2rayHeader
                             {
                                 type = node.headerType
                             }
@@ -852,7 +852,7 @@ namespace Maray.V2ray
                         {
                             TcpSettings tcpSettings = new TcpSettings
                             {
-                                header = new Header
+                                header = new V2rayHeader
                                 {
                                     type = node.headerType
                                 }

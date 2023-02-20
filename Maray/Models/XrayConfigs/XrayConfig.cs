@@ -8,13 +8,11 @@ namespace Maray.Models.XrayConfigs
     {
         public Log log { get; set; } = new Log();
 
-        public Dns dns { get; set; }
-
-        public Routing routing { get; set; }
-
         public List<Inbound> inbounds { get; set; } = new List<Inbound>();
 
         public List<Outbound> outbounds { get; set; } = new List<Outbound>();
+        public Routing routing { get; set; }
+        public Dns dns { get; set; }
 
         public XrayConfig()
         {
@@ -105,18 +103,20 @@ namespace Maray.Models.XrayConfigs
 
     public class Inbound
     {
-        public string tag { get; set; }
-
-        public string protocol { get; set; }
-
-        public string listen { get; set; }
-
+        /// <summary>
+        /// number | "env:variable" | string
+        /// <para> 当只有一个端口时，Xray 会在此端口监听入站连接。当指定了一个端口范围时，取决于 allocate 设置。 </para>
+        /// </summary>
         public int port { get; set; }
 
         /// <summary> 具体的配置内容，视协议不同而不同。详见每个协议中的 InboundConfigurationObject。 </summary>
         public object settings { get; set; }
 
         public Sniffing sniffing { get; set; }
+        public string listen { get; set; }
+
+        public string protocol { get; set; }
+        public string tag { get; set; }
 
         public Inbound()
         {
@@ -309,11 +309,34 @@ namespace Maray.Models.XrayConfigs
         /// <summary> TLS 配置。TLS 由 Golang 提供，通常情况下 TLS 协商的结果为使用 TLS 1.3，不支持 DTLS。 </summary>
         public TlsSettings tlsSettings { get; set; }
 
+        public WebSocketObject wsSettings { get; set; }
+
         public StreamSettings()
         {
             network = "tcp";
             security = "none";
         }
+    }
+
+    public class WebSocketObject
+    {
+        /// <summary> 仅用于 inbound，指示是否接收 PROXY protocol。 </summary>
+        public bool acceptProxyProtocol { get; set; }
+
+        /// <summary> WebSocket 所使用的 HTTP 协议路径，默认值为 "/"。 </summary>
+        public string path { get; set; }
+
+        public Headers headers { get; set; }
+
+        public WebSocketObject()
+        {
+            path = "/";
+        }
+    }
+
+    public class Headers
+    {
+        public string Host { get; set; }
     }
 
     public class TlsSettings

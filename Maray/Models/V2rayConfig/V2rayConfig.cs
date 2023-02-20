@@ -320,7 +320,7 @@
         public string fingerprint { get; set; }
     }
 
-    public class Header
+    public class V2rayHeader
     {
         /// <summary> 伪装 </summary>
         public string type { get; set; }
@@ -335,7 +335,7 @@
     public class TcpSettings
     {
         /// <summary> 数据包头部伪装设置 </summary>
-        public Header header { get; set; }
+        public V2rayHeader header { get; set; }
     }
 
     public class StreamSettings
@@ -380,7 +380,7 @@
         public string key { get; set; }
 
         /// <summary> </summary>
-        public Header header { get; set; }
+        public V2rayHeader header { get; set; }
     }
 
     public class GrpcSettings
@@ -407,10 +407,10 @@
         public string path { get; set; }
 
         /// <summary> </summary>
-        public Headers headers { get; set; }
+        public V2rayHeaders headers { get; set; }
     }
 
-    public class Headers
+    public class V2rayHeaders
     {
         /// <summary> </summary>
         public string Host { get; set; }
@@ -440,7 +440,7 @@
         public int writeBufferSize { get; set; }
 
         /// <summary> </summary>
-        public Header header { get; set; }
+        public V2rayHeader header { get; set; }
 
         /// <summary> </summary>
         public string seed { get; set; }

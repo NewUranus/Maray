@@ -20,7 +20,6 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(Config), typeof(Config));
         Routing.RegisterRoute(nameof(ServerPage), typeof(ServerPage));
         Routing.RegisterRoute(nameof(SettingPage), typeof(SettingPage));
-
         Routing.RegisterRoute(nameof(SubscribeSettingPage), typeof(SubscribeSettingPage));
 
         if (!isSetup)
@@ -33,6 +32,8 @@ public partial class AppShell : Shell
 
     protected override void OnNavigated(ShellNavigatedEventArgs args)
     {
+        base.OnNavigated(args);
+
         if (CurrentPage is ServerPage serverPage)
         {
             serverPage.serverPageVM.InitData();
@@ -40,8 +41,6 @@ public partial class AppShell : Shell
         else if (CurrentPage is SubscribeSettingPage subscribeSettingPage)
         {
         }
-
-        base.OnNavigated(args);
     }
 
     private void SetupTrayIcon()

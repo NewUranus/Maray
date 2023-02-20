@@ -7,25 +7,7 @@
     xmlns:views="clr-namespace:Maray.Views"
     FlyoutWidth="70"
     Shell.FlyoutBehavior="{OnIdiom Phone=Disabled,
-                                   Default=Locked}"
-    Shell.NavBarIsVisible="False">
-
-    <Shell.FlyoutFooterTemplate>
-
-        <DataTemplate>
-            <Grid RowDefinitions="100">
-                <Grid.GestureRecognizers>
-                    <TapGestureRecognizer />
-                </Grid.GestureRecognizers>
-                <Image
-                    HeightRequest="16"
-                    HorizontalOptions="Center"
-                    Source="ellipsis.png"
-                    VerticalOptions="Center"
-                    WidthRequest="16" />
-            </Grid>
-        </DataTemplate>
-    </Shell.FlyoutFooterTemplate>
+                                   Default=Locked}">
 
     <FlyoutItem FlyoutIcon="icon_notes.png">
         <ShellContent Title="MainPage" ContentTemplate="{DataTemplate views:MainPage}" />

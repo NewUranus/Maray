@@ -2,22 +2,38 @@
 using CommunityToolkit.Mvvm.Input;
 
 using Maray.Helpers;
-using Maray.Views;
+using Maray.ViewModels.SettingViewModels;
 
-using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Maray.ViewModels
 {
     public partial class SettingPageVM : ObservableObject
     {
-        /// <summary> 延迟测试 </summary>
         [ObservableProperty]
         private bool showNetSpeed;
+
+        [ObservableProperty]
+        private string selectedLogLevel;
+
+        public ObservableCollection<string> LogLevelList { get; set; } = new ObservableCollection<string>() { "debug", "info", "warning", "error", "none" };
+        public ObservableCollection<BaseSettingVM> SettingList { get; set; } = new ObservableCollection<BaseSettingVM>();
+
+        [ObservableProperty]
+        private BaseSettingVM selectedSettingVM;
+
+        public SettingPageVM()
+        {
+            SelectedLogLevel = "warning";
+            SettingList.Add(new RoutingPageVM()
+            {
+            });
+
+            SettingList.Add(new NetSpeedPageVM()
+            {
+            });
+        }
 
         partial void OnShowNetSpeedChanged(bool value)
         {

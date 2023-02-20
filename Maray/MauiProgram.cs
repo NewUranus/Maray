@@ -1,6 +1,8 @@
 ﻿using Maray.Services;
 using Maray.ViewModels;
+using Maray.ViewModels.SettingViewModels;
 using Maray.Views;
+using Maray.Views.SettingViews;
 
 using Microsoft.Maui.LifecycleEvents;
 
@@ -70,6 +72,9 @@ public static class MauiProgram
 
         services.AddTransient<NetSpeedPageVM>();
         services.AddTransient<NetSpeedPage>();
+
+        services.AddTransient<RoutingPageVM>();
+        services.AddTransient<RoutingPage>();
 
 #if WINDOWS
 

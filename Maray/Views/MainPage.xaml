@@ -22,7 +22,7 @@
             <Label Text="{Binding Source={x:Static system:DateTime.Now}, StringFormat='{0:dddd, MMMM dd yyyy}'}" />
             <BoxView Margin="0,24,0,0" />
         </VerticalStackLayout>
-
+        <Grid x:Name="test" Grid.Row="1" />
         <Border Grid.Row="2" Grid.ColumnSpan="2">
             <lvc:CartesianChart Series="{Binding SeriesList}" />
         </Border>
