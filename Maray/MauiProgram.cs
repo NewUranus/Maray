@@ -8,8 +8,6 @@ using Microsoft.Maui.LifecycleEvents;
 
 using NLog;
 
-using SkiaSharp.Views.Maui.Controls.Hosting;
-
 namespace Maray;
 
 #if WINDOWS
@@ -26,7 +24,7 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
         builder
-            .UseSkiaSharp(true)
+
             .UseMauiApp<App>()
             .ConfigureFonts(fonts =>
             {
